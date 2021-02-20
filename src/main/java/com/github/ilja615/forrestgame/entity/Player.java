@@ -31,7 +31,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Player implements Entity
 {
-    private static final float SCROLL_SPEED = 0.06f;
+    private static final float SCROLL_SPEED = 0.03f;
     private final World world;
     private final StatTracker statTracker;
     private Coordinate coordinate;
