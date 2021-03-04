@@ -270,6 +270,7 @@ public class PlayerWorld implements World
                         case 0, 1, 2, 3 -> tiles[x + (y * WORLD_WIDTH)] = new BushTile();
                         case 4, 5 -> tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
                         case 6 -> tiles[x + (y * WORLD_WIDTH)] = new MushroomTile(Textures.MUSHROOM);
+                        case 7 -> tiles[x + (y * WORLD_WIDTH)] = new TreeTile(Textures.TREE);
                     }
                 }
             }
@@ -278,28 +279,55 @@ public class PlayerWorld implements World
 
     public Coordinate placeEndSign()
     {
-        int pos = WORLD_WIDTH * WORLD_HEIGHT - 1;
-        Coordinate coordinate = new Coordinate(0, 0);
-
-        while (true)
+        Coordinate coordinate;
+        if (ThreadLocalRandom.current().nextBoolean())
         {
-            if (pos > 0)
+            int pos = WORLD_WIDTH * WORLD_HEIGHT - 1;
+            coordinate = new Coordinate(0, 0);
+            while (true)
             {
-                if (tiles[pos - 1].isNotFloor())
+                if (pos > 0)
                 {
-                    pos -= WORLD_WIDTH;
+                    if (tiles[pos - 1].isNotFloor())
+                    {
+                        pos -= WORLD_WIDTH;
+                    } else
+                    {
+                        tiles[pos] = new SignTile(Textures.SIGN);
+                        coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
+                        LOGGER.info("placed end sign at: {}", coordinate);
+                        break;
+                    }
                 } else
                 {
-                    tiles[pos] = new SignTile(Textures.GROUND); // TODO: maybe sign texture idk
-                    coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
-                    LOGGER.info("placed end sign at: {}", coordinate);
+                    LOGGER.error("Failed to create end sign");
+                    this.onBoardFailureToCreate();
                     break;
                 }
-            } else
+            }
+        } else {
+            int pos = WORLD_WIDTH - 1;
+            coordinate = new Coordinate(0, 0);
+            while (true)
             {
-                LOGGER.error("Failed to create end sign");
-                this.onBoardFailureToCreate();
-                break;
+                if (pos < WORLD_WIDTH * WORLD_HEIGHT - 1)
+                {
+                    if (tiles[pos - 1].isNotFloor())
+                    {
+                        pos += WORLD_WIDTH;
+                    } else
+                    {
+                        tiles[pos] = new SignTile(Textures.SIGN);
+                        coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
+                        LOGGER.info("placed end sign at: {}", coordinate);
+                        break;
+                    }
+                } else
+                {
+                    LOGGER.error("Failed to create end sign");
+                    this.onBoardFailureToCreate();
+                    break;
+                }
             }
         }
 
@@ -354,7 +382,7 @@ public class PlayerWorld implements World
         }
 
         textureRenderer.renderBoard();
-        textureRenderer.renderPlayer();
+        textureRenderer.renderPlayer((Player) player);
         textureRenderer.renderViewport();
 
         textRenderer.drawString("energy: " + player.getStatTracker().get(Stat.HUNGER), 0f, 0.85f, 0.7f);

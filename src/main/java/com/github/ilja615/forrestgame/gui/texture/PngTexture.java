@@ -41,13 +41,20 @@ public class PngTexture implements Texture
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
     private final int id;
+    private final boolean isTall;
 
     public PngTexture(final String fileName)
+    {
+        this(fileName, false);
+    }
+
+    public PngTexture(final String fileName, final boolean isTallTexture)
     {
         final IntBuffer width = BufferUtils.createIntBuffer(1);
         final IntBuffer height = BufferUtils.createIntBuffer(1);
         final IntBuffer comp = BufferUtils.createIntBuffer(1);
 
+        this.isTall = isTallTexture;
         try
         {
             final Path textureFile = Paths.get(System.getProperty("java.io.tmpdir"), "forrestgame").resolve(fileName + ".png");
@@ -102,5 +109,10 @@ public class PngTexture implements Texture
     public void bind()
     {
         glBindTexture(GL_TEXTURE_2D, id);
+    }
+
+    public boolean getIsTall()
+    {
+        return this.isTall;
     }
 }

@@ -62,7 +62,7 @@ public interface World extends Tickable
      */
     default boolean isValidLocation(final Coordinate coordinate)
     {
-        if (this.getTiles()[coordinate.getX() + (coordinate.getY() * WORLD_WIDTH)].isRock()) return false;
+        if (this.getTiles()[coordinate.getX() + (coordinate.getY() * WORLD_WIDTH)].isObstacle()) return false;
         else return coordinate.getX() >= 0
                 && coordinate.getY() >= 0
                 && coordinate.getX() < WORLD_WIDTH

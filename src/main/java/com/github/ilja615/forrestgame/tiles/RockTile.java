@@ -29,7 +29,7 @@ public class RockTile extends Tile
     }
 
     @Override
-    public boolean isRock()
+    public boolean isObstacle()
     {
         return true;
     }

@@ -21,14 +21,16 @@ package com.github.ilja615.forrestgame.gui.texture;
 
 public interface Textures
 {
-    // materials
+    // tiles
     Texture AIR = new PngTexture("textures/air");
     Texture GROUND = new PngTexture("textures/ground");
     Texture WALL = new PngTexture("textures/wall");
     Texture MUSHROOM = new PngTexture("textures/mushroom");
+    Texture SIGN = new PngTexture("textures/sign");
+    Texture TREE = new PngTexture("textures/tree", true);
 
     // player
-    Texture PLAYER_IDLE = new PngTexture("textures/player_idle");
+    Texture PLAYER_DOWN = new PngTexture("textures/player_down");
 
     // other
     Texture VIEWPORT = new PngTexture("textures/viewport");

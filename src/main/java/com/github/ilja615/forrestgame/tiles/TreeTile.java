@@ -19,47 +19,17 @@
 
 package com.github.ilja615.forrestgame.tiles;
 
-import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
-import com.github.ilja615.forrestgame.util.Coordinate;
 
-public class Tile
+public class TreeTile extends Tile
 {
-    private final Texture texture;
-
-    public Tile(final Texture texture)
+    public TreeTile(final Texture texture)
     {
-        this.texture = texture;
+        super(texture);
     }
 
-    public Texture getTexture()
-    {
-        return texture;
-    }
-
-    public boolean isNotFloor()
-    {
-        return true;
-    }
-
-    /**
-     * Used for movement checking.
-     *
-     * @return if this tile is an obstacle
-     */
+    @Override
     public boolean isObstacle()
-    {
-        return false;
-    }
-
-    /**
-     * Fires when the player attempts to walk on this tile.
-     *
-     * @param player     the player that attempted to walk
-     * @param coordinate the coordinate of the tile
-     * @return if the player can walk on the tile
-     */
-    public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         return true;
     }
