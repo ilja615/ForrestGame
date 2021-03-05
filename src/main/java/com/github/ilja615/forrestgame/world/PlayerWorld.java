@@ -383,7 +383,7 @@ public class PlayerWorld implements World
         }
 
         textureRenderer.renderBoard();
-        textureRenderer.renderPlayer((Player) player);
+        textureRenderer.renderPlayer(player);
         textureRenderer.renderViewport();
 
         textRenderer.drawString("energy: " + player.getStatTracker().get(Stat.HUNGER), 0f, 0.85f, 0.7f);

@@ -19,6 +19,7 @@
 
 package com.github.ilja615.forrestgame.gui.renderer;
 
+import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
@@ -94,7 +95,7 @@ public class TextureRenderer
         glEnd();
     }
 
-    public void renderPlayer(Player player)
+    public void renderPlayer(Entity player)
     {
         player.getCurrentTexture().bind();
 

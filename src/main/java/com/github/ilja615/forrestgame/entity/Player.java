@@ -207,6 +207,7 @@ public class Player implements Entity
         this.mobile = true;
     }
 
+    @Override
     public Texture getCurrentTexture()
     {
         if (this.world.getTextureRenderer().getPartialX() == 0.0f && this.world.getTextureRenderer().getPartialY() == 0.0f)
