@@ -21,6 +21,9 @@ package com.github.ilja615.forrestgame.entity;
 
 import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
+import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Direction;
 import com.github.ilja615.forrestgame.world.World;
@@ -31,12 +34,14 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Player implements Entity
 {
-    private static final float SCROLL_SPEED = 0.045f;
+    private static final float SCROLL_SPEED = 0.008f;
     private final World world;
     private final StatTracker statTracker;
     private Coordinate coordinate;
     private Coordinate scheduledCoordinate;
     private boolean mobile = true;
+    public Direction facing = Direction.DOWN;
+    private float animationTimer = 0.0f;
 
     public Player(final World world, final Coordinate startPos)
     {
@@ -128,26 +133,54 @@ public class Player implements Entity
 
     private void moveUp()
     {
-        this.mobile = false;
-        move(coordinate.up(), Direction.UP);
+        if (this.facing == Direction.UP)
+        {
+            this.mobile = false;
+            move(coordinate.up(), Direction.UP);
+        } else {
+            this.facing = Direction.UP;
+            waitMoment();
+        }
     }
 
     private void moveDown()
     {
-        this.mobile = false;
-        move(coordinate.down(), Direction.DOWN);
+        if (this.facing == Direction.DOWN)
+        {
+            this.mobile = false;
+            move(coordinate.down(), Direction.DOWN);
+        } else {
+            this.facing = Direction.DOWN;
+            waitMoment();
+        }
     }
 
     private void moveLeft()
     {
-        this.mobile = false;
-        move(coordinate.left(), Direction.LEFT);
+        if (this.facing == Direction.LEFT)
+        {
+            this.mobile = false;
+            move(coordinate.left(), Direction.LEFT);
+        } else {
+            this.facing = Direction.LEFT;
+            waitMoment();
+        }
     }
 
     private void moveRight()
     {
-        this.mobile = false;
-        move(coordinate.right(), Direction.RIGHT);
+        if (this.facing == Direction.RIGHT)
+        {
+            this.mobile = false;
+            move(coordinate.right(), Direction.RIGHT);
+        } else {
+            this.facing = Direction.RIGHT;
+            waitMoment();
+        }
+    }
+
+    private void waitMoment()
+    {
     }
 
     private void move(final Coordinate coordinate, final Direction direction)
@@ -172,6 +205,36 @@ public class Player implements Entity
         }
 
         this.mobile = true;
+    }
+
+    public Texture getCurrentTexture()
+    {
+        if (this.world.getTextureRenderer().getPartialX() == 0.0f && this.world.getTextureRenderer().getPartialY() == 0.0f)
+        {
+            // Standing still
+            return switch (this.facing)
+            {
+                case UP -> Textures.PLAYER_UP;
+                case DOWN -> Textures.PLAYER_DOWN;
+                case LEFT -> Textures.PLAYER_LEFT;
+                case RIGHT -> Textures.PLAYER_RIGHT;
+            };
+        } else {
+            // Walking
+            return switch (this.facing)
+            {
+                case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(60, 4)];
+                case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(60, 4)];
+                case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(60, 4)];
+                case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(60, 4)];
+            };
+        }
+    }
+
+    private int getAnimationFrame(int framesTime, int amountFrames)
+    {
+        this.animationTimer += (1/(float)framesTime);
+        return ((int)this.animationTimer) % amountFrames;
     }
 }
 	

@@ -96,7 +96,7 @@ public class TextureRenderer
 
     public void renderPlayer(Player player)
     {
-        PLAYER_DOWN.bind();
+        player.getCurrentTexture().bind();
 
         glTranslatef(0, 0.25f, 0);
         // glRotated(playerAngle,0,0,1);

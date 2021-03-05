@@ -9,8 +9,8 @@ com/github/ilja615/forrestgame/Game.java
  com.github.ilja615.forrestgame.Game$EndReason
 com/github/ilja615/forrestgame/gui/texture/PngTexture.java
  com.github.ilja615.forrestgame.gui.texture.PngTexture
-com/github/ilja615/forrestgame/ForrestGame.java
- com.github.ilja615.forrestgame.ForrestGame
+com/github/ilja615/forrestgame/util/KeyInput.java
+ com.github.ilja615.forrestgame.util.KeyInput
 com/github/ilja615/forrestgame/util/SortedList.java
  com.github.ilja615.forrestgame.util.SortedList
 com/github/ilja615/forrestgame/util/Direction.java
@@ -21,14 +21,14 @@ com/github/ilja615/forrestgame/entity/StatTracker.java
  com.github.ilja615.forrestgame.entity.StatTracker$Stat
 com/github/ilja615/forrestgame/util/Tickable.java
  com.github.ilja615.forrestgame.util.Tickable
-com/github/ilja615/forrestgame/util/KeyInput.java
- com.github.ilja615.forrestgame.util.KeyInput
+com/github/ilja615/forrestgame/gui/texture/Textures.java
+ com.github.ilja615.forrestgame.gui.texture.Textures
+com/github/ilja615/forrestgame/ForrestGame.java
+ com.github.ilja615.forrestgame.ForrestGame
 com/github/ilja615/forrestgame/entity/Entity.java
  com.github.ilja615.forrestgame.entity.Entity
 com/github/ilja615/forrestgame/world/World.java
  com.github.ilja615.forrestgame.world.World
-com/github/ilja615/forrestgame/gui/texture/Textures.java
- com.github.ilja615.forrestgame.gui.texture.Textures
 com/github/ilja615/forrestgame/entity/Player.java
  com.github.ilja615.forrestgame.entity.Player
  com.github.ilja615.forrestgame.entity.Player$1

@@ -44,9 +44,9 @@ public interface Entity extends Tickable
     StatTracker getStatTracker();
 
     /**
-     * Sets if this player can move
+     * Sets if this entity can move
      *
-     * @param mobile if the player can move
+     * @param mobile if the entity can move
      */
     void setMobile(final boolean mobile);
 }

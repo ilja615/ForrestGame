@@ -25,6 +25,7 @@ import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
+import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.*;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -392,13 +393,6 @@ public class PlayerWorld implements World
     @Override
     public void onEnemyTurn()
     {
-        try
-        {
-            Thread.sleep(200);
-        } catch (final InterruptedException ignored)
-        {
-        }
-
         player.setMobile(true);
     }
 }

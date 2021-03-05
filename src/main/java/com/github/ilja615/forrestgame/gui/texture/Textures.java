@@ -19,6 +19,8 @@
 
 package com.github.ilja615.forrestgame.gui.texture;
 
+import java.util.ArrayList;
+
 public interface Textures
 {
     // tiles
@@ -30,7 +32,39 @@ public interface Textures
     Texture TREE = new PngTexture("textures/tree", true);
 
     // player
+    Texture PLAYER_UP = new PngTexture("textures/player_up");
     Texture PLAYER_DOWN = new PngTexture("textures/player_down");
+    Texture PLAYER_LEFT = new PngTexture("textures/player_left");
+    Texture PLAYER_RIGHT = new PngTexture("textures/player_right");
+
+    Texture[] PLAYER_UP_WALK = new Texture[]
+    {
+        new PngTexture("textures/player_up_walking_0"),
+        new PngTexture("textures/player_up_walking_1"),
+        new PngTexture("textures/player_up_walking_2"),
+        new PngTexture("textures/player_up_walking_3")
+    };
+    Texture[] PLAYER_DOWN_WALK = new Texture[]
+    {
+        new PngTexture("textures/player_down_walking_0"),
+        new PngTexture("textures/player_down_walking_1"),
+        new PngTexture("textures/player_down_walking_2"),
+        new PngTexture("textures/player_down_walking_3")
+    };
+    Texture[] PLAYER_LEFT_WALK = new Texture[]
+    {
+        new PngTexture("textures/player_left_walking_0"),
+        new PngTexture("textures/player_left_walking_1"),
+        new PngTexture("textures/player_left_walking_2"),
+        new PngTexture("textures/player_left_walking_3")
+    };
+    Texture[] PLAYER_RIGHT_WALK = new Texture[]
+    {
+        new PngTexture("textures/player_right_walking_0"),
+        new PngTexture("textures/player_right_walking_1"),
+        new PngTexture("textures/player_right_walking_2"),
+        new PngTexture("textures/player_right_walking_3")
+    };
 
     // other
     Texture VIEWPORT = new PngTexture("textures/viewport");
