@@ -20,6 +20,7 @@
 package com.github.ilja615.forrestgame.tiles;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
@@ -57,6 +58,11 @@ public class BushTile extends Tile
             stage -= 1;
 
             player.setMobile(false);
+            if (player instanceof Player)
+            {
+                ((Player) player).wait += 120;
+                ((Player) player).currentDoingAction = Player.Action.SLASHING;
+            }
             player.getStatTracker().decrement(Stat.HUNGER);
             player.getWorld().onEnemyTurn();
 

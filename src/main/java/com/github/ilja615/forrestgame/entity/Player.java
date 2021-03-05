@@ -42,6 +42,8 @@ public class Player implements Entity
     private boolean mobile = true;
     public Direction facing = Direction.DOWN;
     private float animationTimer = 0.0f;
+    public int wait = 0;
+    public Action currentDoingAction = Action.NOTHING;
 
     public Player(final World world, final Coordinate startPos)
     {
@@ -83,6 +85,12 @@ public class Player implements Entity
     @Override
     public void tick()
     {
+        if (wait > 0)
+        {
+            wait--;
+            return;
+        }
+
         float partialX = world.getTextureRenderer().getPartialX();
         float partialY = world.getTextureRenderer().getPartialY();
 
@@ -122,6 +130,9 @@ public class Player implements Entity
 
         if (mobile && partialX == 0 && partialY == 0)
         {
+            // The player is not doing anything currently and can now do something
+            this.currentDoingAction = Action.NOTHING;
+
             final Game game = world.getGame();
 
             if (isKeyDown(game, GLFW_KEY_W) || isKeyDown(game, GLFW_KEY_UP)) moveUp();
@@ -136,6 +147,7 @@ public class Player implements Entity
         if (this.facing == Direction.UP)
         {
             this.mobile = false;
+            this.currentDoingAction = Action.WALKING;
             move(coordinate.up(), Direction.UP);
         } else {
             this.facing = Direction.UP;
@@ -148,6 +160,7 @@ public class Player implements Entity
         if (this.facing == Direction.DOWN)
         {
             this.mobile = false;
+            this.currentDoingAction = Action.WALKING;
             move(coordinate.down(), Direction.DOWN);
         } else {
             this.facing = Direction.DOWN;
@@ -160,6 +173,7 @@ public class Player implements Entity
         if (this.facing == Direction.LEFT)
         {
             this.mobile = false;
+            this.currentDoingAction = Action.WALKING;
             move(coordinate.left(), Direction.LEFT);
         } else {
             this.facing = Direction.LEFT;
@@ -172,6 +186,7 @@ public class Player implements Entity
         if (this.facing == Direction.RIGHT)
         {
             this.mobile = false;
+            this.currentDoingAction = Action.WALKING;
             move(coordinate.right(), Direction.RIGHT);
         } else {
             this.facing = Direction.RIGHT;
@@ -210,7 +225,7 @@ public class Player implements Entity
     @Override
     public Texture getCurrentTexture()
     {
-        if (this.world.getTextureRenderer().getPartialX() == 0.0f && this.world.getTextureRenderer().getPartialY() == 0.0f)
+        if (this.currentDoingAction == Action.NOTHING)
         {
             // Standing still
             return switch (this.facing)
@@ -219,6 +234,15 @@ public class Player implements Entity
                 case DOWN -> Textures.PLAYER_DOWN;
                 case LEFT -> Textures.PLAYER_LEFT;
                 case RIGHT -> Textures.PLAYER_RIGHT;
+            };
+        } else if (this.currentDoingAction == Action.SLASHING) {
+            // Slashing against bush or enemy
+            return switch (this.facing)
+            {
+                case UP -> Textures.PLAYER_UP_SLASH[getAnimationFrame(30, 3)];
+                case DOWN -> Textures.PLAYER_DOWN_SLASH[getAnimationFrame(30, 3)];
+                case LEFT -> Textures.PLAYER_LEFT_SLASH[getAnimationFrame(30, 3)];
+                case RIGHT -> Textures.PLAYER_RIGHT_SLASH[getAnimationFrame(30, 3)];
             };
         } else {
             // Walking
@@ -236,6 +260,11 @@ public class Player implements Entity
     {
         this.animationTimer += (1/(float)framesTime);
         return ((int)this.animationTimer) % amountFrames;
+    }
+
+    public enum Action
+    {
+        NOTHING, SLASHING, WALKING, ROLLING
     }
 }
 	
