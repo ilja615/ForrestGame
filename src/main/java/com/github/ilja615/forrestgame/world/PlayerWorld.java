@@ -52,11 +52,13 @@ public class PlayerWorld implements World
     private final TextureRenderer textureRenderer = new TextureRenderer(this);
     private Coordinate startCoordinate;
     // private final List<Coordinate> path = new ArrayList<>();
+    private final TimeTracker timeTracker;
 
     public PlayerWorld(final Game game)
     {
         this.game = game;
         this.player = new Player(this, new Coordinate(0, 0));
+        this.timeTracker = new TimeTracker();
         this.generate();
     }
 
@@ -79,9 +81,21 @@ public class PlayerWorld implements World
     }
 
     @Override
+    public TimeTracker getTimeTracker()
+    {
+        return timeTracker;
+    }
+
+    @Override
     public TextureRenderer getTextureRenderer()
     {
         return textureRenderer;
+    }
+
+    @Override
+    public TextRenderer getTextRenderer()
+    {
+        return textRenderer;
     }
 
     @Override
@@ -388,6 +402,8 @@ public class PlayerWorld implements World
 
         textRenderer.drawString("energy: " + player.getStatTracker().get(Stat.HUNGER), 0f, 0.85f, 0.7f);
         textRenderer.drawString("health: " + player.getStatTracker().get(Stat.HEALTH), -1f, 0.85f, 0.7f);
+        textRenderer.drawString(this.getTimeTracker().getCurrentTimeString(), -1f, -0.8f, 0.7f);
+
     }
 
     @Override

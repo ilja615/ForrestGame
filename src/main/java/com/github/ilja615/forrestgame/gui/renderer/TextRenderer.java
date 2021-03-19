@@ -68,19 +68,24 @@ public class TextRenderer
 
         for (int i = 0; i < string.length(); i++)
         {
-            characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))).bind();
-            x += size;
+            if (characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))) == null)
+                LOGGER.error("Not able to draw the texture for the character: " + string.charAt(i));
+            else {
+                characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))).bind();
 
-            glBegin(GL_QUADS);
-            glTexCoord2f(0, 0);
-            glVertex2f(x, size + y);
-            glTexCoord2f(1, 0);
-            glVertex2f(size + x, size + y);
-            glTexCoord2f(1, 1);
-            glVertex2f(size + x, y);
-            glTexCoord2f(0, 1);
-            glVertex2f(x, y);
-            glEnd();
+                x += size;
+
+                glBegin(GL_QUADS);
+                glTexCoord2f(0, 0);
+                glVertex2f(x, size + y);
+                glTexCoord2f(1, 0);
+                glVertex2f(size + x, size + y);
+                glTexCoord2f(1, 1);
+                glVertex2f(size + x, y);
+                glTexCoord2f(0, 1);
+                glVertex2f(x, y);
+                glEnd();
+            }
         }
     }
 }

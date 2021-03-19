@@ -22,6 +22,7 @@ package com.github.ilja615.forrestgame.tiles;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.world.World;
 
 public class SignTile extends Tile
 {
@@ -33,14 +34,15 @@ public class SignTile extends Tile
     @Override
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
+        World world = player.getWorld();
+        world.getTimeTracker().incrementCurrentTime();
         try
         {
-            Thread.sleep(100);
+            Thread.sleep(1000);
         } catch (final InterruptedException ignored)
         {
         }
-
-        player.getWorld().generate();
+        world.generate();
 
         return false;
     }

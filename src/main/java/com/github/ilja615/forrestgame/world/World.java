@@ -21,6 +21,7 @@ package com.github.ilja615.forrestgame.world;
 
 import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -43,6 +44,10 @@ public interface World extends Tickable
     Entity getPlayer();
 
     TextureRenderer getTextureRenderer();
+
+    TextRenderer getTextRenderer();
+
+    TimeTracker getTimeTracker();
 
     /**
      * Generates the world and fills {@link World#getTiles}
