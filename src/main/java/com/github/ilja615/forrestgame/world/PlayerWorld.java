@@ -25,7 +25,6 @@ import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
-import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.*;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -50,9 +49,9 @@ public class PlayerWorld implements World
     private final Entity player;
     private final TextRenderer textRenderer = new TextRenderer();
     private final TextureRenderer textureRenderer = new TextureRenderer(this);
-    private Coordinate startCoordinate;
     // private final List<Coordinate> path = new ArrayList<>();
     private final TimeTracker timeTracker;
+    private Coordinate startCoordinate;
 
     public PlayerWorld(final Game game)
     {
@@ -120,7 +119,7 @@ public class PlayerWorld implements World
         final List<Integer> canPlace = Lists.newArrayList(0, 1, 2, 3, 4, 5, 6, 7);
         final List<Integer> shouldPlace = new ArrayList<>();
 
-        while (canPlace.size() > 0)
+        while (!canPlace.isEmpty())
         {
             final int i = canPlace.get(ThreadLocalRandom.current().nextInt(canPlace.size()));
 
@@ -141,7 +140,7 @@ public class PlayerWorld implements World
             }
         }
 
-        if (shouldPlace.size() == 0) middleHoleCarve();
+        if (shouldPlace.isEmpty()) middleHoleCarve();
 
         for (final int i : shouldPlace)
         {
@@ -320,7 +319,8 @@ public class PlayerWorld implements World
                     break;
                 }
             }
-        } else {
+        } else
+        {
             int pos = WORLD_WIDTH - 1;
             coordinate = new Coordinate(0, 0);
             while (true)

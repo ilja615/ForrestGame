@@ -20,12 +20,10 @@
 package com.github.ilja615.forrestgame.gui.renderer;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.world.World;
 
-import static com.github.ilja615.forrestgame.gui.texture.Textures.PLAYER_DOWN;
 import static com.github.ilja615.forrestgame.gui.texture.Textures.VIEWPORT;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -81,7 +79,7 @@ public class TextureRenderer
         y += World.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
         texture.bind();
 
-        float extraY = (texture instanceof PngTexture && ((PngTexture) texture).getIsTall()) ? 0.125f : 0.0f;
+        final float extraY = (texture instanceof PngTexture && ((PngTexture) texture).getIsTall()) ? 0.125f : 0.0f;
 
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
@@ -95,7 +93,7 @@ public class TextureRenderer
         glEnd();
     }
 
-    public void renderPlayer(Entity player)
+    public void renderPlayer(final Entity player)
     {
         player.getCurrentTexture().bind();
 

@@ -6,35 +6,22 @@ public class TimeTracker
 {
     private int currentTime = 0;
 
-    public int getCurrentTime() { return currentTime; }
+    public int getCurrentTime()
+    {
+        return currentTime;
+    }
 
     public String getCurrentTimeString()
     {
         return "day " + getAmountSurvivedDays(currentTime) + " " + getPeriodFromTime(currentTime).toString().toLowerCase(Locale.ROOT);
     }
 
-    public void incrementCurrentTime() { this.currentTime++; }
-
-    public static enum Period
+    public void incrementCurrentTime()
     {
-        SUNRISE(true),
-        MORNING(true),
-        NOON(true),
-        AFTERNOON(true),
-        SUNSET(false),
-        EVENING(false),
-        NIGHT(false),
-        MIDNIGHT(false);
-
-        private boolean isDayTime;
-
-        Period(boolean isDayTime)
-        {
-            this.isDayTime = isDayTime;
-        }
+        this.currentTime++;
     }
 
-    public Period getPeriodFromTime(int currentTime)
+    public Period getPeriodFromTime(final int currentTime)
     {
         return switch (currentTime % 8)
                 {
@@ -50,8 +37,27 @@ public class TimeTracker
                 };
     }
 
-    public int getAmountSurvivedDays(int currentTime)
+    public int getAmountSurvivedDays(final int currentTime)
     {
         return (int) Math.floor(currentTime / 8.0d) + 1;
+    }
+
+    public enum Period
+    {
+        SUNRISE(true),
+        MORNING(true),
+        NOON(true),
+        AFTERNOON(true),
+        SUNSET(false),
+        EVENING(false),
+        NIGHT(false),
+        MIDNIGHT(false);
+
+        private final boolean isDayTime;
+
+        Period(final boolean isDayTime)
+        {
+            this.isDayTime = isDayTime;
+        }
     }
 }

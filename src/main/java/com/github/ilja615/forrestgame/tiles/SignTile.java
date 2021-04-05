@@ -34,7 +34,7 @@ public class SignTile extends Tile
     @Override
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
-        World world = player.getWorld();
+        final World world = player.getWorld();
         world.getTimeTracker().incrementCurrentTime();
         try
         {

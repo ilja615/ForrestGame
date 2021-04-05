@@ -19,8 +19,6 @@
 
 package com.github.ilja615.forrestgame.gui.texture;
 
-import java.util.ArrayList;
-
 public interface Textures
 {
     // tiles
@@ -38,58 +36,58 @@ public interface Textures
     Texture PLAYER_RIGHT = new PngTexture("textures/player_right");
 
     Texture[] PLAYER_UP_WALK = new Texture[]
-    {
-        new PngTexture("textures/player_up_walking_0"),
-        new PngTexture("textures/player_up_walking_1"),
-        new PngTexture("textures/player_up_walking_2"),
-        new PngTexture("textures/player_up_walking_3")
-    };
+            {
+                    new PngTexture("textures/player_up_walking_0"),
+                    new PngTexture("textures/player_up_walking_1"),
+                    new PngTexture("textures/player_up_walking_2"),
+                    new PngTexture("textures/player_up_walking_3")
+            };
     Texture[] PLAYER_DOWN_WALK = new Texture[]
-    {
-        new PngTexture("textures/player_down_walking_0"),
-        new PngTexture("textures/player_down_walking_1"),
-        new PngTexture("textures/player_down_walking_2"),
-        new PngTexture("textures/player_down_walking_3")
-    };
+            {
+                    new PngTexture("textures/player_down_walking_0"),
+                    new PngTexture("textures/player_down_walking_1"),
+                    new PngTexture("textures/player_down_walking_2"),
+                    new PngTexture("textures/player_down_walking_3")
+            };
     Texture[] PLAYER_LEFT_WALK = new Texture[]
-    {
-        new PngTexture("textures/player_left_walking_0"),
-        new PngTexture("textures/player_left_walking_1"),
-        new PngTexture("textures/player_left_walking_2"),
-        new PngTexture("textures/player_left_walking_3")
-    };
+            {
+                    new PngTexture("textures/player_left_walking_0"),
+                    new PngTexture("textures/player_left_walking_1"),
+                    new PngTexture("textures/player_left_walking_2"),
+                    new PngTexture("textures/player_left_walking_3")
+            };
     Texture[] PLAYER_RIGHT_WALK = new Texture[]
-    {
-        new PngTexture("textures/player_right_walking_0"),
-        new PngTexture("textures/player_right_walking_1"),
-        new PngTexture("textures/player_right_walking_2"),
-        new PngTexture("textures/player_right_walking_3")
-    };
+            {
+                    new PngTexture("textures/player_right_walking_0"),
+                    new PngTexture("textures/player_right_walking_1"),
+                    new PngTexture("textures/player_right_walking_2"),
+                    new PngTexture("textures/player_right_walking_3")
+            };
 
     Texture[] PLAYER_UP_SLASH = new Texture[]
-    {
-        new PngTexture("textures/player_up_slash_0"),
-        new PngTexture("textures/player_up_slash_1"),
-        new PngTexture("textures/player_up_slash_2")
-    };
+            {
+                    new PngTexture("textures/player_up_slash_0"),
+                    new PngTexture("textures/player_up_slash_1"),
+                    new PngTexture("textures/player_up_slash_2")
+            };
     Texture[] PLAYER_DOWN_SLASH = new Texture[]
-    {
-        new PngTexture("textures/player_down_slash_0"),
-        new PngTexture("textures/player_down_slash_1"),
-        new PngTexture("textures/player_down_slash_2")
-    };
+            {
+                    new PngTexture("textures/player_down_slash_0"),
+                    new PngTexture("textures/player_down_slash_1"),
+                    new PngTexture("textures/player_down_slash_2")
+            };
     Texture[] PLAYER_LEFT_SLASH = new Texture[]
-    {
-        new PngTexture("textures/player_left_slash_0"),
-        new PngTexture("textures/player_left_slash_1"),
-        new PngTexture("textures/player_left_slash_2")
-    };
+            {
+                    new PngTexture("textures/player_left_slash_0"),
+                    new PngTexture("textures/player_left_slash_1"),
+                    new PngTexture("textures/player_left_slash_2")
+            };
     Texture[] PLAYER_RIGHT_SLASH = new Texture[]
-    {
-        new PngTexture("textures/player_right_slash_0"),
-        new PngTexture("textures/player_right_slash_1"),
-        new PngTexture("textures/player_right_slash_2")
-    };
+            {
+                    new PngTexture("textures/player_right_slash_0"),
+                    new PngTexture("textures/player_right_slash_1"),
+                    new PngTexture("textures/player_right_slash_2")
+            };
 
     // other
     Texture VIEWPORT = new PngTexture("textures/viewport");
