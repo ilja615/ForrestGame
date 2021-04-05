@@ -1,5 +1,4 @@
-# This is Linux ptmplate gitignore file with thing i want to ignore btw i based it on java tempelet
-
+### Linux template
 *~
 
 # temporary files which can be created if a process still has a handle open of a deleted file
