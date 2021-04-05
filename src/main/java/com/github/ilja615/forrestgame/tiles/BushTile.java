@@ -61,7 +61,7 @@ public class BushTile extends Tile
             if (player instanceof Player)
             {
                 ((Player) player).wait += 120;
-                ((Player) player).currentDoingAction = Player.Action.SLASHING;
+                ((Player) player).setCurrentAction(Player.Action.SLASHING);
             }
             player.getStatTracker().decrement(Stat.HUNGER);
             player.getWorld().onEnemyTurn();

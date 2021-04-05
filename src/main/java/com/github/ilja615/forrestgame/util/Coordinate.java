@@ -46,6 +46,17 @@ public class Coordinate
         return y;
     }
 
+    public Coordinate apply(final Direction direction)
+    {
+        return switch (direction)
+                {
+                    case UP -> up();
+                    case DOWN -> down();
+                    case LEFT -> left();
+                    case RIGHT -> right();
+                };
+    }
+
     public Coordinate up()
     {
         return up(1);
