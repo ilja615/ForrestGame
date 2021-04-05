@@ -34,6 +34,8 @@ public class TextureRenderer
     private final World world;
     private float partialX = 0f;
     private float partialY = 0f;
+    // Whether the texture reindeer should be enabled on not
+    private boolean enabled = true;
 
     public TextureRenderer(final World world)
     {
@@ -58,6 +60,22 @@ public class TextureRenderer
     public void setPartialY(final float partialY)
     {
         this.partialY = partialY;
+    }
+
+    // The stuff for enabled
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public void setEnabled()
+    {
+        this.enabled = true;
+    }
+
+    public void setDisabled()
+    {
+        this.enabled = false;
     }
 
     public void renderBoard()

@@ -390,20 +390,28 @@ public class PlayerWorld implements World
     public void tick()
     {
         player.tick();
+        if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
+        if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();
 
         if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
         {
             player.setCoordinate(startCoordinate);
         }
 
-        textureRenderer.renderBoard();
-        textureRenderer.renderPlayer(player);
-        textureRenderer.renderViewport();
+        if (textureRenderer.isEnabled())
+        {
+            textureRenderer.renderBoard();
+            textureRenderer.renderPlayer(player);
+            textureRenderer.renderViewport();
 
-        textRenderer.drawString("energy: " + player.getStatTracker().get(Stat.HUNGER), 0f, 0.85f, 0.7f);
-        textRenderer.drawString("health: " + player.getStatTracker().get(Stat.HEALTH), -1f, 0.85f, 0.7f);
-        textRenderer.drawString(this.getTimeTracker().getCurrentTimeString(), -1f, -0.8f, 0.7f);
-
+            textRenderer.drawString("energy: " + player.getStatTracker().get(Stat.HUNGER), 0f, 0.85f, 0.7f);
+            textRenderer.drawString("health: " + player.getStatTracker().get(Stat.HEALTH), -1f, 0.85f, 0.7f);
+            textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.3f);
+        } else {
+            String s = this.getTimeTracker().getCurrentTimeString();
+            float size = 20.0f/(s.length()+2);
+            textRenderer.drawString(s, -1f, -0.05f * size, size);
+        }
     }
 
     @Override

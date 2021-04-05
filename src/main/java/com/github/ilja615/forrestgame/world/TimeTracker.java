@@ -5,12 +5,18 @@ import java.util.Locale;
 public class TimeTracker
 {
     private int currentTime = 0;
+    public int waitTicks = 0;
 
     public int getCurrentTime() { return currentTime; }
 
     public String getCurrentTimeString()
     {
-        return "day " + getAmountSurvivedDays(currentTime) + " " + getPeriodFromTime(currentTime).toString().toLowerCase(Locale.ROOT);
+        return "day " + getAmountSurvivedDays(currentTime) + " - " + getPeriodFromTime(currentTime).toString().toLowerCase(Locale.ROOT);
+    }
+
+    public String getCurrentDayString()
+    {
+        return "day " + getAmountSurvivedDays(currentTime);
     }
 
     public void incrementCurrentTime() { this.currentTime++; }

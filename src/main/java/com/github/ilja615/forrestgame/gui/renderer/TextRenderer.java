@@ -32,7 +32,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class TextRenderer
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(TextRenderer.class);
-    private static final char[] characters = "abcdefghijklmnopqrstuvwxyz1234567890 :?!".toCharArray();
+    private static final char[] characters = "abcdefghijklmnopqrstuvwxyz1234567890 :?!-".toCharArray();
     private final Map<String, Texture> characterToTextureMap;
 
     public TextRenderer()
@@ -58,6 +58,7 @@ public class TextRenderer
                     case ':' -> "colon";
                     case '?' -> "question";
                     case '!' -> "exclamation";
+                    case '-' -> "dash";
                     default -> String.valueOf(character);
                 };
     }

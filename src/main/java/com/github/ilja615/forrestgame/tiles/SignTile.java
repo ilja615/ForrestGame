@@ -34,14 +34,11 @@ public class SignTile extends Tile
     @Override
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
+        // The code for moving to the next stage
         World world = player.getWorld();
         world.getTimeTracker().incrementCurrentTime();
-        try
-        {
-            Thread.sleep(1000);
-        } catch (final InterruptedException ignored)
-        {
-        }
+        world.getTextureRenderer().setDisabled();
+        world.getTimeTracker().waitTicks = 1000;
         world.generate();
 
         return false;
