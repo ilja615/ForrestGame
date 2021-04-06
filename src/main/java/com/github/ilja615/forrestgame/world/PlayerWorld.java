@@ -25,6 +25,7 @@ import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
+import com.github.ilja615.forrestgame.gui.shader.Shader;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.*;
@@ -42,6 +43,9 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+
 public class PlayerWorld implements World
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayerWorld.class);
@@ -49,16 +53,19 @@ public class PlayerWorld implements World
     private final Game game;
     private final Entity player;
     private final TextRenderer textRenderer = new TextRenderer();
-    private final TextureRenderer textureRenderer = new TextureRenderer(this);
+    private final TextureRenderer textureRenderer;
     private Coordinate startCoordinate;
     // private final List<Coordinate> path = new ArrayList<>();
     private final TimeTracker timeTracker;
+    private final Shader shader;
 
-    public PlayerWorld(final Game game)
+    public PlayerWorld(final Game game, final Shader shader)
     {
         this.game = game;
         this.player = new Player(this, new Coordinate(0, 0));
         this.timeTracker = new TimeTracker();
+        this.textureRenderer = new TextureRenderer(this);
+        this.shader = shader;
         this.generate();
     }
 
@@ -389,6 +396,8 @@ public class PlayerWorld implements World
     @Override
     public void tick()
     {
+        glUniform1f(glGetUniformLocation(this.shader.program,"daylight"), this.timeTracker.getDayLight());
+
         player.tick();
         if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
         if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();

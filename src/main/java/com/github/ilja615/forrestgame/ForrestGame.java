@@ -62,12 +62,12 @@ public class ForrestGame implements Game
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        final Game game = new ForrestGame(window);
-        final World world = new PlayerWorld(game);
-
         // Create the shaders
         final Shader shader = new Shader();
         shader.create("basic");
+
+        final Game game = new ForrestGame(window);
+        final World world = new PlayerWorld(game, shader);
 
         while (!glfwWindowShouldClose(window))
         {

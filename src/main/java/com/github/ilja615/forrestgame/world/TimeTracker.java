@@ -79,4 +79,15 @@ public class TimeTracker
     {
         return (int) Math.floor(currentTime / 8.0d) + 1;
     }
+
+    public float getDayLight()
+    {
+        return switch (getCurrentTime() % 8)
+                {
+                    case 0, 4 -> 0.5f;
+                    case 1, 2, 3 -> 1.0f;
+                    case 5, 6, 7 -> 0.2f;
+                    default -> throw new IllegalStateException("Unexpected value: " + currentTime % 8);
+                };
+    }
 }
