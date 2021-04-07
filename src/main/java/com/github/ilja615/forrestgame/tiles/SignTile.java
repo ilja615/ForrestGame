@@ -35,7 +35,7 @@ public class SignTile extends Tile
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         // The code for moving to the next stage
-        World world = player.getWorld();
+        final World world = player.getWorld();
         world.getTimeTracker().incrementCurrentTime();
         world.getTextureRenderer().setDisabled();
         world.getTimeTracker().waitTicks = 1000;

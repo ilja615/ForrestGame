@@ -34,18 +34,18 @@ public class SortedList<T extends Comparable<T>> extends AbstractList<T>
     private final List<T> list = new ArrayList<>();
 
     @Override
-    public T get(final int index)
-    {
-        return list.get(index);
-    }
-
-    @Override
     public boolean add(final T t)
     {
         list.add(t);
         Collections.sort(list);
 
         return true;
+    }
+
+    @Override
+    public T get(final int index)
+    {
+        return list.get(index);
     }
 
     @Override

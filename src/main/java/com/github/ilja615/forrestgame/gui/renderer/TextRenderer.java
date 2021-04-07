@@ -71,7 +71,8 @@ public class TextRenderer
         {
             if (characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))) == null)
                 LOGGER.error("Not able to draw the texture for the character: " + string.charAt(i));
-            else {
+            else
+            {
                 characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))).bind();
 
                 x += size;

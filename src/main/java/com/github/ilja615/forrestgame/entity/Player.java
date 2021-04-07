@@ -21,7 +21,6 @@ package com.github.ilja615.forrestgame.entity;
 
 import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
-import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -37,13 +36,13 @@ public class Player implements Entity
     private static final float SCROLL_SPEED = 0.008f;
     private final World world;
     private final StatTracker statTracker;
+    public Direction facing = Direction.DOWN;
+    public int wait = 0;
+    public Action currentDoingAction = Action.NOTHING;
     private Coordinate coordinate;
     private Coordinate scheduledCoordinate;
     private boolean mobile = true;
-    public Direction facing = Direction.DOWN;
     private float animationTimer = 0.0f;
-    public int wait = 0;
-    public Action currentDoingAction = Action.NOTHING;
 
     public Player(final World world, final Coordinate startPos)
     {
@@ -80,6 +79,42 @@ public class Player implements Entity
     public void setMobile(final boolean mobile)
     {
         this.mobile = mobile;
+    }
+
+    @Override
+    public Texture getCurrentTexture()
+    {
+        if (this.currentDoingAction == Action.NOTHING)
+        {
+            // Standing still
+            return switch (this.facing)
+                    {
+                        case UP -> Textures.PLAYER_UP;
+                        case DOWN -> Textures.PLAYER_DOWN;
+                        case LEFT -> Textures.PLAYER_LEFT;
+                        case RIGHT -> Textures.PLAYER_RIGHT;
+                    };
+        } else if (this.currentDoingAction == Action.SLASHING)
+        {
+            // Slashing against bush or enemy
+            return switch (this.facing)
+                    {
+                        case UP -> Textures.PLAYER_UP_SLASH[getAnimationFrame(30, 3)];
+                        case DOWN -> Textures.PLAYER_DOWN_SLASH[getAnimationFrame(30, 3)];
+                        case LEFT -> Textures.PLAYER_LEFT_SLASH[getAnimationFrame(30, 3)];
+                        case RIGHT -> Textures.PLAYER_RIGHT_SLASH[getAnimationFrame(30, 3)];
+                    };
+        } else
+        {
+            // Walking
+            return switch (this.facing)
+                    {
+                        case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(60, 4)];
+                        case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(60, 4)];
+                        case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(60, 4)];
+                        case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(60, 4)];
+                    };
+        }
     }
 
     @Override
@@ -149,7 +184,8 @@ public class Player implements Entity
             this.mobile = false;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.up(), Direction.UP);
-        } else {
+        } else
+        {
             this.facing = Direction.UP;
             waitMoment();
         }
@@ -162,7 +198,8 @@ public class Player implements Entity
             this.mobile = false;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.down(), Direction.DOWN);
-        } else {
+        } else
+        {
             this.facing = Direction.DOWN;
             waitMoment();
         }
@@ -175,7 +212,8 @@ public class Player implements Entity
             this.mobile = false;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.left(), Direction.LEFT);
-        } else {
+        } else
+        {
             this.facing = Direction.LEFT;
             waitMoment();
         }
@@ -188,7 +226,8 @@ public class Player implements Entity
             this.mobile = false;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.right(), Direction.RIGHT);
-        } else {
+        } else
+        {
             this.facing = Direction.RIGHT;
             waitMoment();
         }
@@ -222,44 +261,10 @@ public class Player implements Entity
         this.mobile = true;
     }
 
-    @Override
-    public Texture getCurrentTexture()
+    private int getAnimationFrame(final int framesTime, final int amountFrames)
     {
-        if (this.currentDoingAction == Action.NOTHING)
-        {
-            // Standing still
-            return switch (this.facing)
-            {
-                case UP -> Textures.PLAYER_UP;
-                case DOWN -> Textures.PLAYER_DOWN;
-                case LEFT -> Textures.PLAYER_LEFT;
-                case RIGHT -> Textures.PLAYER_RIGHT;
-            };
-        } else if (this.currentDoingAction == Action.SLASHING) {
-            // Slashing against bush or enemy
-            return switch (this.facing)
-            {
-                case UP -> Textures.PLAYER_UP_SLASH[getAnimationFrame(30, 3)];
-                case DOWN -> Textures.PLAYER_DOWN_SLASH[getAnimationFrame(30, 3)];
-                case LEFT -> Textures.PLAYER_LEFT_SLASH[getAnimationFrame(30, 3)];
-                case RIGHT -> Textures.PLAYER_RIGHT_SLASH[getAnimationFrame(30, 3)];
-            };
-        } else {
-            // Walking
-            return switch (this.facing)
-            {
-                case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(60, 4)];
-                case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(60, 4)];
-                case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(60, 4)];
-                case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(60, 4)];
-            };
-        }
-    }
-
-    private int getAnimationFrame(int framesTime, int amountFrames)
-    {
-        this.animationTimer += (1/(float)framesTime);
-        return ((int)this.animationTimer) % amountFrames;
+        this.animationTimer += (1 / (float) framesTime);
+        return ((int) this.animationTimer) % amountFrames;
     }
 
     public enum Action

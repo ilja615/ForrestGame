@@ -65,7 +65,7 @@ public class PngTexture implements Texture
 
                 if (Files.notExists(forrestGameFolder))
                 {
-                    LOGGER.debug("Creating cached textures folder ({})", forrestGameFolder.toString());
+                    LOGGER.debug("Creating cached textures folder ({})", forrestGameFolder);
                 }
                 Files.createDirectories(forrestGameFolder);
 
@@ -74,7 +74,7 @@ public class PngTexture implements Texture
                         .getResourceAsStream(fileName + ".png")))
                 {
                     Files.write(textureFile, inputStream.readAllBytes(), CREATE_NEW);
-                    LOGGER.debug("Creating cached texture file ({})", textureFile.toString());
+                    LOGGER.debug("Creating cached texture file ({})", textureFile);
                 }
             }
 
@@ -86,7 +86,7 @@ public class PngTexture implements Texture
                     4
             );
 
-            LOGGER.debug("Loaded texture file {}", textureFile.toString());
+            LOGGER.debug("Loaded texture file {}", textureFile);
 
             this.id = glGenTextures();
 

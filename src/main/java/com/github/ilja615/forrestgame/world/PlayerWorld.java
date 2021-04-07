@@ -26,7 +26,6 @@ import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.shader.Shader;
-import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.*;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -54,10 +53,10 @@ public class PlayerWorld implements World
     private final Entity player;
     private final TextRenderer textRenderer = new TextRenderer();
     private final TextureRenderer textureRenderer;
-    private Coordinate startCoordinate;
     // private final List<Coordinate> path = new ArrayList<>();
     private final TimeTracker timeTracker;
     private final Shader shader;
+    private Coordinate startCoordinate;
 
     public PlayerWorld(final Game game, final Shader shader)
     {
@@ -88,12 +87,6 @@ public class PlayerWorld implements World
     }
 
     @Override
-    public TimeTracker getTimeTracker()
-    {
-        return timeTracker;
-    }
-
-    @Override
     public TextureRenderer getTextureRenderer()
     {
         return textureRenderer;
@@ -103,6 +96,12 @@ public class PlayerWorld implements World
     public TextRenderer getTextRenderer()
     {
         return textRenderer;
+    }
+
+    @Override
+    public TimeTracker getTimeTracker()
+    {
+        return timeTracker;
     }
 
     @Override
@@ -178,6 +177,12 @@ public class PlayerWorld implements World
                     .map(Coordinate::toString)
                     .collect(Collectors.joining(" -> ")));
         }
+    }
+
+    @Override
+    public void onEnemyTurn()
+    {
+        player.setMobile(true);
     }
 
     public void cornerHoleCarve(final int corner)
@@ -327,7 +332,8 @@ public class PlayerWorld implements World
                     break;
                 }
             }
-        } else {
+        } else
+        {
             int pos = WORLD_WIDTH - 1;
             coordinate = new Coordinate(0, 0);
             while (true)
@@ -396,7 +402,7 @@ public class PlayerWorld implements World
     @Override
     public void tick()
     {
-        glUniform1f(glGetUniformLocation(this.shader.program,"daylight"), this.timeTracker.getDayLight());
+        glUniform1f(glGetUniformLocation(this.shader.program, "daylight"), this.timeTracker.getDayLight());
 
         player.tick();
         if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
@@ -416,16 +422,11 @@ public class PlayerWorld implements World
             textRenderer.drawString("energy: " + player.getStatTracker().get(Stat.HUNGER), 0f, 0.85f, 0.7f);
             textRenderer.drawString("health: " + player.getStatTracker().get(Stat.HEALTH), -1f, 0.85f, 0.7f);
             textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.3f);
-        } else {
-            String s = this.getTimeTracker().getCurrentTimeString();
-            float size = 20.0f/(s.length()+2);
+        } else
+        {
+            final String s = this.getTimeTracker().getCurrentTimeString();
+            final float size = 20.0f / (s.length() + 2);
             textRenderer.drawString(s, -1f, -0.05f * size, size);
         }
-    }
-
-    @Override
-    public void onEnemyTurn()
-    {
-        player.setMobile(true);
     }
 }

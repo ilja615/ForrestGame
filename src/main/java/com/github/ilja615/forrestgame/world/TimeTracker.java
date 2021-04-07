@@ -23,10 +23,13 @@ import java.util.Locale;
 
 public class TimeTracker
 {
-    private int currentTime = 0;
     public int waitTicks = 0;
+    private int currentTime = 0;
 
-    public int getCurrentTime() { return currentTime; }
+    public int getCurrentTime()
+    {
+        return currentTime;
+    }
 
     public String getCurrentTimeString()
     {
@@ -38,28 +41,12 @@ public class TimeTracker
         return "day " + getAmountSurvivedDays(currentTime);
     }
 
-    public void incrementCurrentTime() { this.currentTime++; }
-
-    public static enum Period
+    public void incrementCurrentTime()
     {
-        SUNRISE(true),
-        MORNING(true),
-        NOON(true),
-        AFTERNOON(true),
-        SUNSET(false),
-        EVENING(false),
-        NIGHT(false),
-        MIDNIGHT(false);
-
-        private boolean isDayTime;
-
-        Period(boolean isDayTime)
-        {
-            this.isDayTime = isDayTime;
-        }
+        this.currentTime++;
     }
 
-    public Period getPeriodFromTime(int currentTime)
+    public Period getPeriodFromTime(final int currentTime)
     {
         return switch (currentTime % 8)
                 {
@@ -75,7 +62,7 @@ public class TimeTracker
                 };
     }
 
-    public int getAmountSurvivedDays(int currentTime)
+    public int getAmountSurvivedDays(final int currentTime)
     {
         return (int) Math.floor(currentTime / 8.0d) + 1;
     }
@@ -89,5 +76,24 @@ public class TimeTracker
                     case 5, 6, 7 -> 0.2f;
                     default -> throw new IllegalStateException("Unexpected value: " + currentTime % 8);
                 };
+    }
+
+    public enum Period
+    {
+        SUNRISE(true),
+        MORNING(true),
+        NOON(true),
+        AFTERNOON(true),
+        SUNSET(false),
+        EVENING(false),
+        NIGHT(false),
+        MIDNIGHT(false);
+
+        private final boolean isDayTime;
+
+        Period(final boolean isDayTime)
+        {
+            this.isDayTime = isDayTime;
+        }
     }
 }

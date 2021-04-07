@@ -48,6 +48,13 @@ public class StatTracker extends AbstractMap<Stat, Integer>
         return delegate.get(key);
     }
 
+    @NotNull
+    @Override
+    public Set<Entry<Stat, Integer>> entrySet()
+    {
+        return delegate.entrySet();
+    }
+
     @Override
     public Integer replace(final Stat key, final Integer value)
     {
@@ -77,13 +84,6 @@ public class StatTracker extends AbstractMap<Stat, Integer>
     public void increment(final Stat key)
     {
         this.replace(key, this.get(key) + 1);
-    }
-
-    @NotNull
-    @Override
-    public Set<Entry<Stat, Integer>> entrySet()
-    {
-        return delegate.entrySet();
     }
 
     public enum Stat

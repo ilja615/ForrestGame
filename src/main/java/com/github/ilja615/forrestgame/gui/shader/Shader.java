@@ -33,12 +33,14 @@ import static org.lwjgl.opengl.GL20.*;
 public class Shader
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
-    private int vertexShader, fragmentShader;
     public int program;
+    private int vertexShader, fragmentShader;
 
-    public Shader() { }
+    public Shader()
+    {
+    }
 
-    public boolean create(String shader)
+    public boolean create(final String shader)
     {
         int success;
 
@@ -99,10 +101,10 @@ public class Shader
         glUseProgram(program);
     }
 
-    private String readSource(String file)
+    private String readSource(final String file)
     {
         BufferedReader reader = null;
-        StringBuilder sourceBuilder = new StringBuilder();
+        final StringBuilder sourceBuilder = new StringBuilder();
 
         try
         {
@@ -114,7 +116,7 @@ public class Shader
             {
                 sourceBuilder.append(line + "\n");
             }
-        } catch (IOException e)
+        } catch (final IOException e)
         {
             e.printStackTrace();
         } finally
@@ -122,7 +124,7 @@ public class Shader
             try
             {
                 reader.close();
-            } catch (IOException e)
+            } catch (final IOException e)
             {
                 e.printStackTrace();
             }
