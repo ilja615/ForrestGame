@@ -248,45 +248,11 @@ ij_java_wrap_comments = false
 ij_java_wrap_first_method_in_call_chain = false
 ij_java_wrap_long_lines = false
 
-[*.nbtt]
-max_line_length = 150
-ij_continuation_indent_size = 4
-ij_nbtt_keep_indents_on_empty_lines = false
-ij_nbtt_space_after_colon = true
-ij_nbtt_space_after_comma = true
-ij_nbtt_space_before_colon = true
-ij_nbtt_space_before_comma = false
-ij_nbtt_spaces_within_brackets = false
-ij_nbtt_spaces_within_parentheses = false
-
 [*.properties]
 ij_properties_align_group_field_declarations = false
 ij_properties_keep_blank_lines = false
 ij_properties_key_value_delimiter = equals
 ij_properties_spaces_around_key_value_delimiter = false
-
-[*.rs]
-max_line_length = 100
-ij_continuation_indent_size = 4
-ij_rust_align_multiline_chained_methods = false
-ij_rust_align_multiline_parameters = true
-ij_rust_align_multiline_parameters_in_calls = true
-ij_rust_align_ret_type = true
-ij_rust_align_type_params = false
-ij_rust_align_where_bounds = true
-ij_rust_align_where_clause = false
-ij_rust_allow_one_line_match = false
-ij_rust_block_comment_at_first_column = false
-ij_rust_indent_where_clause = true
-ij_rust_keep_blank_lines_in_code = 2
-ij_rust_keep_blank_lines_in_declarations = 2
-ij_rust_keep_indents_on_empty_lines = false
-ij_rust_keep_line_breaks = true
-ij_rust_line_comment_add_space = true
-ij_rust_line_comment_at_first_column = false
-ij_rust_min_number_of_blanks_between_items = 1
-ij_rust_preserve_punctuation = false
-ij_rust_spaces_around_assoc_type_binding = false
 
 [.editorconfig]
 ij_editorconfig_align_group_field_declarations = false
@@ -638,9 +604,6 @@ ij_markdown_max_lines_between_paragraphs = 1
 ij_markdown_min_lines_around_block_elements = 1
 ij_markdown_min_lines_around_header = 1
 ij_markdown_min_lines_between_paragraphs = 1
-
-[{*.toml,Cargo.lock,Cargo.toml.orig,Gopkg.lock,Pipfile}]
-ij_toml_keep_indents_on_empty_lines = false
 
 [{*.yaml,*.yml}]
 indent_size = 2
