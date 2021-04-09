@@ -29,8 +29,8 @@ import com.github.ilja615.forrestgame.util.Tickable;
 
 public interface World extends Tickable
 {
-    int WORLD_WIDTH = 20;
-    int WORLD_HEIGHT = 16;
+    int WORLD_WIDTH = 24;
+    int WORLD_HEIGHT = 20;
 
     Game getGame();
 

@@ -95,21 +95,25 @@ public class TextureRenderer
 
     public void renderTexture(final Texture texture, int x, int y)
     {
+        texture.bind();
+
         x += World.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
         y += World.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
-        texture.bind();
+
+        float worldStarterX = (-0.0625f * World.WORLD_WIDTH);
+        float worldStarterY = (-0.0625f * World.WORLD_HEIGHT);
 
         float extraY = (texture instanceof PngTexture && ((PngTexture) texture).getIsTall()) ? 0.125f : 0.0f;
 
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
-        glVertex2f(-1.3125f + ((float) x + partialX) / 8.0f, -0.625f + extraY + ((float) y + partialY) / 8.0f);
+        glVertex2f(  -0.0625f + worldStarterX + ((float) x + partialX) / 8.0f, 0.375f + worldStarterY + extraY + ((float) y + partialY) / 8.0f);
         glTexCoord2f(1, 0);
-        glVertex2f(-1.1875f + ((float) x + partialX) / 8.0f, -0.625f + extraY + ((float) y + partialY) / 8.0f);
+        glVertex2f(0.0625f + worldStarterX + + ((float) x + partialX) / 8.0f, 0.375f + worldStarterY + extraY + ((float) y + partialY) / 8.0f);
         glTexCoord2f(1, 1);
-        glVertex2f(-1.1875f + ((float) x + partialX) / 8.0f, -0.75f + ((float) y + partialY) / 8.0f);
+        glVertex2f(0.0625f + worldStarterX + ((float) x + partialX) / 8.0f, 0.25f + worldStarterY + ((float) y + partialY) / 8.0f);
         glTexCoord2f(0, 1);
-        glVertex2f(-1.3125f + ((float) x + partialX) / 8.0f, -0.75f + ((float) y + partialY) / 8.0f);
+        glVertex2f(-0.0625f + worldStarterX + ((float) x + partialX) / 8.0f, 0.25f + worldStarterY + ((float) y + partialY) / 8.0f);
         glEnd();
     }
 
