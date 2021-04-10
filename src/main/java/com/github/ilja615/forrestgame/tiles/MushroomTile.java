@@ -37,7 +37,7 @@ public class MushroomTile extends Tile
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         player.getStatTracker().increment(Stat.HUNGER);
-        player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)] = new FloorTile(Textures.GROUND);
+        player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)] = new FloorTile(Textures.GROUND_0);
 
         return true;
     }

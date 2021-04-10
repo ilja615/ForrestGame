@@ -118,7 +118,7 @@ public class PlayerWorld implements World
                     tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
                 } else
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new FloorTile(Textures.GROUND);
+                    tiles[x + (y * WORLD_WIDTH)] = new FloorTile(Textures.GROUND[ThreadLocalRandom.current().nextInt(Textures.GROUND.length)]);
                 }
             }
         }
@@ -370,7 +370,7 @@ public class PlayerWorld implements World
                     pos += WORLD_WIDTH;
                 } else
                 {
-                    tiles[pos] = new FloorTile(Textures.GROUND);
+                    tiles[pos] = new FloorTile(Textures.GROUND_0);
                     coordinate = new Coordinate(0, (pos + 1) / WORLD_WIDTH);
                     LOGGER.info("placed start at: {}", coordinate);
                     player.setCoordinate(coordinate);

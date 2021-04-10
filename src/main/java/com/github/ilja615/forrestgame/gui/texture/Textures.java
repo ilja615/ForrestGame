@@ -25,11 +25,14 @@ public interface Textures
 {
     // tiles
     Texture AIR = new PngTexture("textures/air");
-    Texture GROUND = new PngTexture("textures/ground");
+    Texture GROUND_0 = new PngTexture("textures/ground_0");
+    Texture GROUND_1 = new PngTexture("textures/ground_1");
     Texture WALL = new PngTexture("textures/wall");
     Texture MUSHROOM = new PngTexture("textures/mushroom");
     Texture SIGN = new PngTexture("textures/sign");
     Texture TREE = new PngTexture("textures/tree", true);
+
+    Texture[] GROUND = new Texture[]{GROUND_0, GROUND_1};
 
     // player
     Texture PLAYER_UP = new PngTexture("textures/player_up");
