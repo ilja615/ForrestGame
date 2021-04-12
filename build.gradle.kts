@@ -6,7 +6,7 @@ plugins {
     java
     application
     id("com.github.johnrengelman.shadow") version "6.1.0"
-    id("net.minecrell.licenser") version "0.4.1"
+    id("org.cadixdev.licenser") version "0.5.1"
     id("com.github.ben-manes.versions") version "0.38.0"
 }
 
@@ -16,7 +16,6 @@ version = "0.2.0"
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
@@ -119,6 +118,9 @@ dependencies {
     runtimeOnly(group = "org.lwjgl", name = "lwjgl-zstd", classifier = natives)
 
     implementation(group = "org.joml", name = "joml", version = property("jomlVersion"))
+
+    // util
+    implementation("com.beust:jcommander:1.81")
 }
 
 java {
