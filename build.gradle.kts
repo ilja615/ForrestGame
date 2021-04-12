@@ -12,7 +12,7 @@ plugins {
 
 group = "com.github.ilja615"
 base.archivesBaseName = "forrestgame"
-version = "1.0.0"
+version = "0.2.0"
 
 repositories {
     mavenCentral()
@@ -122,9 +122,8 @@ dependencies {
 }
 
 java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(15))
-    }
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
 
 application {
@@ -135,10 +134,10 @@ application {
 }
 
 license {
-    header = rootProject.file("LICENSE_HEADER.txt")
+    header = rootProject.file("LICENSE_HEADER")
 
     ext {
-        this["name"] = "ilja615"
+        this["name"] = "xf8b, ilja615"
         this["years"] = "2021"
         this["projectName"] = "Forrest Game"
     }
@@ -151,7 +150,9 @@ tasks {
         gradleReleaseChannel = "current"
         outputFormatter = "html"
 
-        rejectVersionIf { candidate.version.contains("[.-]alpha|[.-]beta|[.-]rc\\d|[.-]m\\d".toRegex(RegexOption.IGNORE_CASE)) }
+        val versionFilter = Regex("[.-]alpha|[.-]beta|[.-]rc\\d|[.-]m\\d", RegexOption.IGNORE_CASE)
+
+        rejectVersionIf { candidate.version.contains(versionFilter) }
     }
 
     test {

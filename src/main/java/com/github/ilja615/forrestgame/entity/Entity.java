@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 ilja615.
+ * Copyright (c) 2021 xf8b, ilja615.
  *
  * This file is part of Forrest Game.
  *
