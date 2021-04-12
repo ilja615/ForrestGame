@@ -31,13 +31,14 @@ import java.util.List;
  */
 public class SortedList<T extends Comparable<T>> extends AbstractList<T>
 {
-    private final List<T> list = new ArrayList<>();
+    private final List<T> delegate = new ArrayList<>();
 
     @Override
     public boolean add(final T t)
     {
-        list.add(t);
-        Collections.sort(list);
+        delegate.add(t);
+
+        Collections.sort(delegate);
 
         return true;
     }
@@ -45,24 +46,24 @@ public class SortedList<T extends Comparable<T>> extends AbstractList<T>
     @Override
     public T get(final int index)
     {
-        return list.get(index);
+        return delegate.get(index);
     }
 
     @Override
     public T remove(final int index)
     {
-        return list.remove(index);
+        return delegate.remove(index);
     }
 
     @Override
     public void clear()
     {
-        list.clear();
+        delegate.clear();
     }
 
     @Override
     public int size()
     {
-        return list.size();
+        return delegate.size();
     }
 }

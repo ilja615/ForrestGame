@@ -67,6 +67,7 @@ public class PngTexture implements Texture
                 {
                     LOGGER.debug("Creating cached textures folder ({})", forrestGameFolder);
                 }
+
                 Files.createDirectories(forrestGameFolder);
 
                 try (final InputStream inputStream = Objects.requireNonNull(Thread.currentThread()

@@ -21,14 +21,16 @@ package com.github.ilja615.forrestgame.tiles;
 
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.world.World;
 
-public class SignTile extends Tile
+public class SignTile implements Tile
 {
-    public SignTile(final Texture texture)
+    @Override
+    public Texture getTexture()
     {
-        super(texture);
+        return Textures.SIGN;
     }
 
     @Override
@@ -36,6 +38,7 @@ public class SignTile extends Tile
     {
         // The code for moving to the next stage
         final World world = player.getWorld();
+
         world.getTimeTracker().incrementCurrentTime();
         world.getTextureRenderer().setDisabled();
         world.getTimeTracker().waitTicks = 1000;

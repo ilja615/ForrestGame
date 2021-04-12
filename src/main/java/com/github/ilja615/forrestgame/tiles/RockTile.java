@@ -20,12 +20,26 @@
 package com.github.ilja615.forrestgame.tiles;
 
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.gui.texture.Textures;
 
-public class RockTile extends Tile
+public class RockTile implements Tile
 {
+    private final Texture texture;
+
+    public RockTile()
+    {
+        this.texture = Textures.WALL;
+    }
+
     public RockTile(final Texture texture)
     {
-        super(texture);
+        this.texture = texture;
+    }
+
+    @Override
+    public Texture getTexture()
+    {
+        return texture;
     }
 
     @Override

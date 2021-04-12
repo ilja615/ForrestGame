@@ -114,10 +114,10 @@ public class PlayerWorld implements World
             {
                 if (x == 0 || y == 0 || x == WORLD_WIDTH - 1 || y == WORLD_HEIGHT - 1)
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
+                    tiles[x + (y * WORLD_WIDTH)] = new RockTile();
                 } else
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new FloorTile(Textures.GROUND);
+                    tiles[x + (y * WORLD_WIDTH)] = new FloorTile();
                 }
             }
         }
@@ -211,10 +211,10 @@ public class PlayerWorld implements World
                         || (xOffSet == WORLD_WIDTH - holeWidth && x == xOffSet)
                         || (yOffSet == WORLD_HEIGHT - holeHeight && y == yOffSet))
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
+                    tiles[x + (y * WORLD_WIDTH)] = new RockTile();
                 } else
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new Tile(Textures.AIR);
+                    tiles[x + (y * WORLD_WIDTH)] = new AirTile();
                 }
             }
         }
@@ -247,10 +247,10 @@ public class PlayerWorld implements World
                         || (side == 5 && (x == WORLD_WIDTH - holeWidth || y == yOffSet || y == yOffSet + holeHeight - 1))
                         || (side == 7 && (y == holeHeight - 1 || x == xOffSet || x == xOffSet + holeWidth - 1)))
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
+                    tiles[x + (y * WORLD_WIDTH)] = new RockTile();
                 } else
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new Tile(Textures.AIR);
+                    tiles[x + (y * WORLD_WIDTH)] = new AirTile();
                 }
             }
         }
@@ -272,10 +272,10 @@ public class PlayerWorld implements World
                         || y == yOffSet
                         || y == yOffSet + holeHeight - 1)
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
+                    tiles[x + (y * WORLD_WIDTH)] = new RockTile();
                 } else
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new Tile(Textures.AIR);
+                    tiles[x + (y * WORLD_WIDTH)] = new AirTile();
                 }
             }
         }
@@ -295,8 +295,8 @@ public class PlayerWorld implements World
                     switch (random)
                     {
                         case 0, 1, 2, 3 -> tiles[x + (y * WORLD_WIDTH)] = new BushTile();
-                        case 4, 5 -> tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
-                        case 6 -> tiles[x + (y * WORLD_WIDTH)] = new MushroomTile(Textures.MUSHROOM);
+                        case 4, 5 -> tiles[x + (y * WORLD_WIDTH)] = new RockTile();
+                        case 6 -> tiles[x + (y * WORLD_WIDTH)] = new MushroomTile();
                         case 7 -> tiles[x + (y * WORLD_WIDTH)] = new TreeTile(Textures.TREE);
                     }
                 }
@@ -320,7 +320,7 @@ public class PlayerWorld implements World
                         pos -= WORLD_WIDTH;
                     } else
                     {
-                        tiles[pos] = new SignTile(Textures.SIGN);
+                        tiles[pos] = new SignTile();
                         coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
                         LOGGER.info("placed end sign at: {}", coordinate);
                         break;
@@ -345,7 +345,7 @@ public class PlayerWorld implements World
                         pos += WORLD_WIDTH;
                     } else
                     {
-                        tiles[pos] = new SignTile(Textures.SIGN);
+                        tiles[pos] = new SignTile();
                         coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
                         LOGGER.info("placed end sign at: {}", coordinate);
                         break;
@@ -376,7 +376,7 @@ public class PlayerWorld implements World
                     pos += WORLD_WIDTH;
                 } else
                 {
-                    tiles[pos] = new FloorTile(Textures.GROUND);
+                    tiles[pos] = new FloorTile();
                     coordinate = new Coordinate(0, (pos + 1) / WORLD_WIDTH);
                     LOGGER.info("placed start at: {}", coordinate);
                     player.setCoordinate(coordinate);
@@ -402,9 +402,10 @@ public class PlayerWorld implements World
     @Override
     public void tick()
     {
-        glUniform1f(glGetUniformLocation(this.shader.program, "daylight"), this.timeTracker.getDayLight());
+        glUniform1f(glGetUniformLocation(this.shader.getProgram(), "daylight"), this.timeTracker.getDayLight());
 
         player.tick();
+
         if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
         if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();
 

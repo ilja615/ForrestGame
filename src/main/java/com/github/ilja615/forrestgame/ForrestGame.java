@@ -61,10 +61,7 @@ public class ForrestGame implements Game
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        // Create the shaders
-        final Shader shader = new Shader();
-        shader.create("basic");
-
+        final Shader shader = new Shader("basic");
         final Game game = new ForrestGame(window);
         final World world = new PlayerWorld(game, shader);
 
@@ -73,15 +70,14 @@ public class ForrestGame implements Game
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
 
-            // Use the shaders
-            shader.useShader();
+            shader.use();
 
             world.tick();
 
             glfwSwapBuffers(window);
         }
 
-        // Destroy the shaders
+        // cleanup
         shader.destroy();
 
         game.end(EndReason.MANUAL_EXIT);
@@ -97,8 +93,10 @@ public class ForrestGame implements Game
     public void end(final EndReason reason)
     {
         glfwTerminate();
+
         LOGGER.info("exit reason: " + reason.getMessage());
         LOGGER.info("thx for playing");
+
         System.exit(0);
     }
 }

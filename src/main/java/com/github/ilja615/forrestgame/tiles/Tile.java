@@ -23,21 +23,11 @@ import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
 
-public class Tile
+public interface Tile
 {
-    private final Texture texture;
+    Texture getTexture();
 
-    public Tile(final Texture texture)
-    {
-        this.texture = texture;
-    }
-
-    public Texture getTexture()
-    {
-        return texture;
-    }
-
-    public boolean isNotFloor()
+    default boolean isNotFloor()
     {
         return true;
     }
@@ -47,7 +37,7 @@ public class Tile
      *
      * @return if this tile is an obstacle
      */
-    public boolean isObstacle()
+    default boolean isObstacle()
     {
         return false;
     }
@@ -59,7 +49,7 @@ public class Tile
      * @param coordinate the coordinate of the tile
      * @return if the player can walk on the tile
      */
-    public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
+    default boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         return true;
     }

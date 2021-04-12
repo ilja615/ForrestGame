@@ -26,18 +26,12 @@ import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
 
-public class BushTile extends Tile
+public class BushTile implements Tile
 {
     private static final Texture TEXTURE_0 = new PngTexture("textures/bush0");
     private static final Texture TEXTURE_1 = new PngTexture("textures/bush1");
     private static final Texture TEXTURE_2 = new PngTexture("textures/bush2");
     private int stage = 2;
-
-    public BushTile()
-    {
-        // don't worry, getTexture is overrided
-        super(null);
-    }
 
     @Override
     public Texture getTexture()
@@ -58,11 +52,10 @@ public class BushTile extends Tile
             stage -= 1;
 
             player.setMobile(false);
-            if (player instanceof Player)
-            {
-                ((Player) player).wait += 120;
-                ((Player) player).currentDoingAction = Player.Action.SLASHING;
-            }
+
+            ((Player) player).wait += 120;
+            ((Player) player).currentDoingAction = Player.Action.SLASHING;
+
             player.getStatTracker().decrement(Stat.HUNGER);
             player.getWorld().onEnemyTurn();
 

@@ -26,18 +26,31 @@ import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.world.World;
 
-public class MushroomTile extends Tile
+public class MushroomTile implements Tile
 {
+    private final Texture texture;
+
+    public MushroomTile()
+    {
+        this.texture = Textures.MUSHROOM;
+    }
+
     public MushroomTile(final Texture texture)
     {
-        super(texture);
+        this.texture = texture;
+    }
+
+    @Override
+    public Texture getTexture()
+    {
+        return texture;
     }
 
     @Override
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         player.getStatTracker().increment(Stat.HUNGER);
-        player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)] = new FloorTile(Textures.GROUND);
+        player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)] = new FloorTile();
 
         return true;
     }

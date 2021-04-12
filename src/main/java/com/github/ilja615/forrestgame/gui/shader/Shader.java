@@ -19,72 +19,73 @@
 
 package com.github.ilja615.forrestgame.gui.shader;
 
-import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Shader
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
-    public int program;
-    private int vertexShader, fragmentShader;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Shader.class);
+    private final int program;
+    private final int vertexShader;
+    private final int fragmentShader;
 
-    public Shader()
+    public Shader(final String name)
     {
-    }
-
-    public boolean create(final String shader)
-    {
-        int success;
-
-        vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, readSource(shader + ".vertex"));
+        this.vertexShader = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vertexShader, readSource(name + ".vertex"));
         glCompileShader(vertexShader);
 
-        success = glGetShaderi(vertexShader, GL_COMPILE_STATUS);
-        if (success == GL_FALSE)
+        if (glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE)
         {
-            System.err.println("Vertex: \n" + glGetShaderInfoLog(vertexShader));
-            return false;
+            LOGGER.error("Vertex shader {} failed to compile!", name);
+            LOGGER.info("Vertex shader info log is:\n{}", glGetShaderInfoLog(vertexShader));
+            throw new IllegalStateException("Vertex shader failed to compile.");
         }
 
-        fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, readSource(shader + ".fragment"));
+        this.fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fragmentShader, readSource(name + ".fragment"));
         glCompileShader(fragmentShader);
 
-        success = glGetShaderi(fragmentShader, GL_COMPILE_STATUS);
-        if (success == GL_FALSE)
+        if (glGetShaderi(fragmentShader, GL_COMPILE_STATUS) == GL_FALSE)
         {
-            LOGGER.error("Fragment: \n" + glGetShaderInfoLog(fragmentShader));
-            return false;
+            LOGGER.error("Fragment shader {} failed to compile!", name);
+            LOGGER.info("Fragment shader info log is:\n{}", glGetShaderInfoLog(fragmentShader));
+            throw new IllegalStateException("Fragment shader failed to compile.");
         }
 
-        program = glCreateProgram();
-        glAttachShader(program, vertexShader);
-        glAttachShader(program, fragmentShader);
+        this.program = glCreateProgram();
+        glAttachShader(getProgram(), vertexShader);
+        glAttachShader(getProgram(), fragmentShader);
+        glLinkProgram(getProgram());
 
-        glLinkProgram(program);
-        success = glGetProgrami(program, GL_LINK_STATUS);
-        if (success == GL_FALSE)
+        if (glGetProgrami(getProgram(), GL_LINK_STATUS) == GL_FALSE)
         {
-            LOGGER.error("Program Link: \n" + glGetProgramInfoLog(program));
-            return false;
+            LOGGER.error("Program for shader {} failed to link!", name);
+            LOGGER.error("Program info log is:\n{}" + glGetProgramInfoLog(getProgram()));
+            throw new IllegalStateException("Program linking failed.");
         }
-        glValidateProgram(program);
-        success = glGetProgrami(program, GL_VALIDATE_STATUS);
-        if (success == GL_FALSE)
+
+        glValidateProgram(getProgram());
+
+        if (glGetProgrami(getProgram(), GL_VALIDATE_STATUS) == GL_FALSE)
         {
-            LOGGER.error("Program Validate: \n" + glGetProgramInfoLog(program));
-            return false;
+            LOGGER.error("Program for shader {} failed validation!", name);
+            LOGGER.error("Program info log is:\n{}" + glGetProgramInfoLog(getProgram()));
+            throw new IllegalStateException("Program validation failed.");
         }
-        return true;
+    }
+
+    public int getProgram()
+    {
+        return program;
     }
 
     public void destroy()
@@ -96,40 +97,23 @@ public class Shader
         glDeleteProgram(program);
     }
 
-    public void useShader()
+    public void use()
     {
-        glUseProgram(program);
+        glUseProgram(getProgram());
     }
 
     private String readSource(final String file)
     {
-        BufferedReader reader = null;
-        final StringBuilder sourceBuilder = new StringBuilder();
-
-        try
+        try (final InputStream inputStream = Objects.requireNonNull(Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream("shaders/" + file)))
         {
-            reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/shaders/" + file)));
-
-            String line;
-
-            while ((line = reader.readLine()) != null)
-            {
-                sourceBuilder.append(line + "\n");
-            }
-        } catch (final IOException e)
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (final IOException exception)
         {
-            e.printStackTrace();
-        } finally
-        {
-            try
-            {
-                reader.close();
-            } catch (final IOException e)
-            {
-                e.printStackTrace();
-            }
+            LOGGER.error("Could not read file {}", file);
+
+            throw new RuntimeException(exception);
         }
-
-        return sourceBuilder.toString();
     }
 }

@@ -34,7 +34,7 @@ public class ShortPathFinder
 
     public ShortPathFinder()
     {
-        nodes = new Node[World.WORLD_WIDTH][World.WORLD_HEIGHT];
+        this.nodes = new Node[World.WORLD_WIDTH][World.WORLD_HEIGHT];
 
         for (int x = 0; x < World.WORLD_WIDTH; x++)
         {

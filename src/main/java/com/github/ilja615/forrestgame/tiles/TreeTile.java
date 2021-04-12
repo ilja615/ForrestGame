@@ -21,11 +21,19 @@ package com.github.ilja615.forrestgame.tiles;
 
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 
-public class TreeTile extends Tile
+public class TreeTile implements Tile
 {
+    private final Texture texture;
+
     public TreeTile(final Texture texture)
     {
-        super(texture);
+        this.texture = texture;
+    }
+
+    @Override
+    public Texture getTexture()
+    {
+        return texture;
     }
 
     @Override
