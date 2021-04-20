@@ -118,7 +118,8 @@ public class PlayerWorld implements World
                     tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
                 } else
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new FloorTile(Textures.GROUND[ThreadLocalRandom.current().nextInt(Textures.GROUND.length)]);
+                    Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GROUND_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
+                    tiles[x + (y * WORLD_WIDTH)] = new FloorTile(texture);
                 }
             }
         }
