@@ -17,23 +17,24 @@
  * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.ilja615.forrestgame.tiles;
+package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 
-public class BushTile extends Tile
+public class BushItem extends Item
 {
     private static final Texture TEXTURE_0 = new PngTexture("textures/bush0");
     private static final Texture TEXTURE_1 = new PngTexture("textures/bush1");
     private static final Texture TEXTURE_2 = new PngTexture("textures/bush2");
     private int stage = 2;
 
-    public BushTile()
+    public BushItem()
     {
         // don't worry, getTexture is overrided
         super(null);

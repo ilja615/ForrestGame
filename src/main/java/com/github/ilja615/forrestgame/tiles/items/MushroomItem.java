@@ -17,20 +17,30 @@
  * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.ilja615.forrestgame.tiles;
+package com.github.ilja615.forrestgame.tiles.items;
 
+import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.gui.texture.Textures;
+import com.github.ilja615.forrestgame.tiles.FloorTile;
+import com.github.ilja615.forrestgame.tiles.Tile;
+import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.world.World;
 
-public class TreeTile extends Tile
+public class MushroomItem extends Item
 {
-    public TreeTile(final Texture texture)
+    public MushroomItem(final Texture texture)
     {
         super(texture);
     }
 
     @Override
-    public boolean isObstacle()
+    public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
+        player.getStatTracker().increment(Stat.HUNGER);
+        player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)] = new FloorTile(Textures.GROUND_0);
+
         return true;
     }
 }

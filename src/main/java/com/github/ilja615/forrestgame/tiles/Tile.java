@@ -21,11 +21,13 @@ package com.github.ilja615.forrestgame.tiles;
 
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.tiles.items.Item;
 import com.github.ilja615.forrestgame.util.Coordinate;
 
 public class Tile
 {
     private final Texture texture;
+    private Item item = null;
 
     public Tile(final Texture texture)
     {
@@ -37,11 +39,6 @@ public class Tile
         return texture;
     }
 
-    public boolean isNotFloor()
-    {
-        return true;
-    }
-
     /**
      * Used for movement checking.
      *
@@ -49,7 +46,9 @@ public class Tile
      */
     public boolean isObstacle()
     {
-        return false;
+        if (this.hasItem())
+            return this.item.isObstacle();
+        else return false;
     }
 
     /**
@@ -61,6 +60,20 @@ public class Tile
      */
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
-        return true;
+        if (this.hasItem())
+            return this.item.onPlayerAttemptingWalk(player, coordinate);
+        else return true;
+    }
+
+    public boolean hasItem() { return item != null; }
+
+    public Item getItem()
+    {
+        return item;
+    }
+
+    public void setItem(Item item)
+    {
+        this.item = item;
     }
 }

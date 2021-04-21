@@ -29,6 +29,10 @@ import com.github.ilja615.forrestgame.gui.shader.Shader;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.*;
+import com.github.ilja615.forrestgame.tiles.items.BushItem;
+import com.github.ilja615.forrestgame.tiles.items.MushroomItem;
+import com.github.ilja615.forrestgame.tiles.items.SignItem;
+import com.github.ilja615.forrestgame.tiles.items.TreeItem;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.KeyInput;
 import com.github.ilja615.forrestgame.util.ShortPathFinder;
@@ -290,10 +294,10 @@ public class PlayerWorld implements World
 
                     switch (random)
                     {
-                        case 0, 1, 2, 3 -> tiles[x + (y * WORLD_WIDTH)] = new BushTile();
+                        case 0, 1, 2, 3 -> tiles[x + (y * WORLD_WIDTH)].setItem(new BushItem());
                         case 4, 5 -> tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
-                        case 6 -> tiles[x + (y * WORLD_WIDTH)] = new MushroomTile(Textures.MUSHROOM);
-                        case 7 -> tiles[x + (y * WORLD_WIDTH)] = new TreeTile(Textures.TREE);
+                        case 6 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM));
+                        case 7 -> tiles[x + (y * WORLD_WIDTH)].setItem(new TreeItem(Textures.TREE));
                     }
                 }
             }
@@ -311,12 +315,13 @@ public class PlayerWorld implements World
             {
                 if (pos > 0)
                 {
-                    if (tiles[pos - 1].isNotFloor())
+                    if (!(tiles[pos - 1] instanceof FloorTile))
                     {
                         pos -= WORLD_WIDTH;
                     } else
                     {
-                        tiles[pos] = new SignTile(Textures.SIGN);
+                        tiles[pos] = new FloorTile(Textures.GROUND_0);
+                        tiles[pos].setItem(new SignItem(Textures.SIGN));
                         coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
                         LOGGER.info("placed end sign at: {}", coordinate);
                         break;
@@ -335,12 +340,13 @@ public class PlayerWorld implements World
             {
                 if (pos < WORLD_WIDTH * WORLD_HEIGHT - 1)
                 {
-                    if (tiles[pos - 1].isNotFloor())
+                    if (!(tiles[pos - 1] instanceof FloorTile))
                     {
                         pos += WORLD_WIDTH;
                     } else
                     {
-                        tiles[pos] = new SignTile(Textures.SIGN);
+                        tiles[pos] = new FloorTile(Textures.GROUND_0);
+                        tiles[pos].setItem(new SignItem(Textures.SIGN));
                         coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
                         LOGGER.info("placed end sign at: {}", coordinate);
                         break;
@@ -366,7 +372,7 @@ public class PlayerWorld implements World
         {
             if (pos < tiles.length)
             {
-                if (tiles[pos + 1].isNotFloor())
+                if (!(tiles[pos + 1] instanceof FloorTile))
                 {
                     pos += WORLD_WIDTH;
                 } else

@@ -20,17 +20,13 @@
 package com.github.ilja615.forrestgame.tiles;
 
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.gui.texture.Textures;
+import com.github.ilja615.forrestgame.tiles.items.Item;
 
 public class FloorTile extends Tile
 {
     public FloorTile(final Texture texture)
     {
         super(texture);
-    }
-
-    @Override
-    public boolean isNotFloor()
-    {
-        return false;
     }
 }

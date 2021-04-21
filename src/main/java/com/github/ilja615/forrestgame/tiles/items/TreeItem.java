@@ -17,30 +17,21 @@
  * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.ilja615.forrestgame.tiles;
+package com.github.ilja615.forrestgame.tiles.items;
 
-import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
-import com.github.ilja615.forrestgame.util.Coordinate;
-import com.github.ilja615.forrestgame.world.World;
+import com.github.ilja615.forrestgame.tiles.Tile;
 
-public class SignTile extends Tile
+public class TreeItem extends Item
 {
-    public SignTile(final Texture texture)
+    public TreeItem(final Texture texture)
     {
         super(texture);
     }
 
     @Override
-    public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
+    public boolean isObstacle()
     {
-        // The code for moving to the next stage
-        World world = player.getWorld();
-        world.getTimeTracker().incrementCurrentTime();
-        world.getTextureRenderer().setDisabled();
-        world.getTimeTracker().waitTicks = 1000;
-        world.generate();
-
-        return false;
+        return true;
     }
 }

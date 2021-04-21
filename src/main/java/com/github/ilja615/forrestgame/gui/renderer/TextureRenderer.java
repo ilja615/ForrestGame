@@ -23,6 +23,7 @@ import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.world.World;
 
 import static com.github.ilja615.forrestgame.gui.texture.Textures.PLAYER_DOWN;
@@ -88,8 +89,11 @@ public class TextureRenderer
             {
                 if (x >= 0 && x < World.WORLD_WIDTH && y >= 0 && y < World.WORLD_HEIGHT)
                 {
-                    final Texture texture = world.getTiles()[x + (y * World.WORLD_WIDTH)].getTexture();
+                    final Tile tile = world.getTiles()[x + (y * World.WORLD_WIDTH)];
+                    final Texture texture = tile.getTexture();
                     renderTexture(texture, x, y);
+                    if (tile.hasItem())
+                        renderTexture(tile.getItem().getTexture(), x, y);
                 }
             }
         }
