@@ -41,20 +41,16 @@ public class PngTexture implements Texture
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
     private final int id;
-    private final boolean isTall;
+    private boolean isTall;
+    private boolean isHorizontallyMirrored;
+    private boolean isVerticallyMirrored;
 
     public PngTexture(final String fileName)
-    {
-        this(fileName, false);
-    }
-
-    public PngTexture(final String fileName, final boolean isTallTexture)
     {
         final IntBuffer width = BufferUtils.createIntBuffer(1);
         final IntBuffer height = BufferUtils.createIntBuffer(1);
         final IntBuffer comp = BufferUtils.createIntBuffer(1);
 
-        this.isTall = isTallTexture;
         try
         {
             final Path textureFile = Paths.get(System.getProperty("java.io.tmpdir"), "forrestgame").resolve(fileName + ".png");
@@ -111,8 +107,36 @@ public class PngTexture implements Texture
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
-    public boolean getIsTall()
+    public boolean isTall()
     {
-        return this.isTall;
+        return isTall;
+    }
+
+    public Texture setTall(boolean tall)
+    {
+        isTall = tall;
+        return this;
+    }
+
+    public boolean isHorizontallyMirrored()
+    {
+        return isHorizontallyMirrored;
+    }
+
+    public Texture setHorizontallyMirrored(boolean horizontallyMirrored)
+    {
+        isHorizontallyMirrored = horizontallyMirrored;
+        return this;
+    }
+
+    public boolean isVerticallyMirrored()
+    {
+        return isVerticallyMirrored;
+    }
+
+    public Texture setVerticallyMirrored(boolean verticallyMirrored)
+    {
+        isVerticallyMirrored = verticallyMirrored;
+        return this;
     }
 }

@@ -80,9 +80,11 @@ public class TextureRenderer
 
     public void renderBoard()
     {
-        for (int x = world.getPlayer().getCoordinate().getX() - 6; x <= world.getPlayer().getCoordinate().getX() + 6; x++)
+        // Renders all the tiles on the board.
+        // This is in order from top to bottom, so that taller textures like trees will get rendered in front properly.
+        for (int y = world.getPlayer().getCoordinate().getY() + 4; y >= world.getPlayer().getCoordinate().getY() - 6; y--)
         {
-            for (int y = world.getPlayer().getCoordinate().getY() + 4; y >= world.getPlayer().getCoordinate().getY() - 6; y--)
+            for (int x = world.getPlayer().getCoordinate().getX() - 6; x <= world.getPlayer().getCoordinate().getX() + 6; x++)
             {
                 if (x >= 0 && x < World.WORLD_WIDTH && y >= 0 && y < World.WORLD_HEIGHT)
                 {
@@ -103,34 +105,41 @@ public class TextureRenderer
         float worldStarterX = (-0.0833f * World.WORLD_WIDTH);
         float worldStarterY = (-0.0833f * World.WORLD_HEIGHT);
 
-        float extraY = (texture instanceof PngTexture && ((PngTexture) texture).getIsTall()) ? 0.167f : 0.0f;
+        float extraY = (texture instanceof PngTexture && ((PngTexture) texture).isTall()) ? 0.167f : 0.0f;
+        boolean hm = (texture instanceof PngTexture && ((PngTexture) texture).isHorizontallyMirrored()); //isHorizontallyMirroredPNGTexture
+        boolean vm = (texture instanceof PngTexture && ((PngTexture) texture).isVerticallyMirrored()); //isVerticallyMirroredPNGTexture
 
         glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
+        glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
         glVertex2f(  -0.0834f + worldStarterX + ((float) x + partialX) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY) / 6.0f);
-        glTexCoord2f(1, 0);
+        glTexCoord2f(hm ? 0 : 1, vm ? 1 : 0);
         glVertex2f(0.0834f + worldStarterX + + ((float) x + partialX) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY) / 6.0f);
-        glTexCoord2f(1, 1);
+        glTexCoord2f(hm ? 0 : 1, vm ? 0 : 1);
         glVertex2f(0.0834f + worldStarterX + ((float) x + partialX) / 6.0f, 0.083f + worldStarterY + ((float) y + partialY) / 6.0f);
-        glTexCoord2f(0, 1);
+        glTexCoord2f(hm ? 1 : 0, vm ? 0 : 1);
         glVertex2f(-0.084f + worldStarterX + ((float) x + partialX) / 6.0f, 0.083f + worldStarterY + ((float) y + partialY) / 6.0f);
         glEnd();
     }
 
     public void renderPlayer(Entity player)
     {
-        player.getCurrentTexture().bind();
+        Texture texture = player.getCurrentTexture();
+        texture.bind();
+
+        float extraY = (texture instanceof PngTexture && ((PngTexture) texture).isTall()) ? 0.167f : 0.0f;
+        boolean hm = (texture instanceof PngTexture && ((PngTexture) texture).isHorizontallyMirrored()); //isHorizontallyMirroredPNGTexture
+        boolean vm = (texture instanceof PngTexture && ((PngTexture) texture).isVerticallyMirrored()); //isVerticallyMirroredPNGTexture
 
         glTranslatef(0, 0.083f, 0);
         // glRotated(playerAngle,0,0,1);
         glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(-0.0834f, 0.167f);
-        glTexCoord2f(1, 0);
-        glVertex2f(0.0834f, 0.167f);
-        glTexCoord2f(1, 1);
+        glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
+        glVertex2f(-0.0834f, 0.167f + extraY);
+        glTexCoord2f(hm ? 0 : 1, vm ? 1 : 0);
+        glVertex2f(0.0834f, 0.167f + extraY);
+        glTexCoord2f(hm ? 0 : 1, vm ? 0 : 1);
         glVertex2f(0.0834f, 0);
-        glTexCoord2f(0, 1);
+        glTexCoord2f(hm ? 1 : 0, vm ? 0 : 1);
         glVertex2f(-0.0834f, 0);
         glEnd();
         // glRotated(-playerAngle,0,0,1);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 ilja615.
+ * Copyside (c) 2021 ilja615.
  *
  * This file is part of Forrest Game.
  *
@@ -32,15 +32,15 @@ public interface Textures
     Texture WALL = new PngTexture("textures/wall");
     Texture MUSHROOM = new PngTexture("textures/mushroom");
     Texture SIGN = new PngTexture("textures/sign");
-    Texture TREE = new PngTexture("textures/tree", true);
+    Texture TREE = new PngTexture("textures/tree").setTall(true);
 
     Texture[] GROUND_ALTERNATIVES = new Texture[]{GROUND_0, GROUND_1, GROUND_2, GROUND_3};
 
     // player
     Texture PLAYER_UP = new PngTexture("textures/player_up");
     Texture PLAYER_DOWN = new PngTexture("textures/player_down");
-    Texture PLAYER_LEFT = new PngTexture("textures/player_left");
-    Texture PLAYER_RIGHT = new PngTexture("textures/player_right");
+    Texture PLAYER_LEFT = new PngTexture("textures/player_side").setHorizontallyMirrored(true);
+    Texture PLAYER_RIGHT = new PngTexture("textures/player_side");
 
     Texture[] PLAYER_UP_WALK = new Texture[]
     {
@@ -58,17 +58,17 @@ public interface Textures
     };
     Texture[] PLAYER_LEFT_WALK = new Texture[]
     {
-        new PngTexture("textures/player_left_walking_0"),
-        new PngTexture("textures/player_left_walking_1"),
-        new PngTexture("textures/player_left_walking_2"),
-        new PngTexture("textures/player_left_walking_3")
+        new PngTexture("textures/player_side_walking_0").setHorizontallyMirrored(true),
+        new PngTexture("textures/player_side_walking_1").setHorizontallyMirrored(true),
+        new PngTexture("textures/player_side_walking_2").setHorizontallyMirrored(true),
+        new PngTexture("textures/player_side_walking_3").setHorizontallyMirrored(true)
     };
     Texture[] PLAYER_RIGHT_WALK = new Texture[]
     {
-        new PngTexture("textures/player_right_walking_0"),
-        new PngTexture("textures/player_right_walking_1"),
-        new PngTexture("textures/player_right_walking_2"),
-        new PngTexture("textures/player_right_walking_3")
+        new PngTexture("textures/player_side_walking_0"),
+        new PngTexture("textures/player_side_walking_1"),
+        new PngTexture("textures/player_side_walking_2"),
+        new PngTexture("textures/player_side_walking_3")
     };
 
     // other
