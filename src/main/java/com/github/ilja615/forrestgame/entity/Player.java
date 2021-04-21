@@ -235,15 +235,6 @@ public class Player implements Entity
                 case LEFT -> Textures.PLAYER_LEFT;
                 case RIGHT -> Textures.PLAYER_RIGHT;
             };
-        } else if (this.currentDoingAction == Action.SLASHING) {
-            // Slashing against bush or enemy
-            return switch (this.facing)
-            {
-                case UP -> Textures.PLAYER_UP_SLASH[getAnimationFrame(30, 3)];
-                case DOWN -> Textures.PLAYER_DOWN_SLASH[getAnimationFrame(30, 3)];
-                case LEFT -> Textures.PLAYER_LEFT_SLASH[getAnimationFrame(30, 3)];
-                case RIGHT -> Textures.PLAYER_RIGHT_SLASH[getAnimationFrame(30, 3)];
-            };
         } else {
             // Walking
             return switch (this.facing)

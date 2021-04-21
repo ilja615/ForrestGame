@@ -71,31 +71,6 @@ public interface Textures
         new PngTexture("textures/player_right_walking_3")
     };
 
-    Texture[] PLAYER_UP_SLASH = new Texture[]
-    {
-        new PngTexture("textures/player_up_slash_0"),
-        new PngTexture("textures/player_up_slash_1"),
-        new PngTexture("textures/player_up_slash_2")
-    };
-    Texture[] PLAYER_DOWN_SLASH = new Texture[]
-    {
-        new PngTexture("textures/player_down_slash_0"),
-        new PngTexture("textures/player_down_slash_1"),
-        new PngTexture("textures/player_down_slash_2")
-    };
-    Texture[] PLAYER_LEFT_SLASH = new Texture[]
-    {
-        new PngTexture("textures/player_left_slash_0"),
-        new PngTexture("textures/player_left_slash_1"),
-        new PngTexture("textures/player_left_slash_2")
-    };
-    Texture[] PLAYER_RIGHT_SLASH = new Texture[]
-    {
-        new PngTexture("textures/player_right_slash_0"),
-        new PngTexture("textures/player_right_slash_1"),
-        new PngTexture("textures/player_right_slash_2")
-    };
-
     // other
     Texture VIEWPORT = new PngTexture("textures/viewport");
 }
