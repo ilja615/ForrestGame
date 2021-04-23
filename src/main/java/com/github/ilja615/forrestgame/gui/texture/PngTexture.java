@@ -44,6 +44,7 @@ public class PngTexture implements Texture
     private boolean isTall;
     private boolean isHorizontallyMirrored;
     private boolean isVerticallyMirrored;
+    private boolean isPlayerTexture;
 
     public PngTexture(final String fileName)
     {
@@ -107,36 +108,55 @@ public class PngTexture implements Texture
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
+    @Override
     public boolean isTall()
     {
         return isTall;
     }
 
+    @Override
     public Texture setTall(boolean tall)
     {
         isTall = tall;
         return this;
     }
 
+    @Override
     public boolean isHorizontallyMirrored()
     {
         return isHorizontallyMirrored;
     }
 
+    @Override
     public Texture setHorizontallyMirrored(boolean horizontallyMirrored)
     {
         isHorizontallyMirrored = horizontallyMirrored;
         return this;
     }
 
+    @Override
     public boolean isVerticallyMirrored()
     {
         return isVerticallyMirrored;
     }
 
+    @Override
     public Texture setVerticallyMirrored(boolean verticallyMirrored)
     {
         isVerticallyMirrored = verticallyMirrored;
+        return this;
+    }
+
+    @Override
+    public boolean isPlayerTexture()
+    {
+        return isPlayerTexture;
+    }
+
+    @Override
+    public Texture setPlayerTexture(boolean playerTexture)
+    {
+        isPlayerTexture = playerTexture;
         return this;
     }
 }

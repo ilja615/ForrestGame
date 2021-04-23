@@ -21,18 +21,35 @@ package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.FloorTile;
-import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
 
-public class MushroomItem extends Item
+import java.util.ArrayList;
+
+public class MushroomItem implements Item
 {
-    public MushroomItem(final Texture texture)
+    private Texture texture;
+
+    public MushroomItem(final Texture t)
     {
-        super(texture);
+        this.texture = t;
+    }
+
+    @Override
+    public Texture getCurrentTexture()
+    {
+        return this.texture;
+    }
+
+    @Override
+    public boolean isObstacle()
+    {
+        return false;
     }
 
     @Override
@@ -42,5 +59,11 @@ public class MushroomItem extends Item
         player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)] = new FloorTile(Textures.GROUND_0);
 
         return true;
+    }
+
+    @Override
+    public ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    {
+        return TextureRenderer.LAYER_BACK;
     }
 }

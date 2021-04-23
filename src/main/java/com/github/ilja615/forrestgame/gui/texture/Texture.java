@@ -22,4 +22,20 @@ package com.github.ilja615.forrestgame.gui.texture;
 public interface Texture
 {
     void bind();
+
+    boolean isTall();
+
+    Texture setTall(boolean tall);
+
+    boolean isHorizontallyMirrored();
+
+    Texture setHorizontallyMirrored(boolean horizontallyMirrored);
+
+    boolean isVerticallyMirrored();
+
+    Texture setVerticallyMirrored(boolean verticallyMirrored);
+
+    boolean isPlayerTexture();
+
+    Texture setPlayerTexture(boolean playerTexture);
 }

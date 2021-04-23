@@ -23,7 +23,7 @@ import java.util.Locale;
 
 public class TimeTracker
 {
-    private int currentTime = 0;
+    private int currentTime = 1;
     public int waitTicks = 0;
 
     public int getCurrentTime() { return currentTime; }
@@ -44,12 +44,10 @@ public class TimeTracker
     {
         SUNRISE(true),
         MORNING(true),
-        NOON(true),
         AFTERNOON(true),
         SUNSET(false),
         EVENING(false),
-        NIGHT(false),
-        MIDNIGHT(false);
+        NIGHT(false);
 
         private boolean isDayTime;
 
@@ -61,33 +59,31 @@ public class TimeTracker
 
     public Period getPeriodFromTime(int currentTime)
     {
-        return switch (currentTime % 8)
+        return switch (currentTime % 6)
                 {
                     case 0 -> Period.SUNRISE;
                     case 1 -> Period.MORNING;
-                    case 2 -> Period.NOON;
-                    case 3 -> Period.AFTERNOON;
-                    case 4 -> Period.SUNSET;
-                    case 5 -> Period.EVENING;
-                    case 6 -> Period.NIGHT;
-                    case 7 -> Period.MIDNIGHT;
-                    default -> throw new IllegalStateException("Unexpected value: " + currentTime % 8);
+                    case 2 -> Period.AFTERNOON;
+                    case 3 -> Period.SUNSET;
+                    case 4 -> Period.EVENING;
+                    case 5 -> Period.NIGHT;
+                    default -> throw new IllegalStateException("Unexpected value: " + currentTime % 6);
                 };
     }
 
     public int getAmountSurvivedDays(int currentTime)
     {
-        return (int) Math.floor(currentTime / 8.0d) + 1;
+        return (int) Math.floor(currentTime / 6.0d) + 1;
     }
 
     public float getDayLight()
     {
-        return switch (getCurrentTime() % 8)
+        return switch (getCurrentTime() % 6)
                 {
-                    case 0, 4 -> 0.5f;
-                    case 1, 2, 3 -> 1.0f;
-                    case 5, 6, 7 -> 0.2f;
-                    default -> throw new IllegalStateException("Unexpected value: " + currentTime % 8);
+                    case 0, 3 -> 0.5f;
+                    case 1, 2 -> 1.0f;
+                    case 4, 5 -> 0.2f;
+                    default -> throw new IllegalStateException("Unexpected value: " + currentTime % 6);
                 };
     }
 }

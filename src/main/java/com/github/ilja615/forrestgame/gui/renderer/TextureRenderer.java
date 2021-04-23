@@ -20,13 +20,15 @@
 package com.github.ilja615.forrestgame.gui.renderer;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.tiles.Tile;
+import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
 
-import static com.github.ilja615.forrestgame.gui.texture.Textures.PLAYER_DOWN;
+import java.util.ArrayList;
+
 import static com.github.ilja615.forrestgame.gui.texture.Textures.VIEWPORT;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -37,6 +39,9 @@ public class TextureRenderer
     private float partialY = 0f;
     // Whether the texture reindeer should be enabled on not
     private boolean enabled = true;
+    public static final ArrayList<Pair<Coordinate, Texture>> LAYER_BACK = new ArrayList<>(); // For things between the floor and the entities
+    public static final ArrayList<Pair<Coordinate, Texture>> LAYER_MIDDLE = new ArrayList<>(); // For entities
+    public static final ArrayList<Pair<Coordinate, Texture>> LAYER_FRONT = new ArrayList<>(); // For foreground things
 
     public TextureRenderer(final World world)
     {
@@ -81,8 +86,12 @@ public class TextureRenderer
 
     public void renderBoard()
     {
-        // Renders all the tiles on the board.
-        // This is in order from top to bottom, so that taller textures like trees will get rendered in front properly.
+        // Clear the lists
+        LAYER_BACK.clear(); LAYER_MIDDLE.clear(); LAYER_FRONT.clear();
+
+        LAYER_MIDDLE.add(new Pair<>(world.getPlayer().getCoordinate(), world.getPlayer().getCurrentTexture()));
+
+        // Renders all the tiles on the board. Tiles are rendered on "layer 0" so that is even behind layer back.
         for (int y = world.getPlayer().getCoordinate().getY() + 4; y >= world.getPlayer().getCoordinate().getY() - 6; y--)
         {
             for (int x = world.getPlayer().getCoordinate().getX() - 6; x <= world.getPlayer().getCoordinate().getX() + 6; x++)
@@ -93,14 +102,22 @@ public class TextureRenderer
                     final Texture texture = tile.getTexture();
                     renderTexture(texture, x, y);
                     if (tile.hasItem())
-                        renderTexture(tile.getItem().getTexture(), x, y);
+                        tile.getItem().whichLayer().add(new Pair<>(new Coordinate(x, y), tile.getItem().getCurrentTexture()));
                 }
             }
         }
+        LAYER_BACK.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
+        LAYER_MIDDLE.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
+        LAYER_FRONT.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
     }
 
     public void renderTexture(final Texture texture, int x, int y)
     {
+        if (texture.isPlayerTexture())
+        {
+            renderPlayer(this.world.getPlayer());
+            return;
+        }
         texture.bind();
 
         x += World.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
@@ -109,9 +126,9 @@ public class TextureRenderer
         float worldStarterX = (-0.0833f * World.WORLD_WIDTH);
         float worldStarterY = (-0.0833f * World.WORLD_HEIGHT);
 
-        float extraY = (texture instanceof PngTexture && ((PngTexture) texture).isTall()) ? 0.167f : 0.0f;
-        boolean hm = (texture instanceof PngTexture && ((PngTexture) texture).isHorizontallyMirrored()); //isHorizontallyMirroredPNGTexture
-        boolean vm = (texture instanceof PngTexture && ((PngTexture) texture).isVerticallyMirrored()); //isVerticallyMirroredPNGTexture
+        float extraY = (texture.isTall()) ? 0.167f : 0.0f;
+        boolean hm = (texture.isHorizontallyMirrored());
+        boolean vm = (texture.isVerticallyMirrored());
 
         glBegin(GL_QUADS);
         glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
@@ -130,9 +147,9 @@ public class TextureRenderer
         Texture texture = player.getCurrentTexture();
         texture.bind();
 
-        float extraY = (texture instanceof PngTexture && ((PngTexture) texture).isTall()) ? 0.167f : 0.0f;
-        boolean hm = (texture instanceof PngTexture && ((PngTexture) texture).isHorizontallyMirrored()); //isHorizontallyMirroredPNGTexture
-        boolean vm = (texture instanceof PngTexture && ((PngTexture) texture).isVerticallyMirrored()); //isVerticallyMirroredPNGTexture
+        float extraY = (texture.isTall()) ? 0.167f : 0.0f;
+        boolean hm = (texture.isHorizontallyMirrored());
+        boolean vm = (texture.isVerticallyMirrored());
 
         glTranslatef(0, 0.083f, 0);
         // glRotated(playerAngle,0,0,1);

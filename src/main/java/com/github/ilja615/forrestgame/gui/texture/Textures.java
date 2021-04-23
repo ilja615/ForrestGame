@@ -37,38 +37,38 @@ public interface Textures
     Texture[] GROUND_ALTERNATIVES = new Texture[]{GROUND_0, GROUND_1, GROUND_2, GROUND_3};
 
     // player
-    Texture PLAYER_UP = new PngTexture("textures/player_up");
-    Texture PLAYER_DOWN = new PngTexture("textures/player_down");
-    Texture PLAYER_LEFT = new PngTexture("textures/player_side").setHorizontallyMirrored(true);
-    Texture PLAYER_RIGHT = new PngTexture("textures/player_side");
+    Texture PLAYER_UP = new PngTexture("textures/player_up").setPlayerTexture(true);
+    Texture PLAYER_DOWN = new PngTexture("textures/player_down").setPlayerTexture(true);
+    Texture PLAYER_LEFT = new PngTexture("textures/player_side").setHorizontallyMirrored(true).setPlayerTexture(true);
+    Texture PLAYER_RIGHT = new PngTexture("textures/player_side").setPlayerTexture(true);
 
     Texture[] PLAYER_UP_WALK = new Texture[]
     {
-        new PngTexture("textures/player_up_walking_0"),
-        new PngTexture("textures/player_up_walking_1"),
-        new PngTexture("textures/player_up_walking_2"),
-        new PngTexture("textures/player_up_walking_3")
+        new PngTexture("textures/player_up_walking_0").setPlayerTexture(true),
+        new PngTexture("textures/player_up_walking_1").setPlayerTexture(true),
+        new PngTexture("textures/player_up_walking_2").setPlayerTexture(true),
+        new PngTexture("textures/player_up_walking_3").setPlayerTexture(true)
     };
     Texture[] PLAYER_DOWN_WALK = new Texture[]
     {
-        new PngTexture("textures/player_down_walking_0"),
-        new PngTexture("textures/player_down_walking_1"),
-        new PngTexture("textures/player_down_walking_2"),
-        new PngTexture("textures/player_down_walking_3")
+        new PngTexture("textures/player_down_walking_0").setPlayerTexture(true),
+        new PngTexture("textures/player_down_walking_1").setPlayerTexture(true),
+        new PngTexture("textures/player_down_walking_2").setPlayerTexture(true),
+        new PngTexture("textures/player_down_walking_3").setPlayerTexture(true)
     };
     Texture[] PLAYER_LEFT_WALK = new Texture[]
     {
-        new PngTexture("textures/player_side_walking_0").setHorizontallyMirrored(true),
-        new PngTexture("textures/player_side_walking_1").setHorizontallyMirrored(true),
-        new PngTexture("textures/player_side_walking_2").setHorizontallyMirrored(true),
-        new PngTexture("textures/player_side_walking_3").setHorizontallyMirrored(true)
+        new PngTexture("textures/player_side_walking_0").setHorizontallyMirrored(true).setPlayerTexture(true),
+        new PngTexture("textures/player_side_walking_1").setHorizontallyMirrored(true).setPlayerTexture(true),
+        new PngTexture("textures/player_side_walking_2").setHorizontallyMirrored(true).setPlayerTexture(true),
+        new PngTexture("textures/player_side_walking_3").setHorizontallyMirrored(true).setPlayerTexture(true)
     };
     Texture[] PLAYER_RIGHT_WALK = new Texture[]
     {
-        new PngTexture("textures/player_side_walking_0"),
-        new PngTexture("textures/player_side_walking_1"),
-        new PngTexture("textures/player_side_walking_2"),
-        new PngTexture("textures/player_side_walking_3")
+        new PngTexture("textures/player_side_walking_0").setPlayerTexture(true),
+        new PngTexture("textures/player_side_walking_1").setPlayerTexture(true),
+        new PngTexture("textures/player_side_walking_2").setPlayerTexture(true),
+        new PngTexture("textures/player_side_walking_3").setPlayerTexture(true)
     };
 
     // other

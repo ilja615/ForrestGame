@@ -20,16 +20,33 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
-import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
 
-public class SignItem extends Item
+import java.util.ArrayList;
+
+public class SignItem implements Item
 {
-    public SignItem(final Texture texture)
+    private Texture texture;
+
+    public SignItem(final Texture t)
     {
-        super(texture);
+        this.texture = t;
+    }
+
+    @Override
+    public Texture getCurrentTexture()
+    {
+        return this.texture;
+    }
+
+    @Override
+    public boolean isObstacle()
+    {
+        return false;
     }
 
     @Override
@@ -43,5 +60,11 @@ public class SignItem extends Item
         world.generate();
 
         return false;
+    }
+
+    @Override
+    public ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    {
+        return TextureRenderer.LAYER_BACK;
     }
 }

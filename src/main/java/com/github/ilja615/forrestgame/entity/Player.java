@@ -30,6 +30,8 @@ import com.github.ilja615.forrestgame.util.Direction;
 import com.github.ilja615.forrestgame.world.World;
 import com.google.common.collect.ImmutableMap;
 
+import java.util.ArrayList;
+
 import static com.github.ilja615.forrestgame.util.KeyInput.isKeyDown;
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -240,10 +242,10 @@ public class Player implements Entity
             // Walking
             return switch (this.facing)
             {
-                case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(60, 4)];
-                case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(60, 4)];
-                case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(60, 4)];
-                case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(60, 4)];
+                case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(200, 4)];
+                case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(200, 4)];
+                case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(200, 4)];
+                case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(200, 4)];
             };
         }
     }

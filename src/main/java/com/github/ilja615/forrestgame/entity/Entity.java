@@ -19,10 +19,14 @@
 
 package com.github.ilja615.forrestgame.entity;
 
+import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.util.Tickable;
 import com.github.ilja615.forrestgame.world.World;
+
+import java.util.ArrayList;
 
 public interface Entity extends Tickable
 {
@@ -52,4 +56,10 @@ public interface Entity extends Tickable
     void setMobile(final boolean mobile);
 
     Texture getCurrentTexture();
+
+    // Entities use middle layer by default
+    default ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    {
+        return TextureRenderer.LAYER_MIDDLE;
+    };
 }

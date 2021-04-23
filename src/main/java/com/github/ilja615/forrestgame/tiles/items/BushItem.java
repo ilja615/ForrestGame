@@ -22,26 +22,25 @@ package com.github.ilja615.forrestgame.tiles.items;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
-import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 
-public class BushItem extends Item
+import java.util.ArrayList;
+
+public class BushItem implements Item
 {
     private static final Texture TEXTURE_0 = new PngTexture("textures/bush0");
     private static final Texture TEXTURE_1 = new PngTexture("textures/bush1");
     private static final Texture TEXTURE_2 = new PngTexture("textures/bush2");
     private int stage = 2;
 
-    public BushItem()
-    {
-        // don't worry, getTexture is overrided
-        super(null);
-    }
+    public BushItem() { }
 
     @Override
-    public Texture getTexture()
+    public Texture getCurrentTexture()
     {
         return switch (stage)
                 {
@@ -49,6 +48,12 @@ public class BushItem extends Item
                     case 1 -> TEXTURE_1;
                     case 2 -> TEXTURE_2;
                 };
+    }
+
+    @Override
+    public boolean isObstacle()
+    {
+        return false;
     }
 
     @Override
@@ -72,5 +77,11 @@ public class BushItem extends Item
         {
             return true;
         }
+    }
+
+    @Override
+    public ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    {
+        return TextureRenderer.LAYER_BACK;
     }
 }

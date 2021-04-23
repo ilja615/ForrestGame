@@ -416,8 +416,8 @@ public class PlayerWorld implements World
 
         if (textureRenderer.isEnabled())
         {
+
             textureRenderer.renderBoard();
-            textureRenderer.renderPlayer(player);
             textureRenderer.renderViewport();
 
             textRenderer.drawString("energy: " + player.getStatTracker().get(Stat.HUNGER), 0f, 0.85f, 0.7f);
