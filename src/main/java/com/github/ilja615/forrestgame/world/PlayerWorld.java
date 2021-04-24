@@ -112,6 +112,12 @@ public class PlayerWorld implements World
     @Override
     public void generate()
     {
+        if (!(WORLD_WIDTH > 4 && WORLD_HEIGHT > 4))
+        {
+            LOGGER.error("The board size is too small, it has to be minimal 4x4.");
+            this.onBoardFailureToCreate();
+        }
+
         // Make the square world
         for (int x = 0; x < WORLD_WIDTH; x++)
         {
@@ -128,38 +134,7 @@ public class PlayerWorld implements World
             }
         }
 
-        // Make the holes at side and corners
-        final List<Integer> canPlace = Lists.newArrayList(0, 1, 2, 3, 4, 5, 6, 7);
-        final List<Integer> shouldPlace = new ArrayList<>();
-
-        while (canPlace.size() > 0)
-        {
-            final int i = canPlace.get(ThreadLocalRandom.current().nextInt(canPlace.size()));
-
-            if ((i & 1) != 1)
-            {
-                canPlace.removeAll(Collections.singletonList(((i - 1) >= 0) ? (i - 1) : (i + 7)));
-                canPlace.removeAll(Collections.singletonList(i));
-                if (ThreadLocalRandom.current().nextFloat() > 0.3f) shouldPlace.add(i);
-                canPlace.removeAll(Collections.singletonList(((i + 1) <= 7) ? (i + 1) : (i - 7)));
-            } else
-            {
-                canPlace.removeAll(Collections.singletonList(((i - 2) >= 0) ? (i - 2) : (i + 6)));
-                canPlace.removeAll(Collections.singletonList(((i - 1) >= 0) ? (i - 1) : (i + 7)));
-                canPlace.removeAll(Collections.singletonList(i));
-                if (ThreadLocalRandom.current().nextFloat() > 0.3f) shouldPlace.add(i);
-                canPlace.removeAll(Collections.singletonList(((i + 1) <= 7) ? (i + 1) : (i - 7)));
-                canPlace.removeAll(Collections.singletonList(((i + 2) <= 7) ? (i + 2) : (i - 6)));
-            }
-        }
-
-        if (shouldPlace.size() == 0) middleHoleCarve();
-
-        for (final int i : shouldPlace)
-        {
-            if ((i & 1) != 1) cornerHoleCarve(i);
-            else sideHoleCarve(i);
-        }
+        // TODO : Make a new carver system
 
         // Adds bush and rock obstacles scattered around the world
         placeSimpleObstacles();
@@ -184,103 +159,6 @@ public class PlayerWorld implements World
                     .collect(Collectors.joining(" -> ")));
         }
     }
-
-    public void cornerHoleCarve(final int corner)
-    {
-        final int holeWidth = ThreadLocalRandom.current().nextInt(5) + 3;
-        final int holeHeight = ThreadLocalRandom.current().nextInt(5) + 3;
-        // Select the good corner for the hole to go
-        final int xOffSet = switch (corner)
-                {
-                    case 4, 6 -> WORLD_WIDTH - holeWidth;
-                    default -> 0;
-                };
-        final int yOffSet = switch (corner)
-                {
-                    case 2, 4 -> WORLD_HEIGHT - holeHeight;
-                    default -> 0;
-                };
-
-        // Set a square of tiles in the selected corner and with the selected size to air tiles
-        for (int x = xOffSet; x < xOffSet + holeWidth; x++)
-        {
-            for (int y = yOffSet; y < yOffSet + holeHeight; y++)
-            {
-                if ((xOffSet == 0 && x == holeWidth - 1)
-                        || (yOffSet == 0 && y == holeHeight - 1)
-                        || (xOffSet == WORLD_WIDTH - holeWidth && x == xOffSet)
-                        || (yOffSet == WORLD_HEIGHT - holeHeight && y == yOffSet))
-                {
-                    tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
-                } else
-                {
-                    tiles[x + (y * WORLD_WIDTH)] = new Tile(Textures.AIR);
-                }
-            }
-        }
-    }
-
-    public void sideHoleCarve(final int side)
-    {
-        final int holeWidth = ThreadLocalRandom.current().nextInt(5) + 3;
-        final int holeHeight = ThreadLocalRandom.current().nextInt(5) + 3;
-        final int xOffSet = switch (side)
-                {
-                    case 3, 7 -> 3 + ThreadLocalRandom.current().nextInt(6);
-                    case 5 -> WORLD_WIDTH - holeWidth;
-                    default -> 0;
-                };
-        final int yOffSet = switch (side)
-                {
-                    case 1, 5 -> 3 + ThreadLocalRandom.current().nextInt(2);
-                    case 3 -> WORLD_HEIGHT - holeHeight;
-                    default -> 0;
-                };
-
-        // Set a square of tiles in the selected corner and with the selected size to air tiles
-        for (int x = xOffSet; x < xOffSet + holeWidth; x++)
-        {
-            for (int y = yOffSet; y < yOffSet + holeHeight; y++)
-            {
-                if ((side == 1 && (x == holeWidth - 1 || y == yOffSet || y == yOffSet + holeHeight - 1))
-                        || (side == 3 && (y == WORLD_HEIGHT - holeHeight || x == xOffSet || x == xOffSet + holeWidth - 1))
-                        || (side == 5 && (x == WORLD_WIDTH - holeWidth || y == yOffSet || y == yOffSet + holeHeight - 1))
-                        || (side == 7 && (y == holeHeight - 1 || x == xOffSet || x == xOffSet + holeWidth - 1)))
-                {
-                    tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
-                } else
-                {
-                    tiles[x + (y * WORLD_WIDTH)] = new Tile(Textures.AIR);
-                }
-            }
-        }
-    }
-
-    private void middleHoleCarve()
-    {
-        final int holeWidth = ThreadLocalRandom.current().nextInt(5) + 3;
-        final int holeHeight = ThreadLocalRandom.current().nextInt(5) + 3;
-        final int xOffSet = 5 + ThreadLocalRandom.current().nextInt(6);
-        final int yOffSet = 5 + ThreadLocalRandom.current().nextInt(2);
-
-        for (int x = xOffSet; x < xOffSet + holeWidth; x++)
-        {
-            for (int y = yOffSet; y < yOffSet + holeHeight; y++)
-            {
-                if (x == xOffSet
-                        || x == xOffSet + holeWidth - 1
-                        || y == yOffSet
-                        || y == yOffSet + holeHeight - 1)
-                {
-                    tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
-                } else
-                {
-                    tiles[x + (y * WORLD_WIDTH)] = new Tile(Textures.AIR);
-                }
-            }
-        }
-    }
-
     public void placeSimpleObstacles()
     {
         // Note this for loop is a bit smaller because it skips the very outer edge
