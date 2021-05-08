@@ -24,6 +24,7 @@ import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.tiles.Tile;
+import com.github.ilja615.forrestgame.tiles.items.BushItem;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Tickable;
 
@@ -67,7 +68,7 @@ public interface World extends Tickable
      */
     default boolean isValidLocation(final Coordinate coordinate)
     {
-        if (this.getTiles()[coordinate.getX() + (coordinate.getY() * WORLD_WIDTH)].isObstacle()) return false;
+        if (this.getTiles()[coordinate.getX() + (coordinate.getY() * WORLD_WIDTH)].isObstacle() && !(this.getTiles()[coordinate.getX() + (coordinate.getY() * WORLD_WIDTH)].getItem() instanceof BushItem)) return false;
         else return coordinate.getX() >= 0
                 && coordinate.getY() >= 0
                 && coordinate.getX() < WORLD_WIDTH
