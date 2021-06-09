@@ -22,9 +22,11 @@ package com.github.ilja615.forrestgame.tiles.items;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
 
@@ -71,6 +73,7 @@ public class BushItem implements Item
             }
             player.getStatTracker().decrement(Stat.HUNGER);
             player.getWorld().onEnemyTurn();
+            player.getWorld().getParticles().add(new Particle(coordinate, 1, player.getWorld(), Textures.CHOP_PARTICLE));
 
             return false;
         } else

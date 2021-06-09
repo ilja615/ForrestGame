@@ -109,6 +109,8 @@ public class TextureRenderer
         LAYER_BACK.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
         LAYER_MIDDLE.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
         LAYER_FRONT.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
+
+        world.getParticles().forEach(particle -> renderTexture(particle.getCurrentTexture(), particle.getCoordinate().getX(), particle.getCoordinate().getY()));
     }
 
     public void renderTexture(final Texture texture, int x, int y)

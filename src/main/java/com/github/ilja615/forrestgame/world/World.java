@@ -21,12 +21,15 @@ package com.github.ilja615.forrestgame.world;
 
 import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.tiles.items.BushItem;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Tickable;
+
+import java.util.ArrayList;
 
 public interface World extends Tickable
 {
@@ -49,6 +52,8 @@ public interface World extends Tickable
     TextRenderer getTextRenderer();
 
     TimeTracker getTimeTracker();
+
+    ArrayList<Particle> getParticles();
 
     /**
      * Generates the world and fills {@link World#getTiles}

@@ -23,8 +23,10 @@ import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
+import com.github.ilja615.forrestgame.gui.renderer.UiRenderer;
 import com.github.ilja615.forrestgame.gui.shader.Shader;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
@@ -54,9 +56,11 @@ public class PlayerWorld implements World
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayerWorld.class);
     private final Tile[] tiles = new Tile[WORLD_WIDTH * WORLD_HEIGHT];
+    private final ArrayList<Particle> particles = new ArrayList<>();
     private final Game game;
     private final Entity player;
     private final TextRenderer textRenderer = new TextRenderer();
+    private final UiRenderer uiRenderer = new UiRenderer();
     private final TextureRenderer textureRenderer;
     private Coordinate startCoordinate;
     // private final List<Coordinate> path = new ArrayList<>();
@@ -107,6 +111,12 @@ public class PlayerWorld implements World
     public TextRenderer getTextRenderer()
     {
         return textRenderer;
+    }
+
+    @Override
+    public ArrayList<Particle> getParticles()
+    {
+        return particles;
     }
 
     @Override
@@ -281,9 +291,17 @@ public class PlayerWorld implements World
     @Override
     public void tick()
     {
-        glUniform1f(glGetUniformLocation(this.shader.program,"daylight"), this.timeTracker.getDayLight());
+        glUniform1f(glGetUniformLocation(this.shader.program,"redComponent"), this.timeTracker.getRedComponent());
+        glUniform1f(glGetUniformLocation(this.shader.program,"greenComponent"), this.timeTracker.getGreenComponent());
+        glUniform1f(glGetUniformLocation(this.shader.program,"blueComponent"), this.timeTracker.getBlueComponent());
 
+        // Tick all objects
         player.tick();
+        particles.forEach(Particle::tick);
+
+        // Clear the particles that should be removed
+        particles.removeIf(Particle::isExpired);
+
         if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
         if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();
 
@@ -298,9 +316,10 @@ public class PlayerWorld implements World
             textureRenderer.renderBoard();
             textureRenderer.renderViewport();
 
-            textRenderer.drawString("energy: " + player.getStatTracker().get(Stat.HUNGER), 0f, 0.85f, 0.7f);
-            textRenderer.drawString("health: " + player.getStatTracker().get(Stat.HEALTH), -1f, 0.85f, 0.7f);
-            textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.3f);
+            uiRenderer.renderEnergy(player);
+            uiRenderer.renderHealth(player);
+            textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.5f);
+            uiRenderer.renderTimeIcon(this.getTimeTracker().getPeriodFromTime(this.timeTracker.getCurrentTime()));
         } else {
             String s = this.getTimeTracker().getCurrentTimeString();
             float size = 20.0f/(s.length()+2);

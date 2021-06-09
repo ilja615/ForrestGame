@@ -19,6 +19,9 @@
 
 package com.github.ilja615.forrestgame.world;
 
+import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.gui.texture.Textures;
+
 import java.util.Locale;
 
 public class TimeTracker
@@ -42,18 +45,41 @@ public class TimeTracker
 
     public static enum Period
     {
-        SUNRISE(true),
-        MORNING(true),
-        AFTERNOON(true),
-        SUNSET(false),
-        EVENING(false),
-        NIGHT(false);
+        SUNRISE(Textures.SUNRISE, true, 0.5f),
+        MORNING(Textures.MORNING, true),
+        AFTERNOON(Textures.AFTERNOON, true),
+        SUNSET(Textures.SUNSET, false, 0.6f, 0.5f, 0.45f),
+        EVENING(Textures.EVENING, false, 0.2f, 0.2f, 0.2f),
+        NIGHT(Textures.NIGHT, false, 0.15f, 0.15f, 0.25f);
 
-        private boolean isDayTime;
+        private final boolean isDayTime;
+        private final Texture texture;
+        public final float red;
+        public final float green;
+        public final float blue;
 
-        Period(boolean isDayTime)
+        Period(Texture texture, boolean isDayTime, float red, float green, float blue)
         {
+            this.texture = texture;
             this.isDayTime = isDayTime;
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+        }
+
+        Period(Texture texture, boolean isDayTime) // Defaults lightness of 1.0f for R, G and B.
+        {
+            this(texture, isDayTime, 1.0f, 1.0f, 1.0f);
+        }
+
+        Period(Texture texture, boolean isDayTime, float lightness)
+        {
+            this(texture, isDayTime, lightness, lightness, lightness);
+        }
+
+        public Texture getTexture()
+        {
+            return this.texture;
         }
     }
 
@@ -76,14 +102,18 @@ public class TimeTracker
         return (int) Math.floor(currentTime / 6.0d) + 1;
     }
 
-    public float getDayLight()
+    public float getRedComponent()
     {
-        return switch (getCurrentTime() % 6)
-                {
-                    case 0, 3 -> 0.5f;
-                    case 1, 2 -> 1.0f;
-                    case 4, 5 -> 0.2f;
-                    default -> throw new IllegalStateException("Unexpected value: " + currentTime % 6);
-                };
+        return getPeriodFromTime(getCurrentTime()).red;
+    }
+
+    public float getGreenComponent()
+    {
+        return getPeriodFromTime(getCurrentTime()).green;
+    }
+
+    public float getBlueComponent()
+    {
+        return getPeriodFromTime(getCurrentTime()).blue;
     }
 }

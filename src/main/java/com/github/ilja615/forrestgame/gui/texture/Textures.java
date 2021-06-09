@@ -1,5 +1,5 @@
 /*
- * Copyside (c) 2021 ilja615.
+ * Copyright (c) 2021 ilja615.
  *
  * This file is part of Forrest Game.
  *
@@ -19,7 +19,11 @@
 
 package com.github.ilja615.forrestgame.gui.texture;
 
+import com.github.ilja615.forrestgame.world.TimeTracker;
+
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
 
 public interface Textures
 {
@@ -71,6 +75,25 @@ public interface Textures
         new PngTexture("textures/player_side_walking_3").setPlayerTexture(true)
     };
 
-    // other
+    // particles
+    Texture[] CHOP_PARTICLE = new Texture[]
+            {
+                    new PngTexture("textures/chop_particle_0"),
+                    new PngTexture("textures/chop_particle_1"),
+                    new PngTexture("textures/chop_particle_2"),
+                    new PngTexture("textures/chop_particle_3")
+            };
+
+    // other gui
     Texture VIEWPORT = new PngTexture("textures/viewport");
+    Texture HEALTH = new PngTexture("textures/ui_health");
+    Texture ENERGY = new PngTexture("textures/ui_energy");
+
+    // time gui
+    Texture SUNRISE = new PngTexture("textures/ui_time_sunrise");
+    Texture MORNING = new PngTexture("textures/ui_time_morning");
+    Texture AFTERNOON = new PngTexture("textures/ui_time_afternoon");
+    Texture SUNSET = new PngTexture("textures/ui_time_sunset");
+    Texture EVENING = new PngTexture("textures/ui_time_evening");
+    Texture NIGHT = new PngTexture("textures/ui_time_night");
 }

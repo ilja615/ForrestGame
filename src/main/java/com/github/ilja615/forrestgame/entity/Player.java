@@ -100,15 +100,12 @@ public class Player implements Entity
         if (partialX > 0 && partialX < 1)
         {
             partialX += SCROLL_SPEED;
-            //  world.getTextureRenderer().getPlayerAngle = (int)(Math.sin(world.getTextureRenderer().getPartialX * 6.2f)*10);
         } else if (partialX < 0 && partialX > -1)
         {
             partialX -= SCROLL_SPEED;
-            //  world.getTextureRenderer().getPlayerAngle = (int)(Math.sin(world.getTextureRenderer().getPartialX * 6.2f)*10);
         } else if (partialX <= -1 || partialX >= 1)
         {
             partialX = 0;
-            //  world.getTextureRenderer().getPlayerAngle = 0;
             if (this.scheduledCoordinate != null) this.setCoordinate(this.scheduledCoordinate);
         }
 
@@ -117,15 +114,12 @@ public class Player implements Entity
         if (partialY > 0 && partialY < 1)
         {
             partialY += SCROLL_SPEED;
-            //  world.getTextureRenderer().getPlayerAngle = (int)(Math.sin(partialY * 6.2f)*10);
         } else if (partialY < 0 && partialY > -1)
         {
             partialY -= SCROLL_SPEED;
-            //  world.getTextureRenderer().getPlayerAngle = (int)(Math.sin(partialY * 6.2f)*10);
         } else if (partialY <= -1 || partialY >= 1)
         {
             partialY = 0;
-            //  world.getTextureRenderer().getPlayerAngle = 0;
             if (this.scheduledCoordinate != null) this.setCoordinate(this.scheduledCoordinate);
         }
 
@@ -138,18 +132,20 @@ public class Player implements Entity
 
             final Game game = world.getGame();
 
-            if (isKeyDown(game, GLFW_KEY_W) || isKeyDown(game, GLFW_KEY_UP)) moveUp();
-            else if (isKeyDown(game, GLFW_KEY_S) || isKeyDown(game, GLFW_KEY_DOWN)) moveDown();
-            else if (isKeyDown(game, GLFW_KEY_A) || isKeyDown(game, GLFW_KEY_LEFT)) moveLeft();
-            else if (isKeyDown(game, GLFW_KEY_D) || isKeyDown(game, GLFW_KEY_RIGHT)) moveRight();
+            if (isKeyDown(game, GLFW_KEY_UP) || isKeyDown(game, GLFW_KEY_W)) { moveUp(); }
+            else if (isKeyDown(game, GLFW_KEY_DOWN) || isKeyDown(game, GLFW_KEY_S)) { moveDown(); }
+            else if (isKeyDown(game, GLFW_KEY_LEFT) || isKeyDown(game, GLFW_KEY_A)) { moveLeft(); }
+            else if (isKeyDown(game, GLFW_KEY_RIGHT) || isKeyDown(game, GLFW_KEY_D)) { moveRight(); }
         }
     }
 
     private void moveUp()
     {
-        if (this.facing == Direction.UP)
+        final Game game = world.getGame();
+        if (!isKeyDown(game, GLFW_KEY_LEFT_SHIFT) && !isKeyDown(game, GLFW_KEY_RIGHT_SHIFT))
         {
             this.mobile = false;
+            this.facing = Direction.UP;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.up(), Direction.UP);
         } else {
@@ -160,9 +156,11 @@ public class Player implements Entity
 
     private void moveDown()
     {
-        if (this.facing == Direction.DOWN)
+        final Game game = world.getGame();
+        if (!isKeyDown(game, GLFW_KEY_LEFT_SHIFT) && !isKeyDown(game, GLFW_KEY_RIGHT_SHIFT))
         {
             this.mobile = false;
+            this.facing = Direction.DOWN;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.down(), Direction.DOWN);
         } else {
@@ -173,9 +171,11 @@ public class Player implements Entity
 
     private void moveLeft()
     {
-        if (this.facing == Direction.LEFT)
+        final Game game = world.getGame();
+        if (!isKeyDown(game, GLFW_KEY_LEFT_SHIFT) && !isKeyDown(game, GLFW_KEY_RIGHT_SHIFT))
         {
             this.mobile = false;
+            this.facing = Direction.LEFT;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.left(), Direction.LEFT);
         } else {
@@ -186,9 +186,11 @@ public class Player implements Entity
 
     private void moveRight()
     {
-        if (this.facing == Direction.RIGHT)
+        final Game game = world.getGame();
+        if (!isKeyDown(game, GLFW_KEY_LEFT_SHIFT) && !isKeyDown(game, GLFW_KEY_RIGHT_SHIFT))
         {
             this.mobile = false;
+            this.facing = Direction.RIGHT;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.right(), Direction.RIGHT);
         } else {
@@ -199,6 +201,7 @@ public class Player implements Entity
 
     private void waitMoment()
     {
+        wait = 1;
     }
 
     private void move(final Coordinate coordinate, final Direction direction)
