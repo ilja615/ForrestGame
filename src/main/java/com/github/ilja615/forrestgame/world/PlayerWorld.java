@@ -22,7 +22,6 @@ package com.github.ilja615.forrestgame.world;
 import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
-import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
@@ -31,20 +30,15 @@ import com.github.ilja615.forrestgame.gui.shader.Shader;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.*;
-import com.github.ilja615.forrestgame.tiles.items.BushItem;
-import com.github.ilja615.forrestgame.tiles.items.MushroomItem;
-import com.github.ilja615.forrestgame.tiles.items.SignItem;
-import com.github.ilja615.forrestgame.tiles.items.TreeItem;
+import com.github.ilja615.forrestgame.tiles.items.*;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.KeyInput;
 import com.github.ilja615.forrestgame.util.ShortPathFinder;
-import com.google.common.collect.Lists;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -135,10 +129,10 @@ public class PlayerWorld implements World
             {
                 if (x == 0 || y == 0 || x == WORLD_WIDTH - 1 || y == WORLD_HEIGHT - 1)
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
+                    tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
                 } else
                 {
-                    Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GROUND_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
+                    Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GRASS_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
                     tiles[x + (y * WORLD_WIDTH)] = new FloorTile(texture);
                 }
             }
@@ -146,12 +140,25 @@ public class PlayerWorld implements World
 
         // TODO : Make a new carver system
 
-        // Adds bush and rock obstacles scattered around the world
+        // Adds bush and wall obstacles scattered around the world
         placeSimpleObstacles();
 
         // Adds start and end
         startCoordinate = placeStart();
         final Coordinate end = placeEndSign();
+
+
+        // After placing obstacles, it should give all the walls their correct texture
+        for (int x = 0; x < WORLD_WIDTH; x++)
+        {
+            for (int y = 0; y < WORLD_HEIGHT; y++)
+            {
+                Coordinate mutableCoordinate = new Coordinate(x,y);
+                if (isWithinWorld(mutableCoordinate))
+                    if (tiles[x + y * WORLD_WIDTH] instanceof WallTile)
+                        tiles[x + y * WORLD_WIDTH] = new WallTile(getConnectingWallTexture(mutableCoordinate));
+            }
+        }
 
         // A check if there exists a valid path , if not , the entire world must be re-created
         // idk if theres a use for path yet - xf8b
@@ -183,9 +190,10 @@ public class PlayerWorld implements World
                     switch (random)
                     {
                         case 0, 1, 2, 3 -> tiles[x + (y * WORLD_WIDTH)].setItem(new BushItem());
-                        case 4, 5 -> tiles[x + (y * WORLD_WIDTH)] = new RockTile(Textures.WALL);
-                        case 6 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM));
+                        case 4, 5 -> tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
+                        case 6 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
                         case 7 -> tiles[x + (y * WORLD_WIDTH)].setItem(new TreeItem(Textures.TREE));
+                        case 8 -> tiles[x + (y * WORLD_WIDTH)].setItem(new CrateItem(Textures.CRATE));
                     }
                 }
             }
@@ -208,7 +216,7 @@ public class PlayerWorld implements World
                         pos -= WORLD_WIDTH;
                     } else
                     {
-                        tiles[pos] = new FloorTile(Textures.GROUND_0);
+                        tiles[pos] = new FloorTile(Textures.GRASS_0);
                         tiles[pos].setItem(new SignItem(Textures.SIGN));
                         coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
                         LOGGER.info("placed end sign at: {}", coordinate);
@@ -233,7 +241,7 @@ public class PlayerWorld implements World
                         pos += WORLD_WIDTH;
                     } else
                     {
-                        tiles[pos] = new FloorTile(Textures.GROUND_0);
+                        tiles[pos] = new FloorTile(Textures.GRASS_0);
                         tiles[pos].setItem(new SignItem(Textures.SIGN));
                         coordinate = new Coordinate(WORLD_WIDTH - 1, (pos + 1) / WORLD_WIDTH - 1);
                         LOGGER.info("placed end sign at: {}", coordinate);
@@ -265,7 +273,7 @@ public class PlayerWorld implements World
                     pos += WORLD_WIDTH;
                 } else
                 {
-                    tiles[pos] = new FloorTile(Textures.GROUND_0);
+                    tiles[pos] = new FloorTile(Textures.GRASS_0);
                     coordinate = new Coordinate(0, (pos + 1) / WORLD_WIDTH);
                     LOGGER.info("placed start at: {}", coordinate);
                     player.setCoordinate(coordinate);
@@ -331,5 +339,57 @@ public class PlayerWorld implements World
     public void onEnemyTurn()
     {
         player.setMobile(true);
+    }
+
+    private Texture getConnectingWallTexture(Coordinate coordinate)
+    {
+        String surroundings = "";
+        surroundings += surrounding(coordinate.up());
+        surroundings += surrounding(coordinate.down());
+        surroundings += surrounding(coordinate.right());
+        surroundings += surrounding(coordinate.left());
+
+        return switch(surroundings)
+        {
+            case "FFFF" -> Textures.WALL_SINGLE;
+            case "AFWW", "AFWA", "AFAW" -> Textures.WALL_TOP;
+            case "FAWW", "FAWA", "FAAW" -> Textures.WALL_BOTTOM;
+            case "WWAF", "WAAF", "AWAF" -> Textures.WALL_RIGHT;
+            case "WWFA", "WAFA", "AWFA" -> Textures.WALL_LEFT;
+            case "AWWA" -> Textures.WALL_SMALL_TOP_LEFT_CORNER;
+            case "WAWA" -> Textures.WALL_SMALL_BOTTOM_LEFT_CORNER;
+            case "AWAW" -> Textures.WALL_SMALL_TOP_RIGHT_CORNER;
+            case "WAAW" -> Textures.WALL_SMALL_BOTTOM_RIGHT_CORNER;
+            case "FWWF" -> Textures.WALL_BIG_TOP_LEFT_CORNER;
+            case "WFWF" -> Textures.WALL_BIG_BOTTOM_LEFT_CORNER;
+            case "FWFW" -> Textures.WALL_BIG_TOP_RIGHT_CORNER;
+            case "WFFW" -> Textures.WALL_BIG_BOTTOM_RIGHT_CORNER;
+
+            // here is where i will add a lot more case
+
+            default -> {
+                LOGGER.error("Unexpected invalid texture situation: " + surroundings + " at: " + coordinate);
+                yield Textures.WALL_SURROUNDED;
+            }
+        };
+    }
+
+    private boolean isWithinWorld(Coordinate coordinate)
+    {
+        int i = coordinate.getX() + coordinate.getY() * WORLD_WIDTH;
+        return i >= 0 && i < tiles.length && coordinate.getX() >= 0 && coordinate.getY() < WORLD_WIDTH && coordinate.getY() >= 0 && coordinate.getY() < WORLD_HEIGHT;
+    }
+
+    private char surrounding(Coordinate coordinate)
+    {
+        if (!isWithinWorld(coordinate))
+            return 'A';
+        if (tiles[coordinate.getX() + coordinate.getY() * WORLD_WIDTH] instanceof WallTile)
+            return 'W';
+        if (tiles[coordinate.getX() + coordinate.getY() * WORLD_WIDTH] instanceof FloorTile)
+            return 'F';
+
+        // it is invalid
+        return 'X';
     }
 }

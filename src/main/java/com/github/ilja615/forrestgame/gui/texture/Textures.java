@@ -19,26 +19,40 @@
 
 package com.github.ilja615.forrestgame.gui.texture;
 
-import com.github.ilja615.forrestgame.world.TimeTracker;
-
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-
 public interface Textures
 {
-    // tiles
+    // tiles and items
     Texture AIR = new PngTexture("textures/air");
-    Texture GROUND_0 = new PngTexture("textures/ground_0");
-    Texture GROUND_1 = new PngTexture("textures/ground_1");
-    Texture GROUND_2 = new PngTexture("textures/ground_2");
-    Texture GROUND_3 = new PngTexture("textures/ground_3");
-    Texture WALL = new PngTexture("textures/wall");
-    Texture MUSHROOM = new PngTexture("textures/mushroom");
+    Texture GRASS_0 = new PngTexture("textures/grass_0");
+    Texture GRASS_1 = new PngTexture("textures/grass_1");
+    Texture GRASS_2 = new PngTexture("textures/grass_2");
+    Texture GRASS_3 = new PngTexture("textures/grass_3");
+    Texture[] MUSHROOM = new Texture[]
+    {
+        new PngTexture("textures/mushroom_0"),
+        new PngTexture("textures/mushroom_1")
+    };
     Texture SIGN = new PngTexture("textures/sign");
     Texture TREE = new PngTexture("textures/tree").setTall(true);
+    Texture CRATE = new PngTexture("textures/crate");
 
-    Texture[] GROUND_ALTERNATIVES = new Texture[]{GROUND_0, GROUND_1, GROUND_2, GROUND_3};
+    Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
+
+    // wall
+    Texture WALL_SINGLE = new PngTexture("textures/wall_single");
+    Texture WALL_SURROUNDED = new PngTexture("textures/wall_all_round");
+    Texture WALL_TOP = new PngTexture("textures/wall");
+    Texture WALL_BOTTOM = new PngTexture("textures/wall").setVerticallyMirrored(true);
+    Texture WALL_LEFT = new PngTexture("textures/wall_vertical");
+    Texture WALL_RIGHT = new PngTexture("textures/wall_vertical").setHorizontallyMirrored(true);
+    Texture WALL_SMALL_TOP_LEFT_CORNER = new PngTexture("textures/wall_small_corner");
+    Texture WALL_SMALL_BOTTOM_LEFT_CORNER = new PngTexture("textures/wall_small_corner").setVerticallyMirrored(true);
+    Texture WALL_SMALL_TOP_RIGHT_CORNER = new PngTexture("textures/wall_small_corner").setHorizontallyMirrored(true);
+    Texture WALL_SMALL_BOTTOM_RIGHT_CORNER = new PngTexture("textures/wall_small_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    Texture WALL_BIG_TOP_LEFT_CORNER = new PngTexture("textures/wall_big_corner");
+    Texture WALL_BIG_BOTTOM_LEFT_CORNER = new PngTexture("textures/wall_big_corner").setVerticallyMirrored(true);
+    Texture WALL_BIG_TOP_RIGHT_CORNER = new PngTexture("textures/wall_big_corner").setHorizontallyMirrored(true);
+    Texture WALL_BIG_BOTTOM_RIGHT_CORNER = new PngTexture("textures/wall_big_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
 
     // player
     Texture PLAYER_UP = new PngTexture("textures/player_up").setPlayerTexture(true);

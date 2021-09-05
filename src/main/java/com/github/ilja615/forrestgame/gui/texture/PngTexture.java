@@ -30,6 +30,7 @@ import java.nio.IntBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -70,7 +71,7 @@ public class PngTexture implements Texture
                         .getContextClassLoader()
                         .getResourceAsStream(fileName + ".png")))
                 {
-                    Files.write(textureFile, inputStream.readAllBytes(), CREATE_NEW);
+                    Files.copy(inputStream, textureFile, StandardCopyOption.REPLACE_EXISTING);
                     LOGGER.debug("Creating cached texture file ({})", textureFile.toString());
                 }
             }

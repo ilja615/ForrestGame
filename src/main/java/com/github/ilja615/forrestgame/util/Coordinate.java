@@ -94,6 +94,11 @@ public class Coordinate
         return new Coordinate(this.x + amount, this.y);
     }
 
+    public Coordinate relative(final int deltaX, final int deltaY)
+    {
+        return new Coordinate(this.x + deltaX, this.y + deltaY);
+    }
+
     @Override
     public boolean equals(final Object object)
     {
