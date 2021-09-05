@@ -343,53 +343,12 @@ public class PlayerWorld implements World
 
     private Texture getConnectingWallTexture(Coordinate coordinate)
     {
-        String surroundings = "";
-        surroundings += surrounding(coordinate.up());
-        surroundings += surrounding(coordinate.down());
-        surroundings += surrounding(coordinate.right());
-        surroundings += surrounding(coordinate.left());
-
-        return switch(surroundings)
-        {
-            case "FFFF" -> Textures.WALL_SINGLE;
-            case "AFWW", "AFWA", "AFAW" -> Textures.WALL_TOP;
-            case "FAWW", "FAWA", "FAAW" -> Textures.WALL_BOTTOM;
-            case "WWAF", "WAAF", "AWAF" -> Textures.WALL_RIGHT;
-            case "WWFA", "WAFA", "AWFA" -> Textures.WALL_LEFT;
-            case "AWWA" -> Textures.WALL_SMALL_TOP_LEFT_CORNER;
-            case "WAWA" -> Textures.WALL_SMALL_BOTTOM_LEFT_CORNER;
-            case "AWAW" -> Textures.WALL_SMALL_TOP_RIGHT_CORNER;
-            case "WAAW" -> Textures.WALL_SMALL_BOTTOM_RIGHT_CORNER;
-            case "FWWF" -> Textures.WALL_BIG_TOP_LEFT_CORNER;
-            case "WFWF" -> Textures.WALL_BIG_BOTTOM_LEFT_CORNER;
-            case "FWFW" -> Textures.WALL_BIG_TOP_RIGHT_CORNER;
-            case "WFFW" -> Textures.WALL_BIG_BOTTOM_RIGHT_CORNER;
-
-            // here is where i will add a lot more case
-
-            default -> {
-                LOGGER.error("Unexpected invalid texture situation: " + surroundings + " at: " + coordinate);
-                yield Textures.WALL_SURROUNDED;
-            }
-        };
+        return Textures.WALL_SURROUNDED;
     }
 
     private boolean isWithinWorld(Coordinate coordinate)
     {
         int i = coordinate.getX() + coordinate.getY() * WORLD_WIDTH;
         return i >= 0 && i < tiles.length && coordinate.getX() >= 0 && coordinate.getY() < WORLD_WIDTH && coordinate.getY() >= 0 && coordinate.getY() < WORLD_HEIGHT;
-    }
-
-    private char surrounding(Coordinate coordinate)
-    {
-        if (!isWithinWorld(coordinate))
-            return 'A';
-        if (tiles[coordinate.getX() + coordinate.getY() * WORLD_WIDTH] instanceof WallTile)
-            return 'W';
-        if (tiles[coordinate.getX() + coordinate.getY() * WORLD_WIDTH] instanceof FloorTile)
-            return 'F';
-
-        // it is invalid
-        return 'X';
     }
 }
