@@ -99,6 +99,16 @@ public class Coordinate
         return new Coordinate(this.x + deltaX, this.y + deltaY);
     }
 
+    public Coordinate move(final Direction direction, final int amount)
+    {
+        return new Coordinate(this.x + direction.getX() * amount,  this.y + direction.getY() * amount);
+    }
+
+    public Coordinate move(final Direction.Secondary secondaryDirection, final int amount)
+    {
+        return new Coordinate(this.x + secondaryDirection.getX() * amount,  this.y + secondaryDirection.getY() * amount);
+    }
+
     @Override
     public boolean equals(final Object object)
     {

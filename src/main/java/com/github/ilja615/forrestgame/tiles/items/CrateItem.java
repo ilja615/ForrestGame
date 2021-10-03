@@ -20,18 +20,13 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.entity.Player;
-import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
-import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
-import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.FloorTile;
 import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
-import com.github.ilja615.forrestgame.world.World;
 
 import java.util.ArrayList;
 
@@ -58,11 +53,11 @@ public class CrateItem implements Item
     {
         Coordinate playerOldCoordinate = player.getCoordinate();
         Coordinate coordinateThatCratePushedTo = coordinate.relative(coordinate.getX() - playerOldCoordinate.getX(),  coordinate.getY() - playerOldCoordinate.getY());
-        Tile destination = player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * World.WORLD_WIDTH)];
+        Tile destination = player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * player.getWorld().WORLD_WIDTH)];
         if (!destination.hasItem() && !destination.isObstacle())
         {
-            player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * World.WORLD_WIDTH)].setItem(this);
-            player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
+            player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * player.getWorld().WORLD_WIDTH)].setItem(this);
+            player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
             return true;
         }
         return false;

@@ -21,16 +21,12 @@ package com.github.ilja615.forrestgame.entity;
 
 import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
-import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
-import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Direction;
 import com.github.ilja615.forrestgame.world.World;
 import com.google.common.collect.ImmutableMap;
-
-import java.util.ArrayList;
 
 import static com.github.ilja615.forrestgame.util.KeyInput.isKeyDown;
 import static org.lwjgl.glfw.GLFW.*;
@@ -206,25 +202,26 @@ public class Player implements Entity
 
     private void move(final Coordinate coordinate, final Direction direction)
     {
-        if (world.getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)].onPlayerAttemptingWalk(this, coordinate))
+        if (world.isWithinWorld(coordinate))
         {
-            if (world.isValidLocation(coordinate))
+            if (!world.getTileAt(coordinate).isObstacle())
             {
-                this.scheduledCoordinate = coordinate;
-                world.onEnemyTurn();
-
-                switch (direction)
+                if (world.getTileAt(coordinate).onPlayerAttemptingWalk(this, coordinate))
                 {
-                    case UP -> world.getTextureRenderer().setPartialY(-SCROLL_SPEED);
-                    case DOWN -> world.getTextureRenderer().setPartialY(SCROLL_SPEED);
-                    case LEFT -> world.getTextureRenderer().setPartialX(SCROLL_SPEED);
-                    case RIGHT -> world.getTextureRenderer().setPartialX(-SCROLL_SPEED);
-                }
+                    this.scheduledCoordinate = coordinate;
+                    world.onEnemyTurn();
 
-                return;
+                    switch (direction)
+                    {
+                        case UP -> world.getTextureRenderer().setPartialY(-SCROLL_SPEED);
+                        case DOWN -> world.getTextureRenderer().setPartialY(SCROLL_SPEED);
+                        case LEFT -> world.getTextureRenderer().setPartialX(SCROLL_SPEED);
+                        case RIGHT -> world.getTextureRenderer().setPartialX(-SCROLL_SPEED);
+                    }
+                    return;
+                }
             }
         }
-
         this.mobile = true;
     }
 

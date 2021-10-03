@@ -30,20 +30,9 @@ import java.util.List;
 public class ShortPathFinder
 {
     private static final int MAX_SEARCH_DISTANCE = 32;
-    private final Node[][] nodes;
+    private Node[][] nodes;
 
-    public ShortPathFinder()
-    {
-        nodes = new Node[World.WORLD_WIDTH][World.WORLD_HEIGHT];
-
-        for (int x = 0; x < World.WORLD_WIDTH; x++)
-        {
-            for (int y = 0; y < World.WORLD_HEIGHT; y++)
-            {
-                nodes[x][y] = new Node(x, y);
-            }
-        }
-    }
+    public ShortPathFinder() {}
 
     /**
      * Finds the shortest path from {@code from} to {@code to}.
@@ -55,8 +44,18 @@ public class ShortPathFinder
      */
     public List<Coordinate> findPath(final World world, final Coordinate from, final Coordinate to)
     {
+        nodes = new Node[world.WORLD_WIDTH][world.WORLD_HEIGHT];
+
+        for (int x = 0; x < world.WORLD_WIDTH; x++)
+        {
+            for (int y = 0; y < world.WORLD_HEIGHT; y++)
+            {
+                nodes[x][y] = new Node(x, y);
+            }
+        }
+
         // this is codde for to find a path who is short !!!
-        if (!world.isValidLocation(to)) return new ArrayList<>();
+        if (!world.isWithinWorld(to)) return new ArrayList<>();
 
         final List<Node> closed = new ArrayList<>();
         final List<Node> open = new SortedList<>();
@@ -82,15 +81,15 @@ public class ShortPathFinder
                 {
                     // not a neighbour, its the current tile
                     if (x == 0 && y == 0) continue;
-                    // it can't go diagonal .
+                    // it can't go diagonal.
                     if (x != 0 && y != 0) continue;
-                    // it can't go oob .
+                    // idk why it has to continue when going left or down idk.
                     if (x < 0 || y < 0) continue;
                     // determine the location of the neighbor and evaluate it
                     final int xp = x + current.getX();
                     final int yp = y + current.getY();
 
-                    if (world.isValidLocation(new Coordinate(xp, yp)))
+                    if (world.isWithinWorld(new Coordinate(xp, yp)))
                     {
                         // Movement cost :
                         final float movementCost = 1.0f;

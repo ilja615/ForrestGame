@@ -46,9 +46,11 @@ public class PngTexture implements Texture
     private boolean isHorizontallyMirrored;
     private boolean isVerticallyMirrored;
     private boolean isPlayerTexture;
+    private String name;
 
     public PngTexture(final String fileName)
     {
+        this.name = fileName;
         final IntBuffer width = BufferUtils.createIntBuffer(1);
         final IntBuffer height = BufferUtils.createIntBuffer(1);
         final IntBuffer comp = BufferUtils.createIntBuffer(1);
@@ -159,5 +161,11 @@ public class PngTexture implements Texture
     {
         isPlayerTexture = playerTexture;
         return this;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.name;
     }
 }

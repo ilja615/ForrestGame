@@ -20,18 +20,17 @@
 package com.github.ilja615.forrestgame;
 
 import com.github.ilja615.forrestgame.gui.shader.Shader;
-import com.github.ilja615.forrestgame.world.PlayerWorld;
 import com.github.ilja615.forrestgame.world.World;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
 
 public class ForrestGame implements Game
 {
@@ -67,7 +66,7 @@ public class ForrestGame implements Game
         shader.create("basic");
 
         final Game game = new ForrestGame(window);
-        final World world = new PlayerWorld(game, shader);
+        final World world = new World(game, shader);
 
         while (!glfwWindowShouldClose(window))
         {

@@ -39,20 +39,20 @@ public interface Textures
     Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
 
     // wall
-    Texture WALL_SINGLE = new PngTexture("textures/wall_single");
-    Texture WALL_SURROUNDED = new PngTexture("textures/wall_all_round");
-    Texture WALL_TOP = new PngTexture("textures/wall");
-    Texture WALL_BOTTOM = new PngTexture("textures/wall").setVerticallyMirrored(true);
-    Texture WALL_LEFT = new PngTexture("textures/wall_vertical");
-    Texture WALL_RIGHT = new PngTexture("textures/wall_vertical").setHorizontallyMirrored(true);
-    Texture WALL_SMALL_TOP_LEFT_CORNER = new PngTexture("textures/wall_small_corner");
-    Texture WALL_SMALL_BOTTOM_LEFT_CORNER = new PngTexture("textures/wall_small_corner").setVerticallyMirrored(true);
-    Texture WALL_SMALL_TOP_RIGHT_CORNER = new PngTexture("textures/wall_small_corner").setHorizontallyMirrored(true);
-    Texture WALL_SMALL_BOTTOM_RIGHT_CORNER = new PngTexture("textures/wall_small_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-    Texture WALL_BIG_TOP_LEFT_CORNER = new PngTexture("textures/wall_big_corner");
-    Texture WALL_BIG_BOTTOM_LEFT_CORNER = new PngTexture("textures/wall_big_corner").setVerticallyMirrored(true);
-    Texture WALL_BIG_TOP_RIGHT_CORNER = new PngTexture("textures/wall_big_corner").setHorizontallyMirrored(true);
-    Texture WALL_BIG_BOTTOM_RIGHT_CORNER = new PngTexture("textures/wall_big_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    Texture WALL_AIR_PIECE = new PngTexture("textures/wall_air");
+    Texture WALL_STRAIGHT_PIECE = new PngTexture("textures/wall_straight");
+    Texture WALL_STRAIGHT_PIECE_MIRRORED = new PngTexture("textures/wall_straight").setVerticallyMirrored(true);
+    Texture WALL_STRAIGHT_VERTICAL_PIECE = new PngTexture("textures/wall_straight_vertical");
+    Texture WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture("textures/wall_straight_vertical").setHorizontallyMirrored(true);
+    Texture WALL_INNER_CORNER_PIECE = new PngTexture("textures/wall_inner_corner");
+    Texture WALL_INNER_CORNER_PIECE_HM = new PngTexture("textures/wall_inner_corner").setHorizontallyMirrored(true);
+    Texture WALL_INNER_CORNER_PIECE_VM = new PngTexture("textures/wall_inner_corner").setVerticallyMirrored(true);
+    Texture WALL_INNER_CORNER_PIECE_HVM = new PngTexture("textures/wall_inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    Texture WALL_OUTER_CORNER_PIECE = new PngTexture("textures/wall_outer_corner");
+    Texture WALL_OUTER_CORNER_PIECE_HM = new PngTexture("textures/wall_outer_corner_other");
+    Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture("textures/wall_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/wall_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+
 
     // player
     Texture PLAYER_UP = new PngTexture("textures/player_up").setPlayerTexture(true);

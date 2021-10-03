@@ -20,10 +20,11 @@
 package com.github.ilja615.forrestgame.gui.renderer;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.tiles.Tile;
+import com.github.ilja615.forrestgame.tiles.WallTile;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Direction;
 import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
 
@@ -96,11 +97,18 @@ public class TextureRenderer
         {
             for (int x = world.getPlayer().getCoordinate().getX() - 6; x <= world.getPlayer().getCoordinate().getX() + 6; x++)
             {
-                if (x >= 0 && x < World.WORLD_WIDTH && y >= 0 && y < World.WORLD_HEIGHT)
+                if (x >= 0 && x < world.WORLD_WIDTH && y >= 0 && y < world.WORLD_HEIGHT)
                 {
-                    final Tile tile = world.getTiles()[x + (y * World.WORLD_WIDTH)];
-                    final Texture texture = tile.getTexture();
-                    renderTexture(texture, x, y);
+                    final Tile tile = world.getTiles()[x + (y * world.WORLD_WIDTH)];
+
+                    if (tile instanceof WallTile)
+                        renderWallTile(x, y);
+                    else
+                    {
+                        final Texture texture = tile.getTexture();
+                        renderTexture(texture, x, y);
+                    }
+
                     if (tile.hasItem())
                         tile.getItem().whichLayer().add(new Pair<>(new Coordinate(x, y), tile.getItem().getCurrentTexture()));
                 }
@@ -122,11 +130,11 @@ public class TextureRenderer
         }
         texture.bind();
 
-        x += World.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
-        y += World.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
+        x += world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
+        y += world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
 
-        float worldStarterX = (-0.0833f * World.WORLD_WIDTH);
-        float worldStarterY = (-0.0833f * World.WORLD_HEIGHT);
+        float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
+        float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
 
         float extraY = (texture.isTall()) ? 0.167f : 0.0f;
         boolean hm = (texture.isHorizontallyMirrored());
@@ -183,5 +191,39 @@ public class TextureRenderer
         glTexCoord2f(0, 1);
         glVertex2f(-1.0f, -1.0f);
         glEnd();
+    }
+
+    public void renderWallTile(int x, int y)
+    {
+        float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
+        float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
+        if (world instanceof World)
+        {
+            World playerWorld = (World) world;
+            WallTile wallTile = (WallTile) playerWorld.getTileAt(x, y);
+            final int finalX = x + world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
+            final int finalY = y + world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
+            wallTile.QUADRANT_TEXTURES.forEach((secondary, texture) ->
+            {
+                texture.bind();
+
+                boolean hm = texture.isHorizontallyMirrored();
+                boolean vm = texture.isVerticallyMirrored();
+
+                float u = secondary.getVertical() == Direction.UP ? 0.0834f : 0.0f;
+                float r = secondary.getHorizontal() == Direction.RIGHT ? 0.0834f : 0.0f;
+
+                glBegin(GL_QUADS);
+                glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
+                glVertex2f(  -0.0834f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+                glTexCoord2f(hm ? 0 : 1, vm ? 1 : 0);
+                glVertex2f(0.0f + r + worldStarterX + + ((float)finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+                glTexCoord2f(hm ? 0 : 1, vm ? 0 : 1);
+                glVertex2f(0.0f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+                glTexCoord2f(hm ? 1 : 0, vm ? 0 : 1);
+                glVertex2f(-0.084f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+                glEnd();
+            });
+        }
     }
 }

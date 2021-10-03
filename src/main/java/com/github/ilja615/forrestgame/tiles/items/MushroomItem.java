@@ -27,7 +27,6 @@ import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.FloorTile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
-import com.github.ilja615.forrestgame.world.World;
 
 import java.util.ArrayList;
 
@@ -56,7 +55,7 @@ public class MushroomItem implements Item
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         player.getStatTracker().increment(Stat.HUNGER);
-        player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * World.WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
+        player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
 
         return true;
     }
