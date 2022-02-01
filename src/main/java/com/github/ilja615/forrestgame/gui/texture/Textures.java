@@ -89,6 +89,9 @@ public interface Textures
         new PngTexture("textures/player_side_walking_3").setPlayerTexture(true)
     };
 
+    // scamperer
+    Texture SCAMPERER = new PngTexture("textures/scamperer");
+
     // particles
     Texture[] CHOP_PARTICLE = new Texture[]
             {

@@ -49,8 +49,8 @@ public class TimeTracker
         MORNING(Textures.MORNING, true),
         AFTERNOON(Textures.AFTERNOON, true),
         SUNSET(Textures.SUNSET, false, 0.6f, 0.5f, 0.45f),
-        EVENING(Textures.EVENING, false, 0.2f, 0.2f, 0.2f),
-        NIGHT(Textures.NIGHT, false, 0.15f, 0.15f, 0.25f);
+        EVENING(Textures.EVENING, false, 0.35f, 0.35f, 0.35f),
+        NIGHT(Textures.NIGHT, false, 0.2f, 0.2f, 0.3f);
 
         private final boolean isDayTime;
         private final Texture texture;

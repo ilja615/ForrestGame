@@ -61,8 +61,8 @@ public class MushroomItem implements Item
     }
 
     @Override
-    public ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    public ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr)
     {
-        return TextureRenderer.LAYER_BACK;
+        return tr.LAYER_BACK;
     }
 }

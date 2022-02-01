@@ -72,7 +72,7 @@ public class BushItem implements Item
                 ((Player) player).currentDoingAction = Player.Action.SLASHING;
             }
             player.getStatTracker().decrement(Stat.HUNGER);
-            player.getWorld().onEnemyTurn();
+            player.getWorld().onEnemyTurnCalled();
             player.getWorld().getParticles().add(new Particle(coordinate, 1, player.getWorld(), Textures.CHOP_PARTICLE));
 
             return false;
@@ -83,8 +83,8 @@ public class BushItem implements Item
     }
 
     @Override
-    public ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    public ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr)
     {
-        return TextureRenderer.LAYER_BACK;
+        return tr.LAYER_BACK;
     }
 }

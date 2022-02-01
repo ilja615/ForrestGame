@@ -58,8 +58,21 @@ public interface Entity extends Tickable
     Texture getCurrentTexture();
 
     // Entities use middle layer by default
-    default ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    default ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr)
     {
-        return TextureRenderer.LAYER_MIDDLE;
+        return tr.LAYER_MIDDLE;
     };
+
+    /**
+     * Fires when the player attempts to walk into this entity.
+     *
+     * @param player     the player that attempted to walk
+     * @param coordinate the coordinate of the entity
+     * @return if the player can walk into the space of the entity
+     */
+    boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate);
+
+    void die(StatTracker.Stat deathCausingStat);
+
+    void automaticallyMove();
 }

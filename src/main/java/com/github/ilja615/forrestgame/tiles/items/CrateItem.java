@@ -54,7 +54,7 @@ public class CrateItem implements Item
         Coordinate playerOldCoordinate = player.getCoordinate();
         Coordinate coordinateThatCratePushedTo = coordinate.relative(coordinate.getX() - playerOldCoordinate.getX(),  coordinate.getY() - playerOldCoordinate.getY());
         Tile destination = player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * player.getWorld().WORLD_WIDTH)];
-        if (!destination.hasItem() && !destination.isObstacle())
+        if (!destination.hasItem() && !destination.isObstacle() && player.getWorld().getEntityAt(coordinateThatCratePushedTo) == null)
         {
             player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * player.getWorld().WORLD_WIDTH)].setItem(this);
             player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
@@ -64,8 +64,8 @@ public class CrateItem implements Item
     }
 
     @Override
-    public ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    public ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr)
     {
-        return TextureRenderer.LAYER_FRONT;
+        return tr.LAYER_FRONT;
     }
 }

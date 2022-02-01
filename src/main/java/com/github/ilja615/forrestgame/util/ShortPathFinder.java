@@ -91,27 +91,30 @@ public class ShortPathFinder
 
                     if (world.isWithinWorld(new Coordinate(xp, yp)))
                     {
-                        // Movement cost :
-                        final float movementCost = 1.0f;
-                        final float nextStepCost = current.getCost() + movementCost;
-                        final Node neighbor = nodes[xp][yp];
-                        //  map.pathFinderVisited(xp, yp);
-
-                        if (nextStepCost < neighbor.getCost())
+                        if (!world.getTileAt(xp, yp).isObstacle())
                         {
-                            open.remove(neighbor);
-                            closed.remove(neighbor);
-                        }
+                            // Movement cost :
+                            final float movementCost = 1.0f;
+                            final float nextStepCost = current.getCost() + movementCost;
+                            final Node neighbor = nodes[xp][yp];
+                            //  map.pathFinderVisited(xp, yp);
 
-                        // if the node hasn't already been processed and discarded then
-                        // reset it's cost to our current cost and add it as a next possible
-                        // step (i.e. to the open list)
-                        if (!open.contains(neighbor) && !(closed.contains(neighbor)))
-                        {
-                            neighbor.setCost(nextStepCost);
-                            neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.getX() - xp) + Math.sqrt(to.getY() - yp)));
-                            maxDepth = Math.max(maxDepth, neighbor.setParent(current));
-                            open.add(neighbor);
+                            if (nextStepCost < neighbor.getCost())
+                            {
+                                open.remove(neighbor);
+                                closed.remove(neighbor);
+                            }
+
+                            // if the node hasn't already been processed and discarded then
+                            // reset it's cost to our current cost and add it as a next possible
+                            // step (i.e. to the open list)
+                            if (!open.contains(neighbor) && !(closed.contains(neighbor)))
+                            {
+                                neighbor.setCost(nextStepCost);
+                                neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.getX() - xp) + Math.sqrt(to.getY() - yp)));
+                                maxDepth = Math.max(maxDepth, neighbor.setParent(current));
+                                open.add(neighbor);
+                            }
                         }
                     }
                 }

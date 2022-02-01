@@ -33,13 +33,13 @@ import java.util.Set;
  */
 public class StatTracker extends AbstractMap<Stat, Integer>
 {
-    private final Game game;
     private final Map<Stat, Integer> delegate;
+    private final Entity entity;
 
-    public StatTracker(final Game game, final Map<Stat, Integer> stats)
+    public StatTracker(final Entity entity, final Map<Stat, Integer> stats)
     {
-        this.game = game;
         this.delegate = new HashMap<>(stats);
+        this.entity = entity;
     }
 
     @Override
@@ -53,12 +53,7 @@ public class StatTracker extends AbstractMap<Stat, Integer>
     {
         if (value <= 0)
         {
-            switch (key)
-            {
-                case HEALTH -> game.end(Game.EndReason.DIED);
-                case HUNGER -> game.end(Game.EndReason.NO_ENERGY);
-            }
-
+            this.entity.die(key);
             return delegate.get(key);
         } else if (value > key.getLimit())
         {

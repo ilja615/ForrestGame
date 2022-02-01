@@ -25,6 +25,7 @@ import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.world.TimeTracker;
 
+import static com.github.ilja615.forrestgame.gui.texture.Textures.VIEWPORT;
 import static org.lwjgl.opengl.GL11.*;
 
 public class UiRenderer
@@ -69,6 +70,22 @@ public class UiRenderer
         glVertex2f(size + x, y);
         glTexCoord2f(0, 1);
         glVertex2f(x, y);
+        glEnd();
+    }
+
+    public void renderViewport()
+    {
+        VIEWPORT.bind();
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(-1.0f, 1.0f);
+        glTexCoord2f(1, 0);
+        glVertex2f(1.0f, 1.0f);
+        glTexCoord2f(1, 1);
+        glVertex2f(1.0f, -1.0f);
+        glTexCoord2f(0, 1);
+        glVertex2f(-1.0f, -1.0f);
         glEnd();
     }
 }

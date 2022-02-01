@@ -48,7 +48,7 @@ public class Player implements Entity
     {
         this.world = world;
         this.coordinate = startPos;
-        this.statTracker = new StatTracker(world.getGame(), ImmutableMap.of(Stat.HEALTH, 10, Stat.HUNGER, 10));
+        this.statTracker = new StatTracker(this, ImmutableMap.of(Stat.HEALTH, 10, Stat.HUNGER, 10));
     }
 
     @Override
@@ -206,10 +206,15 @@ public class Player implements Entity
         {
             if (!world.getTileAt(coordinate).isObstacle())
             {
+                if (world.getEntityAt(coordinate) != null)
+                {
+                    if (!world.getEntityAt(coordinate).onPlayerAttemptingWalk(this, coordinate))
+                        return; // The player was not able to walk into the entity
+                }
                 if (world.getTileAt(coordinate).onPlayerAttemptingWalk(this, coordinate))
                 {
                     this.scheduledCoordinate = coordinate;
-                    world.onEnemyTurn();
+                    world.onEnemyTurnCalled();
 
                     switch (direction)
                     {
@@ -248,6 +253,28 @@ public class Player implements Entity
                 case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(200, 4)];
             };
         }
+    }
+
+    @Override
+    public boolean onPlayerAttemptingWalk(Entity player, Coordinate coordinate)
+    {
+        return false;
+    }
+
+    @Override
+    public void die(Stat deathCausingStat)
+    {
+        switch (deathCausingStat)
+        {
+            case HEALTH -> world.getGame().end(Game.EndReason.DIED);
+            case HUNGER -> world.getGame().end(Game.EndReason.NO_ENERGY);
+        }
+    }
+
+    @Override
+    public void automaticallyMove()
+    {
+        // it is not an automatical mover but a controlled mover
     }
 
     private int getAnimationFrame(int framesTime, int amountFrames)

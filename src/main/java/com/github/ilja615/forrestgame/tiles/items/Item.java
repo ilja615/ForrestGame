@@ -20,6 +20,7 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
@@ -50,5 +51,5 @@ public interface Item
      */
     boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate);
 
-    ArrayList<Pair<Coordinate, Texture>> whichLayer();
+    ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr);
 }

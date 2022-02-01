@@ -22,6 +22,7 @@ package com.github.ilja615.forrestgame.world;
 import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
+import com.github.ilja615.forrestgame.entity.Scamperer;
 import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
@@ -31,10 +32,7 @@ import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.*;
 import com.github.ilja615.forrestgame.tiles.items.*;
-import com.github.ilja615.forrestgame.util.Coordinate;
-import com.github.ilja615.forrestgame.util.KeyInput;
-import com.github.ilja615.forrestgame.util.ShortPathFinder;
-import com.github.ilja615.forrestgame.util.Tickable;
+import com.github.ilja615.forrestgame.util.*;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +55,7 @@ public class World implements Tickable
     private final ArrayList<Particle> particles = new ArrayList<>();
     private final Game game;
     private Entity player;
+    private final ArrayList<Entity> entities = new ArrayList<>();
     private final TextRenderer textRenderer = new TextRenderer();
     private final UiRenderer uiRenderer = new UiRenderer();
     private TextureRenderer textureRenderer;
@@ -65,6 +64,7 @@ public class World implements Tickable
     private TimeTracker timeTracker;
     private final Shader shader;
     public final AirTile airTile;
+    private int enemyTurnWait;
 
     public World(final Game game, final Shader shader)
     {
@@ -112,6 +112,11 @@ public class World implements Tickable
         return particles;
     }
 
+    public ArrayList<Entity> getEntities()
+    {
+        return entities;
+    }
+
     public void generate()
     {
         WORLD_WIDTH = 6 + ThreadLocalRandom.current().nextInt(7) * 2;
@@ -145,6 +150,10 @@ public class World implements Tickable
         // Adds bush and wall obstacles scattered around the world
         placeRockClusters();
         placeSimpleObstacles();
+
+        // Adds creatures
+        this.entities.clear();
+        placeEntities();
 
         // Adds start and end
         startCoordinate = placeStart();
@@ -215,6 +224,26 @@ public class World implements Tickable
                         case 6 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
                         case 7 -> tiles[x + (y * WORLD_WIDTH)].setItem(new TreeItem(Textures.TREE));
                         case 8 -> tiles[x + (y * WORLD_WIDTH)].setItem(new CrateItem(Textures.CRATE));
+                    }
+                }
+            }
+        }
+    }
+
+    public void placeEntities()
+    {
+        // Note this for loop is a bit smaller because it skips the very outer edge
+        for (int x = 1; x < WORLD_WIDTH - 1; x++)
+        {
+            for (int y = 1; y < WORLD_HEIGHT - 1; y++)
+            {
+                if (getTileAt(x, y) instanceof FloorTile && !getTileAt(x, y).hasItem())
+                {
+                    final int random = ThreadLocalRandom.current().nextInt(10);
+
+                    switch (random)
+                    {
+                        case 0 -> entities.add(new Scamperer(this, new Coordinate(x, y)));
                     }
                 }
             }
@@ -327,12 +356,19 @@ public class World implements Tickable
         // Tick all objects
         player.tick();
         particles.forEach(Particle::tick);
+        entities.forEach(Entity::tick);
 
         // Clear the particles that should be removed
         particles.removeIf(Particle::isExpired);
 
         if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
         if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();
+
+        if (enemyTurnWait > 0)
+        {
+            enemyTurnWait--;
+            if (enemyTurnWait == 0) onEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
+        }
 
         if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
         {
@@ -341,10 +377,14 @@ public class World implements Tickable
 
         if (textureRenderer.isEnabled())
         {
+            // Board
+            textureRenderer.clearLists();
+            textureRenderer.LAYER_MIDDLE.add(new Pair<>(player.getCoordinate(), player.getCurrentTexture()));
+            entities.forEach(entity -> entity.whichLayer(textureRenderer).add(new Pair<>(entity.getCoordinate(), entity.getCurrentTexture())));
+            textureRenderer.renderBoard(); // Tiles and items get added to the lists in here and the rendering gets called.
 
-            textureRenderer.renderBoard();
-            textureRenderer.renderViewport();
-
+            // UI
+            uiRenderer.renderViewport();
             uiRenderer.renderEnergy(player);
             uiRenderer.renderHealth(player);
             textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.5f);
@@ -356,8 +396,17 @@ public class World implements Tickable
         }
     }
 
-    public void onEnemyTurn()
+    public void onEnemyTurnCalled()
     {
+        if (getEntities().size() > 0)
+            enemyTurnWait = 200; // Wait for the enemies their turn if there is any enemies
+        else
+            enemyTurnWait = 1;
+    }
+
+    private void onEnemyTurn()
+    {
+        getEntities().forEach(e -> e.automaticallyMove());
         player.setMobile(true);
     }
 
@@ -375,5 +424,15 @@ public class World implements Tickable
     public Tile getTileAt(Coordinate coordinate)
     {
         return this.getTileAt(coordinate.getX(), coordinate.getY());
+    }
+
+    public Entity getEntityAt(Coordinate coordinate)
+    {
+        for (Entity e : getEntities())
+        {
+            if (e.getCoordinate().equals(coordinate)) return e;
+        }
+
+        return null;
     }
 }

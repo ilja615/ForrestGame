@@ -40,9 +40,9 @@ public class TextureRenderer
     private float partialY = 0f;
     // Whether the texture reindeer should be enabled on not
     private boolean enabled = true;
-    public static final ArrayList<Pair<Coordinate, Texture>> LAYER_BACK = new ArrayList<>(); // For things between the floor and the entities
-    public static final ArrayList<Pair<Coordinate, Texture>> LAYER_MIDDLE = new ArrayList<>(); // For entities
-    public static final ArrayList<Pair<Coordinate, Texture>> LAYER_FRONT = new ArrayList<>(); // For foreground things
+    public final ArrayList<Pair<Coordinate, Texture>> LAYER_BACK = new ArrayList<>(); // For things between the floor and the entities
+    public final ArrayList<Pair<Coordinate, Texture>> LAYER_MIDDLE = new ArrayList<>(); // For entities
+    public final ArrayList<Pair<Coordinate, Texture>> LAYER_FRONT = new ArrayList<>(); // For foreground things
 
     public TextureRenderer(final World world)
     {
@@ -85,11 +85,15 @@ public class TextureRenderer
         this.enabled = false;
     }
 
-    public void renderBoard()
+    public void clearLists()
     {
         // Clear the lists
         LAYER_BACK.clear(); LAYER_MIDDLE.clear(); LAYER_FRONT.clear();
+    }
 
+    public void renderBoard()
+    {
+        // Add things to the list that need to be rendered
         LAYER_MIDDLE.add(new Pair<>(world.getPlayer().getCoordinate(), world.getPlayer().getCurrentTexture()));
 
         // Renders all the tiles on the board. Tiles are rendered on "layer 0" so that is even behind layer back.
@@ -110,7 +114,7 @@ public class TextureRenderer
                     }
 
                     if (tile.hasItem())
-                        tile.getItem().whichLayer().add(new Pair<>(new Coordinate(x, y), tile.getItem().getCurrentTexture()));
+                        tile.getItem().whichLayer(this).add(new Pair<>(new Coordinate(x, y), tile.getItem().getCurrentTexture()));
                 }
             }
         }
@@ -175,22 +179,6 @@ public class TextureRenderer
         glEnd();
         // glRotated(-playerAngle,0,0,1);
         glTranslatef(0, -0.083f, 0);
-    }
-
-    public void renderViewport()
-    {
-        VIEWPORT.bind();
-
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(-1.0f, 1.0f);
-        glTexCoord2f(1, 0);
-        glVertex2f(1.0f, 1.0f);
-        glTexCoord2f(1, 1);
-        glVertex2f(1.0f, -1.0f);
-        glTexCoord2f(0, 1);
-        glVertex2f(-1.0f, -1.0f);
-        glEnd();
     }
 
     public void renderWallTile(int x, int y)

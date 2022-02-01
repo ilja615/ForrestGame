@@ -55,8 +55,8 @@ public class TreeItem implements Item
     }
 
     @Override
-    public ArrayList<Pair<Coordinate, Texture>> whichLayer()
+    public ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr)
     {
-        return TextureRenderer.LAYER_FRONT;
+        return tr.LAYER_FRONT;
     }
 }
