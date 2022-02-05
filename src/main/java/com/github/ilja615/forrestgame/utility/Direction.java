@@ -17,36 +17,36 @@
  * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.ilja615.forrestgame.util;
+package com.github.ilja615.forrestgame.utility;
 
-public class Pair<F, S>
+public enum Direction
 {
-    private F firstThing;
-    private S secondThing;
+    LEFT, RIGHT, DOWN, UP;
 
-    public Pair(final F firstThing, final S secondThing)
+    public enum Secondary
     {
-        this.firstThing = firstThing;
-        this.secondThing = secondThing;
-    }
+        BOTTOM_LEFT(LEFT, UP),
+        BOTTOM_RIGHT(RIGHT, UP),
+        TOP_LEFT(LEFT, UP),
+        TOP_RIGHT(RIGHT, UP);
 
-    public F getFirstThing()
-    {
-        return firstThing;
-    }
+        private final Direction horizontal;
+        private final Direction vertical;
 
-    public void setFirstThing(F firstThing)
-    {
-        this.firstThing = firstThing;
-    }
+        Secondary(Direction horizontal, Direction vertical)
+        {
+            this.horizontal = horizontal;
+            this.vertical = vertical;
+        }
 
-    public S getSecondThing()
-    {
-        return secondThing;
-    }
+        public Direction getVertical()
+        {
+            return vertical;
+        }
 
-    public void setSecondThing(S secondThing)
-    {
-        this.secondThing = secondThing;
+        public Direction getHorizontal()
+        {
+            return horizontal;
+        }
     }
 }

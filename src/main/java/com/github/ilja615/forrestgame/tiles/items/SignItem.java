@@ -22,11 +22,10 @@ package com.github.ilja615.forrestgame.tiles.items;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
-import com.github.ilja615.forrestgame.util.Coordinate;
-import com.github.ilja615.forrestgame.util.Pair;
+import com.github.ilja615.forrestgame.utility.Coordinate;
 import com.github.ilja615.forrestgame.world.World;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 public class SignItem implements Item
 {
@@ -63,7 +62,7 @@ public class SignItem implements Item
     }
 
     @Override
-    public ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr)
+    public Map<Coordinate, Texture> whichLayer(TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

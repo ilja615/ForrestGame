@@ -22,7 +22,7 @@ package com.github.ilja615.forrestgame.tiles;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.tiles.items.Item;
-import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.utility.Coordinate;
 
 public class Tile
 {

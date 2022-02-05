@@ -23,12 +23,12 @@ import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
-import com.github.ilja615.forrestgame.util.Coordinate;
-import com.github.ilja615.forrestgame.util.Direction;
+import com.github.ilja615.forrestgame.utility.Coordinate;
+import com.github.ilja615.forrestgame.utility.Direction;
 import com.github.ilja615.forrestgame.world.World;
 import com.google.common.collect.ImmutableMap;
 
-import static com.github.ilja615.forrestgame.util.KeyInput.isKeyDown;
+import static com.github.ilja615.forrestgame.utility.KeyInput.isKeyDown;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Player implements Entity
@@ -152,7 +152,7 @@ public class Player implements Entity
             this.mobile = false;
             this.facing = Direction.UP;
             this.currentDoingAction = Action.WALKING;
-            move(coordinate.up(), Direction.UP);
+            move(coordinate.up(1), Direction.UP);
         } else
         {
             this.facing = Direction.UP;
@@ -168,7 +168,7 @@ public class Player implements Entity
             this.mobile = false;
             this.facing = Direction.DOWN;
             this.currentDoingAction = Action.WALKING;
-            move(coordinate.down(), Direction.DOWN);
+            move(coordinate.down(1), Direction.DOWN);
         } else
         {
             this.facing = Direction.DOWN;
@@ -184,7 +184,7 @@ public class Player implements Entity
             this.mobile = false;
             this.facing = Direction.LEFT;
             this.currentDoingAction = Action.WALKING;
-            move(coordinate.left(), Direction.LEFT);
+            move(coordinate.left(1), Direction.LEFT);
         } else
         {
             this.facing = Direction.LEFT;
@@ -200,7 +200,7 @@ public class Player implements Entity
             this.mobile = false;
             this.facing = Direction.RIGHT;
             this.currentDoingAction = Action.WALKING;
-            move(coordinate.right(), Direction.RIGHT);
+            move(coordinate.right(1), Direction.RIGHT);
         } else
         {
             this.facing = Direction.RIGHT;

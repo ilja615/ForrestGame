@@ -35,7 +35,10 @@ import com.github.ilja615.forrestgame.tiles.FloorTile;
 import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.tiles.WallTile;
 import com.github.ilja615.forrestgame.tiles.items.*;
-import com.github.ilja615.forrestgame.util.*;
+import com.github.ilja615.forrestgame.utility.Coordinate;
+import com.github.ilja615.forrestgame.utility.KeyInput;
+import com.github.ilja615.forrestgame.utility.ShortPathFinder;
+import com.github.ilja615.forrestgame.utility.Tickable;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -382,9 +385,9 @@ public class World implements Tickable
         if (textureRenderer.isEnabled())
         {
             // Board
-            textureRenderer.clearLists();
-            textureRenderer.LAYER_MIDDLE.add(new Pair<>(player.getCoordinate(), player.getCurrentTexture()));
-            entities.forEach(entity -> entity.whichLayer(textureRenderer).add(new Pair<>(entity.getCoordinate(), entity.getCurrentTexture())));
+            textureRenderer.clearMaps();
+            textureRenderer.LAYER_MIDDLE.put(player.getCoordinate(), player.getCurrentTexture());
+            entities.forEach(entity -> entity.whichLayer(textureRenderer).put(entity.getCoordinate(), entity.getCurrentTexture()));
             textureRenderer.renderBoard(); // Tiles and items get added to the lists in here and the rendering gets called.
 
             // UI
@@ -411,14 +414,14 @@ public class World implements Tickable
 
     private void onEnemyTurn()
     {
-        getEntities().forEach(e -> e.automaticallyMove());
+        getEntities().forEach(Entity::automaticallyMove);
         player.setMobile(true);
     }
 
     public boolean isWithinWorld(Coordinate coordinate)
     {
-        int i = coordinate.getX() + coordinate.getY() * WORLD_WIDTH;
-        return i >= 0 && i < tiles.length && coordinate.getX() >= 0 && coordinate.getX() < WORLD_WIDTH && coordinate.getY() >= 0 && coordinate.getY() < WORLD_HEIGHT;
+        int i = coordinate.x() + coordinate.y() * WORLD_WIDTH;
+        return i >= 0 && i < tiles.length && coordinate.x() >= 0 && coordinate.x() < WORLD_WIDTH && coordinate.y() >= 0 && coordinate.y() < WORLD_HEIGHT;
     }
 
     public Tile getTileAt(int x, int y)
@@ -428,7 +431,7 @@ public class World implements Tickable
 
     public Tile getTileAt(Coordinate coordinate)
     {
-        return this.getTileAt(coordinate.getX(), coordinate.getY());
+        return this.getTileAt(coordinate.x(), coordinate.y());
     }
 
     public Entity getEntityAt(Coordinate coordinate)

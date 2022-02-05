@@ -17,7 +17,7 @@
  * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.ilja615.forrestgame.util;
+package com.github.ilja615.forrestgame.utility;
 
 import com.github.ilja615.forrestgame.Game;
 import org.lwjgl.glfw.GLFW;

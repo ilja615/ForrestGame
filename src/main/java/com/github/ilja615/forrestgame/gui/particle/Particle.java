@@ -20,8 +20,8 @@
 package com.github.ilja615.forrestgame.gui.particle;
 
 import com.github.ilja615.forrestgame.gui.texture.Texture;
-import com.github.ilja615.forrestgame.util.Coordinate;
-import com.github.ilja615.forrestgame.util.Tickable;
+import com.github.ilja615.forrestgame.utility.Coordinate;
+import com.github.ilja615.forrestgame.utility.Tickable;
 import com.github.ilja615.forrestgame.world.World;
 
 public class Particle implements Tickable
