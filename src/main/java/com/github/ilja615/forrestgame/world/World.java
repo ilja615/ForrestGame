@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2021 ilja615.
+ * Copyright (c) 2021-2022 the ForrestGame contributors.
  *
- * This file is part of Forrest Game.
+ * This file is part of ForrestGame.
  *
- * Forrest Game is free software: you can redistribute it and/or modify
+ * ForrestGame is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Forrest Game is distributed in the hope that it will be useful,
+ * ForrestGame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
+ * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.github.ilja615.forrestgame.world;
@@ -30,7 +30,10 @@ import com.github.ilja615.forrestgame.gui.renderer.UiRenderer;
 import com.github.ilja615.forrestgame.gui.shader.Shader;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
-import com.github.ilja615.forrestgame.tiles.*;
+import com.github.ilja615.forrestgame.tiles.AirTile;
+import com.github.ilja615.forrestgame.tiles.FloorTile;
+import com.github.ilja615.forrestgame.tiles.Tile;
+import com.github.ilja615.forrestgame.tiles.WallTile;
 import com.github.ilja615.forrestgame.tiles.items.*;
 import com.github.ilja615.forrestgame.util.*;
 import org.lwjgl.glfw.GLFW;
@@ -54,14 +57,14 @@ public class World implements Tickable
     private Tile[] tiles;
     private final ArrayList<Particle> particles = new ArrayList<>();
     private final Game game;
-    private Entity player;
+    private final Entity player;
     private final ArrayList<Entity> entities = new ArrayList<>();
     private final TextRenderer textRenderer = new TextRenderer();
     private final UiRenderer uiRenderer = new UiRenderer();
-    private TextureRenderer textureRenderer;
+    private final TextureRenderer textureRenderer;
     private Coordinate startCoordinate;
     // private final List<Coordinate> path = new ArrayList<>();
-    private TimeTracker timeTracker;
+    private final TimeTracker timeTracker;
     private final Shader shader;
     public final AirTile airTile;
     private int enemyTurnWait;

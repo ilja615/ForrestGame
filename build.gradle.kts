@@ -1,159 +1,153 @@
+/*
+ * Copyright (c) 2022 the ForrestGame contributors.
+ *
+ * This file is part of ForrestGame.
+ *
+ * ForrestGame is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * ForrestGame is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-    eclipse
-    idea
     java
     application
-    id("com.github.johnrengelman.shadow") version "6.1.0"
-    id("net.minecrell.licenser") version "0.4.1"
-    id("com.github.ben-manes.versions") version "0.36.0"
 }
 
 group = "com.github.ilja615"
-base.archivesBaseName = "forrestgame"
-version = "1.0.0"
+base.archivesName.set("forrestgame")
+version = "0.1.0"
+
+@Suppress("INACCESSIBLE_TYPE")
+val lwjglNatives = when (OperatingSystem.current()) {
+    OperatingSystem.WINDOWS -> "natives-windows"
+    OperatingSystem.MAC_OS ->
+        if (System.getProperty("os.arch").startsWith("aarch64")) "natives-macos-arm64"
+        else "natives-macos"
+    OperatingSystem.LINUX -> "natives-linux"
+    else -> throw Error("Unrecognized or unsupported operating system. Please set \"lwjglNatives\" manually.")
+}
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    fun property(name: String) = project.property(name)!!.toString()
+    testImplementation(platform("org.junit:junit-bom:5.8.2")) // testing
+    testImplementation("org.junit.jupiter:junit-jupiter") // testing
+    implementation("ch.qos.logback:logback-classic:1.2.10") // logging
+    implementation("com.google.guava:guava:31.0.1-jre") // collections
+    compileOnly("org.jetbrains:annotations:23.0.0") // annotations
 
-    // testing
-    testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = property("jupiterVersion"))
-    testRuntimeOnly(group = "org.junit.jupiter", name = "junit-jupiter-engine")
-    implementation(group = "com.google.guava", name = "guava", version = property("guavaVersion"))
+    // lwjgl
+    implementation(platform("org.lwjgl:lwjgl-bom:3.3.0"))
 
-    // annotations
-    compileOnly(group = "org.jetbrains", name = "annotations", version = property("jetbrainsAnnotationsVersion"))
-
-    // logging
-    implementation(group = "org.slf4j", name = "slf4j-api", version = property("slf4jVersion"))
-    implementation(group = "ch.qos.logback", name = "logback-core", version = property("logbackVersion"))
-    implementation(group = "ch.qos.logback", name = "logback-classic", version = property("logbackVersion"))
-
-    // lwjgl and joml
-    implementation(platform("org.lwjgl:lwjgl-bom:${property("lwjglVersion")}"))
-    implementation(group = "org.lwjgl", name = "lwjgl")
-    implementation(group = "org.lwjgl", name = "lwjgl-assimp")
-    implementation(group = "org.lwjgl", name = "lwjgl-bgfx")
-    implementation(group = "org.lwjgl", name = "lwjgl-cuda")
-    implementation(group = "org.lwjgl", name = "lwjgl-egl")
-    implementation(group = "org.lwjgl", name = "lwjgl-glfw")
-    implementation(group = "org.lwjgl", name = "lwjgl-jawt")
-    implementation(group = "org.lwjgl", name = "lwjgl-jemalloc")
-    implementation(group = "org.lwjgl", name = "lwjgl-libdivide")
-    implementation(group = "org.lwjgl", name = "lwjgl-llvm")
-    implementation(group = "org.lwjgl", name = "lwjgl-lmdb")
-    implementation(group = "org.lwjgl", name = "lwjgl-lz4")
-    implementation(group = "org.lwjgl", name = "lwjgl-meow")
-    implementation(group = "org.lwjgl", name = "lwjgl-nanovg")
-    implementation(group = "org.lwjgl", name = "lwjgl-nfd")
-    implementation(group = "org.lwjgl", name = "lwjgl-nuklear")
-    implementation(group = "org.lwjgl", name = "lwjgl-odbc")
-    implementation(group = "org.lwjgl", name = "lwjgl-openal")
-    implementation(group = "org.lwjgl", name = "lwjgl-opencl")
-    implementation(group = "org.lwjgl", name = "lwjgl-opengl")
-    implementation(group = "org.lwjgl", name = "lwjgl-opengles")
-    implementation(group = "org.lwjgl", name = "lwjgl-openvr")
-    implementation(group = "org.lwjgl", name = "lwjgl-opus")
-    implementation(group = "org.lwjgl", name = "lwjgl-ovr")
-    implementation(group = "org.lwjgl", name = "lwjgl-par")
-    implementation(group = "org.lwjgl", name = "lwjgl-remotery")
-    implementation(group = "org.lwjgl", name = "lwjgl-rpmalloc")
-    implementation(group = "org.lwjgl", name = "lwjgl-shaderc")
-    implementation(group = "org.lwjgl", name = "lwjgl-sse")
-    implementation(group = "org.lwjgl", name = "lwjgl-stb")
-    implementation(group = "org.lwjgl", name = "lwjgl-tinyexr")
-    implementation(group = "org.lwjgl", name = "lwjgl-tinyfd")
-    implementation(group = "org.lwjgl", name = "lwjgl-tootle")
-    implementation(group = "org.lwjgl", name = "lwjgl-vma")
-    implementation(group = "org.lwjgl", name = "lwjgl-vulkan")
-    implementation(group = "org.lwjgl", name = "lwjgl-xxhash")
-    implementation(group = "org.lwjgl", name = "lwjgl-yoga")
-    implementation(group = "org.lwjgl", name = "lwjgl-zstd")
-
-    @Suppress("INACCESSIBLE_TYPE")
-    val natives = when (OperatingSystem.current()) {
-        OperatingSystem.LINUX -> "natives-linux"
-        OperatingSystem.MAC_OS -> "natives-macos"
-        OperatingSystem.WINDOWS -> "natives-windows"
-        else -> error("Your OS is not supported.")
+    implementation("org.lwjgl", "lwjgl")
+    implementation("org.lwjgl", "lwjgl-assimp")
+    implementation("org.lwjgl", "lwjgl-bgfx")
+    implementation("org.lwjgl", "lwjgl-cuda")
+    implementation("org.lwjgl", "lwjgl-egl")
+    implementation("org.lwjgl", "lwjgl-glfw")
+    implementation("org.lwjgl", "lwjgl-jawt")
+    implementation("org.lwjgl", "lwjgl-jemalloc")
+    implementation("org.lwjgl", "lwjgl-libdivide")
+    implementation("org.lwjgl", "lwjgl-llvm")
+    implementation("org.lwjgl", "lwjgl-lmdb")
+    implementation("org.lwjgl", "lwjgl-lz4")
+    implementation("org.lwjgl", "lwjgl-meow")
+    implementation("org.lwjgl", "lwjgl-meshoptimizer")
+    implementation("org.lwjgl", "lwjgl-nanovg")
+    implementation("org.lwjgl", "lwjgl-nfd")
+    implementation("org.lwjgl", "lwjgl-nuklear")
+    implementation("org.lwjgl", "lwjgl-odbc")
+    implementation("org.lwjgl", "lwjgl-openal")
+    implementation("org.lwjgl", "lwjgl-opencl")
+    implementation("org.lwjgl", "lwjgl-opengl")
+    implementation("org.lwjgl", "lwjgl-opengles")
+    implementation("org.lwjgl", "lwjgl-openvr")
+    implementation("org.lwjgl", "lwjgl-opus")
+    implementation("org.lwjgl", "lwjgl-ovr")
+    implementation("org.lwjgl", "lwjgl-par")
+    implementation("org.lwjgl", "lwjgl-remotery")
+    implementation("org.lwjgl", "lwjgl-rpmalloc")
+    implementation("org.lwjgl", "lwjgl-shaderc")
+    implementation("org.lwjgl", "lwjgl-spvc")
+    implementation("org.lwjgl", "lwjgl-sse")
+    implementation("org.lwjgl", "lwjgl-stb")
+    implementation("org.lwjgl", "lwjgl-tinyexr")
+    implementation("org.lwjgl", "lwjgl-tinyfd")
+    implementation("org.lwjgl", "lwjgl-tootle")
+    implementation("org.lwjgl", "lwjgl-vma")
+    implementation("org.lwjgl", "lwjgl-vulkan")
+    implementation("org.lwjgl", "lwjgl-xxhash")
+    implementation("org.lwjgl", "lwjgl-yoga")
+    implementation("org.lwjgl", "lwjgl-zstd")
+    runtimeOnly("org.lwjgl", "lwjgl", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-assimp", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-bgfx", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-glfw", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-jemalloc", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-libdivide", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-llvm", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-lmdb", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-lz4", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-meow", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-meshoptimizer", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-nanovg", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-nfd", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-nuklear", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-openal", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-opengl", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-opengles", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-openvr", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-opus", classifier = lwjglNatives)
+    if (lwjglNatives == "natives-windows") {
+        runtimeOnly("org.lwjgl", "lwjgl-ovr", classifier = lwjglNatives)
     }
+    runtimeOnly("org.lwjgl", "lwjgl-par", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-remotery", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-rpmalloc", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-shaderc", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-spvc", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-sse", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-tinyexr", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-tinyfd", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-tootle", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-vma", classifier = lwjglNatives)
+    if (lwjglNatives == "natives-macos" || lwjglNatives == "natives-macos-arm64") {
+        runtimeOnly("org.lwjgl", "lwjgl-vulkan", classifier = lwjglNatives)
+    }
+    runtimeOnly("org.lwjgl", "lwjgl-xxhash", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-yoga", classifier = lwjglNatives)
+    runtimeOnly("org.lwjgl", "lwjgl-zstd", classifier = lwjglNatives)
 
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-assimp", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-bgfx", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-glfw", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-jemalloc", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-libdivide", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-llvm", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-lmdb", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-lz4", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-meow", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-nanovg", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-nfd", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-nuklear", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-openal", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-opengl", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-opengles", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-openvr", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-opus", classifier = natives)
-    if (natives == "natives-windows") runtimeOnly(group = "org.lwjgl", name = "lwjgl-ovr", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-par", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-remotery", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-rpmalloc", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-shaderc", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-sse", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-stb", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-tinyexr", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-tinyfd", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-tootle", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-vma", classifier = natives)
-    if (natives == "natives-macos") runtimeOnly(group = "org.lwjgl", name = "lwjgl-vulkan", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-xxhash", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-yoga", classifier = natives)
-    runtimeOnly(group = "org.lwjgl", name = "lwjgl-zstd", classifier = natives)
-
-    implementation(group = "org.joml", name = "joml", version = property("jomlVersion"))
+    implementation("org.joml", "joml", "1.10.3") // joml
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(15))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
 application {
-    @Suppress("DEPRECATION") // required for shadow
-    mainClassName = "com.github.ilja615.forrestgame.ForrestGame"
+    mainClass.set("com.github.ilja615.forrestgame.ForrestGame")
 
     if (OperatingSystem.current().isMacOsX) applicationDefaultJvmArgs = listOf("-XstartOnFirstThread")
 }
 
-license {
-    header = rootProject.file("LICENSE_HEADER.txt")
-
-    ext {
-        this["name"] = "ilja615"
-        this["years"] = "2021"
-        this["projectName"] = "Forrest Game"
-    }
-
-    include("**/*.java")
-}
-
 tasks {
-    dependencyUpdates {
-        gradleReleaseChannel = "current"
-        outputFormatter = "html"
-
-        rejectVersionIf { candidate.version.contains("[.-]alpha|[.-]beta|[.-]rc\\d|[.-]m\\d".toRegex(RegexOption.IGNORE_CASE)) }
-    }
-
     test {
         useJUnitPlatform()
     }

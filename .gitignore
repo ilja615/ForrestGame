@@ -1,46 +1,111 @@
-# This is Linux ptmplate gitignore file with thing i want to ignore btw i based it on java tempelet
+### Java template
+# Compiled class file
+*.class
 
-*~
+# Log file
+*.log
 
-# temporary files which can be created if a process still has a handle open of a deleted file
-.fuse_hidden*
+# BlueJ files
+*.ctxt
 
-# KDE directory preferences
-.directory
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
-# .nfs files are created when an open file is removed but is still being accessed
-.nfs*
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
 
-### macOS template
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
+### Gradle template
+.gradle
+**/build/
+!src/**/build/
 
-# Icon must end with two \r
-Icon
+# Ignore Gradle GUI config
+gradle-app.setting
 
-# Thumbnails
-._*
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
 
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
+# Cache of project
+.gradletasknamecache
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+### JetBrains template
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# Gradle and Maven with auto-import
+.idea/artifacts
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/modules.xml
+.idea/*.iml
+.idea/modules
+*.iml
+*.ipr
+
+# CMake
+cmake-build-*/
+
+# Mongo Explorer plugin
+.idea/**/mongoSettings.xml
+
+# File-based project format
+*.iws
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Cursive Clojure plugin
+.idea/replstate.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Editor-based Rest Client
+.idea/httpRequests
+
+# Android studio 3.1+ serialized cache file
+.idea/caches/build_file_checksums.ser
 
 ### Eclipse template
 .metadata
@@ -104,70 +169,71 @@ local.properties
 # Typically, this file would be tracked if it contains build/dependency configurations:
 #.project
 
-### JetBrains template
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
-# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+### Windows template
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
 
-# User-specific stuff
-.idea/
+# Dump file
+*.stackdump
 
-# Gradle and Maven with auto-import
-*.iml
-*.ipr
+# Folder config file
+[Dd]esktop.ini
 
-# CMake
-cmake-build-*/
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
 
-# File-based project format
-*.iws
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
 
-# IntelliJ
-out/
+# Windows shortcuts
+*.lnk
 
-# mpeltonen/sbt-idea plugin
-.idea_modules/
+### macOS template
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# JIRA plugin
-atlassian-ide-plugin.xml
+# Icon must end with two \r
+Icon
 
-# Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
+# Thumbnails
+._*
 
-### Java template
-# Compiled class file
-*.class
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
-# Log file
-*.log
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
-# BlueJ files
-*.ctxt
+### Linux template
+*~
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# KDE directory preferences
+.directory
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
 
-# Ignore Gradle project-specific cache directory
-.gradle
-.gradle/*
-
-# Ignore Gradle build output directory
-build
-build/*
-
-# The Gradle wrapper should not be ignored
-!gradle-wrapper.jar
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
