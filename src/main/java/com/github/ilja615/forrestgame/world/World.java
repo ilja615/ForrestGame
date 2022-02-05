@@ -50,11 +50,8 @@ import static org.lwjgl.opengl.GL20.glUniform1f;
 
 public class World implements Tickable
 {
-    public int WORLD_WIDTH;
-    public int WORLD_HEIGHT;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(World.class);
-    private Tile[] tiles;
+    public final AirTile airTile;
     private final ArrayList<Particle> particles = new ArrayList<>();
     private final Game game;
     private final Entity player;
@@ -62,11 +59,13 @@ public class World implements Tickable
     private final TextRenderer textRenderer = new TextRenderer();
     private final UiRenderer uiRenderer = new UiRenderer();
     private final TextureRenderer textureRenderer;
-    private Coordinate startCoordinate;
     // private final List<Coordinate> path = new ArrayList<>();
     private final TimeTracker timeTracker;
     private final Shader shader;
-    public final AirTile airTile;
+    public int WORLD_WIDTH;
+    public int WORLD_HEIGHT;
+    private Tile[] tiles;
+    private Coordinate startCoordinate;
     private int enemyTurnWait;
 
     public World(final Game game, final Shader shader)
@@ -167,7 +166,7 @@ public class World implements Tickable
         {
             for (int y = 0; y < WORLD_HEIGHT; y++)
             {
-                Coordinate mutableCoordinate = new Coordinate(x,y);
+                Coordinate mutableCoordinate = new Coordinate(x, y);
                 if (isWithinWorld(mutableCoordinate))
                     if (getTileAt(x, y) instanceof WallTile)
                         ((WallTile) getTileAt(x, y)).adaptQuadrantTexturesList(this, new Coordinate(x, y));
@@ -282,7 +281,8 @@ public class World implements Tickable
                     break;
                 }
             }
-        } else {
+        } else
+        {
             int pos = WORLD_WIDTH - 1;
             coordinate = new Coordinate(0, 0);
             while (true)
@@ -352,9 +352,9 @@ public class World implements Tickable
     @Override
     public void tick()
     {
-        glUniform1f(glGetUniformLocation(this.shader.program,"redComponent"), this.timeTracker.getRedComponent());
-        glUniform1f(glGetUniformLocation(this.shader.program,"greenComponent"), this.timeTracker.getGreenComponent());
-        glUniform1f(glGetUniformLocation(this.shader.program,"blueComponent"), this.timeTracker.getBlueComponent());
+        glUniform1f(glGetUniformLocation(this.shader.program, "redComponent"), this.timeTracker.getRedComponent());
+        glUniform1f(glGetUniformLocation(this.shader.program, "greenComponent"), this.timeTracker.getGreenComponent());
+        glUniform1f(glGetUniformLocation(this.shader.program, "blueComponent"), this.timeTracker.getBlueComponent());
 
         // Tick all objects
         player.tick();
@@ -370,7 +370,8 @@ public class World implements Tickable
         if (enemyTurnWait > 0)
         {
             enemyTurnWait--;
-            if (enemyTurnWait == 0) onEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
+            if (enemyTurnWait == 0)
+                onEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
         }
 
         if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
@@ -392,9 +393,10 @@ public class World implements Tickable
             uiRenderer.renderHealth(player);
             textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.5f);
             uiRenderer.renderTimeIcon(this.getTimeTracker().getPeriodFromTime(this.timeTracker.getCurrentTime()));
-        } else {
+        } else
+        {
             String s = this.getTimeTracker().getCurrentTimeString();
-            float size = 20.0f/(s.length()+2);
+            float size = 20.0f / (s.length() + 2);
             textRenderer.drawString(s, -1f, -0.05f * size, size);
         }
     }

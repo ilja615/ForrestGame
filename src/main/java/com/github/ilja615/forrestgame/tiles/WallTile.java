@@ -70,14 +70,17 @@ public class WallTile extends Tile
                 if (secondary.getVertical() == Direction.UP)
                 {
                     return Textures.WALL_OUTER_CORNER_PIECE_VM;
-                } else {
+                } else
+                {
                     return Textures.WALL_OUTER_CORNER_PIECE;
                 }
-            } else {
+            } else
+            {
                 if (secondary.getVertical() == Direction.UP)
                 {
                     return Textures.WALL_OUTER_CORNER_PIECE_HVM;
-                } else {
+                } else
+                {
                     return Textures.WALL_OUTER_CORNER_PIECE_HM;
                 }
             }
@@ -102,14 +105,17 @@ public class WallTile extends Tile
                 if (secondary.getVertical() == Direction.UP)
                 {
                     return Textures.WALL_INNER_CORNER_PIECE_VM;
-                } else {
+                } else
+                {
                     return Textures.WALL_INNER_CORNER_PIECE;
                 }
-            } else {
+            } else
+            {
                 if (secondary.getVertical() == Direction.UP)
                 {
                     return Textures.WALL_INNER_CORNER_PIECE_HVM;
-                } else {
+                } else
+                {
                     return Textures.WALL_INNER_CORNER_PIECE_HM;
                 }
             }

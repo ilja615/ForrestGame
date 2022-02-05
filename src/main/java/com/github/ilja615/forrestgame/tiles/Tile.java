@@ -65,7 +65,10 @@ public class Tile
         else return true;
     }
 
-    public boolean hasItem() { return item != null; }
+    public boolean hasItem()
+    {
+        return item != null;
+    }
 
     public Item getItem()
     {

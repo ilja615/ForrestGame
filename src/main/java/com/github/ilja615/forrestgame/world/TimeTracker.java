@@ -26,10 +26,13 @@ import java.util.Locale;
 
 public class TimeTracker
 {
-    private int currentTime = 1;
     public int waitTicks = 0;
+    private int currentTime = 1;
 
-    public int getCurrentTime() { return currentTime; }
+    public int getCurrentTime()
+    {
+        return currentTime;
+    }
 
     public String getCurrentTimeString()
     {
@@ -41,46 +44,9 @@ public class TimeTracker
         return "day " + getAmountSurvivedDays(currentTime);
     }
 
-    public void incrementCurrentTime() { this.currentTime++; }
-
-    public enum Period
+    public void incrementCurrentTime()
     {
-        SUNRISE(Textures.SUNRISE, true, 0.5f),
-        MORNING(Textures.MORNING, true),
-        AFTERNOON(Textures.AFTERNOON, true),
-        SUNSET(Textures.SUNSET, false, 0.6f, 0.5f, 0.45f),
-        EVENING(Textures.EVENING, false, 0.35f, 0.35f, 0.35f),
-        NIGHT(Textures.NIGHT, false, 0.2f, 0.2f, 0.3f);
-
-        private final boolean isDayTime;
-        private final Texture texture;
-        public final float red;
-        public final float green;
-        public final float blue;
-
-        Period(Texture texture, boolean isDayTime, float red, float green, float blue)
-        {
-            this.texture = texture;
-            this.isDayTime = isDayTime;
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
-        }
-
-        Period(Texture texture, boolean isDayTime) // Defaults lightness of 1.0f for R, G and B.
-        {
-            this(texture, isDayTime, 1.0f, 1.0f, 1.0f);
-        }
-
-        Period(Texture texture, boolean isDayTime, float lightness)
-        {
-            this(texture, isDayTime, lightness, lightness, lightness);
-        }
-
-        public Texture getTexture()
-        {
-            return this.texture;
-        }
+        this.currentTime++;
     }
 
     public Period getPeriodFromTime(int currentTime)
@@ -115,5 +81,45 @@ public class TimeTracker
     public float getBlueComponent()
     {
         return getPeriodFromTime(getCurrentTime()).blue;
+    }
+
+    public enum Period
+    {
+        SUNRISE(Textures.SUNRISE, true, 0.5f),
+        MORNING(Textures.MORNING, true),
+        AFTERNOON(Textures.AFTERNOON, true),
+        SUNSET(Textures.SUNSET, false, 0.6f, 0.5f, 0.45f),
+        EVENING(Textures.EVENING, false, 0.35f, 0.35f, 0.35f),
+        NIGHT(Textures.NIGHT, false, 0.2f, 0.2f, 0.3f);
+
+        public final float red;
+        public final float green;
+        public final float blue;
+        private final boolean isDayTime;
+        private final Texture texture;
+
+        Period(Texture texture, boolean isDayTime, float red, float green, float blue)
+        {
+            this.texture = texture;
+            this.isDayTime = isDayTime;
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+        }
+
+        Period(Texture texture, boolean isDayTime) // Defaults lightness of 1.0f for R, G and B.
+        {
+            this(texture, isDayTime, 1.0f, 1.0f, 1.0f);
+        }
+
+        Period(Texture texture, boolean isDayTime, float lightness)
+        {
+            this(texture, isDayTime, lightness, lightness, lightness);
+        }
+
+        public Texture getTexture()
+        {
+            return this.texture;
+        }
     }
 }

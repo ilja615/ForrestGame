@@ -41,11 +41,11 @@ public class PngTexture implements Texture
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
     private final int id;
+    private final String name;
     private boolean isTall;
     private boolean isHorizontallyMirrored;
     private boolean isVerticallyMirrored;
     private boolean isPlayerTexture;
-    private final String name;
 
     public PngTexture(final String fileName)
     {

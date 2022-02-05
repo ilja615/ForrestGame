@@ -33,10 +33,12 @@ import static org.lwjgl.opengl.GL20.*;
 public class Shader
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
-    private int vertexShader, fragmentShader;
     public int program;
+    private int vertexShader, fragmentShader;
 
-    public Shader() { }
+    public Shader()
+    {
+    }
 
     public boolean create(String shader)
     {

@@ -28,10 +28,10 @@ public interface Textures
     Texture GRASS_2 = new PngTexture("textures/grass_2");
     Texture GRASS_3 = new PngTexture("textures/grass_3");
     Texture[] MUSHROOM = new Texture[]
-    {
-        new PngTexture("textures/mushroom_0"),
-        new PngTexture("textures/mushroom_1")
-    };
+            {
+                    new PngTexture("textures/mushroom_0"),
+                    new PngTexture("textures/mushroom_1")
+            };
     Texture SIGN = new PngTexture("textures/sign");
     Texture TREE = new PngTexture("textures/tree").setTall(true);
     Texture CRATE = new PngTexture("textures/crate");
@@ -53,7 +53,6 @@ public interface Textures
     Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture("textures/wall_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
     Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/wall_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
 
-
     // player
     Texture PLAYER_UP = new PngTexture("textures/player_up").setPlayerTexture(true);
     Texture PLAYER_DOWN = new PngTexture("textures/player_down").setPlayerTexture(true);
@@ -61,33 +60,33 @@ public interface Textures
     Texture PLAYER_RIGHT = new PngTexture("textures/player_side").setPlayerTexture(true);
 
     Texture[] PLAYER_UP_WALK = new Texture[]
-    {
-        new PngTexture("textures/player_up_walking_0").setPlayerTexture(true),
-        new PngTexture("textures/player_up_walking_1").setPlayerTexture(true),
-        new PngTexture("textures/player_up_walking_2").setPlayerTexture(true),
-        new PngTexture("textures/player_up_walking_3").setPlayerTexture(true)
-    };
+            {
+                    new PngTexture("textures/player_up_walking_0").setPlayerTexture(true),
+                    new PngTexture("textures/player_up_walking_1").setPlayerTexture(true),
+                    new PngTexture("textures/player_up_walking_2").setPlayerTexture(true),
+                    new PngTexture("textures/player_up_walking_3").setPlayerTexture(true)
+            };
     Texture[] PLAYER_DOWN_WALK = new Texture[]
-    {
-        new PngTexture("textures/player_down_walking_0").setPlayerTexture(true),
-        new PngTexture("textures/player_down_walking_1").setPlayerTexture(true),
-        new PngTexture("textures/player_down_walking_2").setPlayerTexture(true),
-        new PngTexture("textures/player_down_walking_3").setPlayerTexture(true)
-    };
+            {
+                    new PngTexture("textures/player_down_walking_0").setPlayerTexture(true),
+                    new PngTexture("textures/player_down_walking_1").setPlayerTexture(true),
+                    new PngTexture("textures/player_down_walking_2").setPlayerTexture(true),
+                    new PngTexture("textures/player_down_walking_3").setPlayerTexture(true)
+            };
     Texture[] PLAYER_LEFT_WALK = new Texture[]
-    {
-        new PngTexture("textures/player_side_walking_0").setHorizontallyMirrored(true).setPlayerTexture(true),
-        new PngTexture("textures/player_side_walking_1").setHorizontallyMirrored(true).setPlayerTexture(true),
-        new PngTexture("textures/player_side_walking_2").setHorizontallyMirrored(true).setPlayerTexture(true),
-        new PngTexture("textures/player_side_walking_3").setHorizontallyMirrored(true).setPlayerTexture(true)
-    };
+            {
+                    new PngTexture("textures/player_side_walking_0").setHorizontallyMirrored(true).setPlayerTexture(true),
+                    new PngTexture("textures/player_side_walking_1").setHorizontallyMirrored(true).setPlayerTexture(true),
+                    new PngTexture("textures/player_side_walking_2").setHorizontallyMirrored(true).setPlayerTexture(true),
+                    new PngTexture("textures/player_side_walking_3").setHorizontallyMirrored(true).setPlayerTexture(true)
+            };
     Texture[] PLAYER_RIGHT_WALK = new Texture[]
-    {
-        new PngTexture("textures/player_side_walking_0").setPlayerTexture(true),
-        new PngTexture("textures/player_side_walking_1").setPlayerTexture(true),
-        new PngTexture("textures/player_side_walking_2").setPlayerTexture(true),
-        new PngTexture("textures/player_side_walking_3").setPlayerTexture(true)
-    };
+            {
+                    new PngTexture("textures/player_side_walking_0").setPlayerTexture(true),
+                    new PngTexture("textures/player_side_walking_1").setPlayerTexture(true),
+                    new PngTexture("textures/player_side_walking_2").setPlayerTexture(true),
+                    new PngTexture("textures/player_side_walking_3").setPlayerTexture(true)
+            };
 
     // scamperer
     Texture SCAMPERER = new PngTexture("textures/scamperer");

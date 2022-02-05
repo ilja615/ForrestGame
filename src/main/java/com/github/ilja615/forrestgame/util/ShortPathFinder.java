@@ -32,7 +32,9 @@ public class ShortPathFinder
     private static final int MAX_SEARCH_DISTANCE = 32;
     private Node[][] nodes;
 
-    public ShortPathFinder() {}
+    public ShortPathFinder()
+    {
+    }
 
     /**
      * Finds the shortest path from {@code from} to {@code to}.
@@ -220,7 +222,8 @@ public class ShortPathFinder
         }
 
         @Override
-        public String toString() {
+        public String toString()
+        {
             return "(" + x + ", " + y + ")";
         }
     }

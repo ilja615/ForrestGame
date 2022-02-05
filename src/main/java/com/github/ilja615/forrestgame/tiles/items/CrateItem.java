@@ -34,7 +34,10 @@ public class CrateItem implements Item
 {
     private final Texture texture;
 
-    public CrateItem(final Texture t) { this.texture = t; }
+    public CrateItem(final Texture t)
+    {
+        this.texture = t;
+    }
 
     @Override
     public Texture getCurrentTexture()
@@ -52,7 +55,7 @@ public class CrateItem implements Item
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         Coordinate playerOldCoordinate = player.getCoordinate();
-        Coordinate coordinateThatCratePushedTo = coordinate.relative(coordinate.getX() - playerOldCoordinate.getX(),  coordinate.getY() - playerOldCoordinate.getY());
+        Coordinate coordinateThatCratePushedTo = coordinate.relative(coordinate.getX() - playerOldCoordinate.getX(), coordinate.getY() - playerOldCoordinate.getY());
         Tile destination = player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * player.getWorld().WORLD_WIDTH)];
         if (!destination.hasItem() && !destination.isObstacle() && player.getWorld().getEntityAt(coordinateThatCratePushedTo) == null)
         {

@@ -39,7 +39,9 @@ public class BushItem implements Item
     private static final Texture TEXTURE_2 = new PngTexture("textures/bush2");
     private int stage = 2;
 
-    public BushItem() { }
+    public BushItem()
+    {
+    }
 
     @Override
     public Texture getCurrentTexture()

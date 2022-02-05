@@ -36,13 +36,13 @@ public class Player implements Entity
     private static final float SCROLL_SPEED = 0.008f;
     private final World world;
     private final StatTracker statTracker;
+    public Direction facing = Direction.DOWN;
+    public int wait = 0;
+    public Action currentDoingAction = Action.NOTHING;
     private Coordinate coordinate;
     private Coordinate scheduledCoordinate;
     private boolean mobile = true;
-    public Direction facing = Direction.DOWN;
     private float animationTimer = 0.0f;
-    public int wait = 0;
-    public Action currentDoingAction = Action.NOTHING;
 
     public Player(final World world, final Coordinate startPos)
     {
@@ -128,10 +128,19 @@ public class Player implements Entity
 
             final Game game = world.getGame();
 
-            if (isKeyDown(game, GLFW_KEY_UP) || isKeyDown(game, GLFW_KEY_W)) { moveUp(); }
-            else if (isKeyDown(game, GLFW_KEY_DOWN) || isKeyDown(game, GLFW_KEY_S)) { moveDown(); }
-            else if (isKeyDown(game, GLFW_KEY_LEFT) || isKeyDown(game, GLFW_KEY_A)) { moveLeft(); }
-            else if (isKeyDown(game, GLFW_KEY_RIGHT) || isKeyDown(game, GLFW_KEY_D)) { moveRight(); }
+            if (isKeyDown(game, GLFW_KEY_UP) || isKeyDown(game, GLFW_KEY_W))
+            {
+                moveUp();
+            } else if (isKeyDown(game, GLFW_KEY_DOWN) || isKeyDown(game, GLFW_KEY_S))
+            {
+                moveDown();
+            } else if (isKeyDown(game, GLFW_KEY_LEFT) || isKeyDown(game, GLFW_KEY_A))
+            {
+                moveLeft();
+            } else if (isKeyDown(game, GLFW_KEY_RIGHT) || isKeyDown(game, GLFW_KEY_D))
+            {
+                moveRight();
+            }
         }
     }
 
@@ -144,7 +153,8 @@ public class Player implements Entity
             this.facing = Direction.UP;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.up(), Direction.UP);
-        } else {
+        } else
+        {
             this.facing = Direction.UP;
             waitMoment();
         }
@@ -159,7 +169,8 @@ public class Player implements Entity
             this.facing = Direction.DOWN;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.down(), Direction.DOWN);
-        } else {
+        } else
+        {
             this.facing = Direction.DOWN;
             waitMoment();
         }
@@ -174,7 +185,8 @@ public class Player implements Entity
             this.facing = Direction.LEFT;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.left(), Direction.LEFT);
-        } else {
+        } else
+        {
             this.facing = Direction.LEFT;
             waitMoment();
         }
@@ -189,7 +201,8 @@ public class Player implements Entity
             this.facing = Direction.RIGHT;
             this.currentDoingAction = Action.WALKING;
             move(coordinate.right(), Direction.RIGHT);
-        } else {
+        } else
+        {
             this.facing = Direction.RIGHT;
             waitMoment();
         }
@@ -237,21 +250,22 @@ public class Player implements Entity
         {
             // Standing still
             return switch (this.facing)
-            {
-                case UP -> Textures.PLAYER_UP;
-                case DOWN -> Textures.PLAYER_DOWN;
-                case LEFT -> Textures.PLAYER_LEFT;
-                case RIGHT -> Textures.PLAYER_RIGHT;
-            };
-        } else {
+                    {
+                        case UP -> Textures.PLAYER_UP;
+                        case DOWN -> Textures.PLAYER_DOWN;
+                        case LEFT -> Textures.PLAYER_LEFT;
+                        case RIGHT -> Textures.PLAYER_RIGHT;
+                    };
+        } else
+        {
             // Walking
             return switch (this.facing)
-            {
-                case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(200, 4)];
-                case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(200, 4)];
-                case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(200, 4)];
-                case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(200, 4)];
-            };
+                    {
+                        case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(200, 4)];
+                        case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(200, 4)];
+                        case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(200, 4)];
+                        case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(200, 4)];
+                    };
         }
     }
 
@@ -279,8 +293,8 @@ public class Player implements Entity
 
     private int getAnimationFrame(int framesTime, int amountFrames)
     {
-        this.animationTimer += (1/(float)framesTime);
-        return ((int)this.animationTimer) % amountFrames;
+        this.animationTimer += (1 / (float) framesTime);
+        return ((int) this.animationTimer) % amountFrames;
     }
 
     public enum Action

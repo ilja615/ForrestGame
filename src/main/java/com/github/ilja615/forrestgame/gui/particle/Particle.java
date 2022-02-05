@@ -26,13 +26,13 @@ import com.github.ilja615.forrestgame.world.World;
 
 public class Particle implements Tickable
 {
-    private int currentFrame = 0;
-    private float animationTimer = 0.0f;
     private final Coordinate coordinate;
     private final Texture[] TEXTURES;
     private final int amountLifeCycles;
-    private int completedCycles = 0;
     private final World world;
+    private int currentFrame = 0;
+    private float animationTimer = 0.0f;
+    private int completedCycles = 0;
     private boolean expired = false;
 
     public Particle(Coordinate coord, int amountCycles, World world, Texture[] textures)

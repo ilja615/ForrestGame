@@ -48,7 +48,6 @@ public class UiRenderer
 //        }
         renderTexture(Textures.ENERGY, 0.4f, 0.8f, 0.167f);
         player.getWorld().getTextRenderer().drawString("x" + player.getStatTracker().get(StatTracker.Stat.HUNGER).toString(), 0.7f, 0.81f, 0.5f);
-
     }
 
     public void renderTimeIcon(TimeTracker.Period period)

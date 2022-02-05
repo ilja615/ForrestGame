@@ -101,12 +101,12 @@ public class Coordinate
 
     public Coordinate move(final Direction direction, final int amount)
     {
-        return new Coordinate(this.x + direction.getX() * amount,  this.y + direction.getY() * amount);
+        return new Coordinate(this.x + direction.getX() * amount, this.y + direction.getY() * amount);
     }
 
     public Coordinate move(final Direction.Secondary secondaryDirection, final int amount)
     {
-        return new Coordinate(this.x + secondaryDirection.getX() * amount,  this.y + secondaryDirection.getY() * amount);
+        return new Coordinate(this.x + secondaryDirection.getX() * amount, this.y + secondaryDirection.getY() * amount);
     }
 
     @Override
