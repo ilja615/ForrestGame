@@ -26,11 +26,15 @@ import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.ShortPathFinder;
 import com.github.ilja615.forrestgame.world.World;
 import com.google.common.collect.ImmutableMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Scamperer implements Entity
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(World.class);
     private final World world;
     private final StatTracker statTracker;
     private Coordinate coordinate;
@@ -111,10 +115,14 @@ public class Scamperer implements Entity
         final ShortPathFinder pathFinder = new ShortPathFinder();
         final List<Coordinate> path = pathFinder.findPath(this.world, this.coordinate, this.world.getPlayer().getCoordinate());
 
+        LOGGER.info("Found path {}", path.stream()
+                .map(Coordinate::toString)
+                .collect(Collectors.joining(" -> ")));
+
         if (!path.isEmpty())
         {
             Coordinate newPos = path.get(1);
-            if (world.isWithinWorld(newPos) && !world.getTileAt(newPos).isObstacle() && world.getEntityAt(newPos) != null)
+            if (world.isWithinWorld(newPos) && !world.getTileAt(newPos).isObstacle() && world.getEntityAt(newPos) == null)
             {
                 this.coordinate = newPos;
             }
