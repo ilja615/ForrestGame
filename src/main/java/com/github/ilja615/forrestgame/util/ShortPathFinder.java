@@ -55,7 +55,8 @@ public class ShortPathFinder
         }
 
         // this is codde for to find a path who is short !!!
-        if (!world.isWithinWorld(to)) return new ArrayList<>();
+        if (!world.isWithinWorld(to))
+            return new ArrayList<>();
 
         final List<Node> closed = new ArrayList<>();
         final List<Node> open = new SortedList<>();
@@ -73,7 +74,7 @@ public class ShortPathFinder
             if (current == nodes[to.getX()][to.getY()]) break;
 
             open.remove(current);
-            closed.add(current);
+            //closed.add(current);
 
             for (int x = -1; x < 2; x++)
             {
@@ -84,7 +85,7 @@ public class ShortPathFinder
                     // it can't go diagonal.
                     if (x != 0 && y != 0) continue;
                     // idk why it has to continue when going left or down idk.
-                    if (x < 0 || y < 0) continue;
+                    //if (x < 0 || y < 0) continue;
                     // determine the location of the neighbor and evaluate it
                     final int xp = x + current.getX();
                     final int yp = y + current.getY();
@@ -99,21 +100,26 @@ public class ShortPathFinder
                             final Node neighbor = nodes[xp][yp];
                             //  map.pathFinderVisited(xp, yp);
 
-                            if (nextStepCost < neighbor.getCost())
-                            {
-                                open.remove(neighbor);
-                                closed.remove(neighbor);
-                            }
-
                             // if the node hasn't already been processed and discarded then
                             // reset it's cost to our current cost and add it as a next possible
                             // step (i.e. to the open list)
-                            if (!open.contains(neighbor) && !(closed.contains(neighbor)))
+                            if (!closed.contains(neighbor))
                             {
+                                neighbor.setParent(current);
                                 neighbor.setCost(nextStepCost);
                                 neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.getX() - xp) + Math.sqrt(to.getY() - yp)));
                                 maxDepth = Math.max(maxDepth, neighbor.setParent(current));
+                                closed.add(neighbor);
                                 open.add(neighbor);
+                            }
+
+                            if (nextStepCost < neighbor.getCost())
+                            {
+                                neighbor.setParent(current);
+                                neighbor.setCost(nextStepCost);
+                                neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.getX() - xp) + Math.sqrt(to.getY() - yp)));
+                                open.add(neighbor);
+                                //closed.add(neighbor);
                             }
                         }
                     }
@@ -122,7 +128,8 @@ public class ShortPathFinder
         }
 
         // in this case is no path soo it has to return empty :T
-        if (nodes[to.getX()][to.getY()].getParent() == null) return new ArrayList<>();
+        if (nodes[to.getX()][to.getY()].getParent() == null)
+            return new ArrayList<>();
 
         // in this case is ther path whoo yey \o/ !!! :D :] happy momment'
         final List<Coordinate> path = new ArrayList<>();
@@ -210,6 +217,11 @@ public class ShortPathFinder
             final float of = other.getHeuristic() + other.getCost();
 
             return Float.compare(f, of);
+        }
+
+        @Override
+        public String toString() {
+            return "(" + x + ", " + y + ")";
         }
     }
 }
