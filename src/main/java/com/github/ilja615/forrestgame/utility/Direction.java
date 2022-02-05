@@ -25,8 +25,8 @@ public enum Direction
 
     public enum Secondary
     {
-        BOTTOM_LEFT(LEFT, UP),
-        BOTTOM_RIGHT(RIGHT, UP),
+        BOTTOM_LEFT(LEFT, DOWN),
+        BOTTOM_RIGHT(RIGHT, DOWN),
         TOP_LEFT(LEFT, UP),
         TOP_RIGHT(RIGHT, UP);
 
@@ -39,14 +39,14 @@ public enum Direction
             this.vertical = vertical;
         }
 
-        public Direction getVertical()
-        {
-            return vertical;
-        }
-
         public Direction getHorizontal()
         {
             return horizontal;
+        }
+
+        public Direction getVertical()
+        {
+            return vertical;
         }
     }
 }
