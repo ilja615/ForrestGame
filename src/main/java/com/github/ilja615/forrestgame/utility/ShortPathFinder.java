@@ -90,7 +90,7 @@ public class ShortPathFinder
 
                     if (world.isWithinWorld(new Coordinate(xp, yp)))
                     {
-                        if (world.getTileAt(xp, yp).isObstacle())
+                        if (world.getTileAt(xp, yp).isNotObstacle())
                         {
                             // Movement cost :
                             final float movementCost = 1.0f;

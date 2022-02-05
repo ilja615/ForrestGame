@@ -122,7 +122,7 @@ public class Scamperer implements Entity
         if (!path.isEmpty())
         {
             final Coordinate newPos = path.get(1);
-            if (world.isWithinWorld(newPos) && world.getTileAt(newPos).isObstacle() && world.getEntityAt(newPos) == null)
+            if (world.isWithinWorld(newPos) && world.getTileAt(newPos).isNotObstacle() && world.getEntityAt(newPos) == null)
             {
                 this.coordinate = newPos;
             }

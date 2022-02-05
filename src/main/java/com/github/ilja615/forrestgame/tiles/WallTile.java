@@ -38,7 +38,7 @@ public class WallTile extends Tile
     }
 
     @Override
-    public boolean isObstacle()
+    public boolean isNotObstacle()
     {
         return false;
     }

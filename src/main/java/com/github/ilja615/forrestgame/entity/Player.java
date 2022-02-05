@@ -217,7 +217,7 @@ public class Player implements Entity
     {
         if (world.isWithinWorld(coordinate))
         {
-            if (world.getTileAt(coordinate).isObstacle())
+            if (world.getTileAt(coordinate).isNotObstacle())
             {
                 if (world.getEntityAt(coordinate) != null)
                 {

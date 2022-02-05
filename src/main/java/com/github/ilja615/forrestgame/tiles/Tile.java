@@ -42,12 +42,11 @@ public class Tile
     /**
      * Used for movement checking.
      *
-     * @return if this tile is an obstacle
+     * @return if this tile is not an obstacle
      */
-    public boolean isObstacle()
+    public boolean isNotObstacle()
     {
-        if (this.hasItem())
-            return !this.item.isObstacle();
+        if (this.hasItem()) return !this.item.isObstacle();
         else return true;
     }
 
