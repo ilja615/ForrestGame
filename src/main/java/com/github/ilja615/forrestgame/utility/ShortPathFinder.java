@@ -57,7 +57,7 @@ public class ShortPathFinder
             return new ArrayList<>();
 
         final List<Node> closed = new ArrayList<>();
-        final List<Node> open = new SortedList<>();
+        final List<Node> open = new SortedList<>(); // TODO: remove this and use a TreeSet or something
 
         open.add(nodes[from.x()][from.y()]);
 
