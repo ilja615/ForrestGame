@@ -35,7 +35,7 @@ public class Particle implements Tickable
     private int completedCycles = 0;
     private boolean expired = false;
 
-    public Particle(Coordinate coord, int amountCycles, World world, Texture[] textures)
+    public Particle(final Coordinate coord, final int amountCycles, final World world, final Texture[] textures)
     {
         this.coordinate = coord;
         this.amountLifeCycles = amountCycles;
@@ -53,7 +53,7 @@ public class Particle implements Tickable
         return this.currentFrame;
     }
 
-    public void setCurrentFrame(int currentFrame)
+    public void setCurrentFrame(final int currentFrame)
     {
         this.currentFrame = currentFrame;
     }

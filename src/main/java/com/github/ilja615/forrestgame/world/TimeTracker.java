@@ -49,7 +49,7 @@ public class TimeTracker
         this.currentTime++;
     }
 
-    public Period getPeriodFromTime(int currentTime)
+    public Period getPeriodFromTime(final int currentTime)
     {
         return switch (currentTime % 6)
                 {
@@ -63,7 +63,7 @@ public class TimeTracker
                 };
     }
 
-    public int getAmountSurvivedDays(int currentTime)
+    public int getAmountSurvivedDays(final int currentTime)
     {
         return (int) Math.floor(currentTime / 6.0d) + 1;
     }
@@ -98,7 +98,7 @@ public class TimeTracker
         private final boolean isDayTime;
         private final Texture texture;
 
-        Period(Texture texture, boolean isDayTime, float red, float green, float blue)
+        Period(final Texture texture, final boolean isDayTime, final float red, final float green, final float blue)
         {
             this.texture = texture;
             this.isDayTime = isDayTime;
@@ -107,12 +107,12 @@ public class TimeTracker
             this.blue = blue;
         }
 
-        Period(Texture texture, boolean isDayTime) // Defaults lightness of 1.0f for R, G and B.
+        Period(final Texture texture, final boolean isDayTime) // Defaults lightness of 1.0f for R, G and B.
         {
             this(texture, isDayTime, 1.0f, 1.0f, 1.0f);
         }
 
-        Period(Texture texture, boolean isDayTime, float lightness)
+        Period(final Texture texture, final boolean isDayTime, final float lightness)
         {
             this(texture, isDayTime, lightness, lightness, lightness);
         }

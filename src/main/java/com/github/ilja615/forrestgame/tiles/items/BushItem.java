@@ -33,9 +33,9 @@ import java.util.Map;
 
 public class BushItem implements Item
 {
-    private static final Texture TEXTURE_0 = new PngTexture("textures/bush0");
-    private static final Texture TEXTURE_1 = new PngTexture("textures/bush1");
-    private static final Texture TEXTURE_2 = new PngTexture("textures/bush2");
+    private static final Texture TEXTURE_0 = new PngTexture("bush0");
+    private static final Texture TEXTURE_1 = new PngTexture("bush1");
+    private static final Texture TEXTURE_2 = new PngTexture("bush2");
     private int stage = 2;
 
     public BushItem()
@@ -84,7 +84,7 @@ public class BushItem implements Item
     }
 
     @Override
-    public Map<Coordinate, Texture> whichLayer(TextureRenderer tr)
+    public Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

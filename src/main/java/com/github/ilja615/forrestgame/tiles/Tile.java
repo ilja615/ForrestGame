@@ -47,8 +47,8 @@ public class Tile
     public boolean isObstacle()
     {
         if (this.hasItem())
-            return this.item.isObstacle();
-        else return false;
+            return !this.item.isObstacle();
+        else return true;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Tile
         return item;
     }
 
-    public void setItem(Item item)
+    public void setItem(final Item item)
     {
         this.item = item;
     }

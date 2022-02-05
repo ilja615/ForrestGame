@@ -41,7 +41,7 @@ public class PngTexture implements Texture
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
     private final int id;
-    private final String name;
+    private final String fileName;
     private boolean isTall;
     private boolean isHorizontallyMirrored;
     private boolean isVerticallyMirrored;
@@ -49,14 +49,14 @@ public class PngTexture implements Texture
 
     public PngTexture(final String fileName)
     {
-        this.name = fileName;
+        this.fileName = "textures/" + fileName + ".png";
         final IntBuffer width = BufferUtils.createIntBuffer(1);
         final IntBuffer height = BufferUtils.createIntBuffer(1);
         final IntBuffer comp = BufferUtils.createIntBuffer(1);
 
         try
         {
-            final Path textureFile = Paths.get(System.getProperty("java.io.tmpdir"), "forrestgame").resolve(fileName + ".png");
+            final Path textureFile = Paths.get(System.getProperty("java.io.tmpdir"), "forrestgame").resolve(this.fileName);
 
             if (Files.notExists(textureFile))
             {
@@ -70,7 +70,7 @@ public class PngTexture implements Texture
 
                 try (final InputStream inputStream = Objects.requireNonNull(Thread.currentThread()
                         .getContextClassLoader()
-                        .getResourceAsStream(fileName + ".png")))
+                        .getResourceAsStream(this.fileName)))
                 {
                     Files.copy(inputStream, textureFile, StandardCopyOption.REPLACE_EXISTING);
                     LOGGER.debug("Creating cached texture file ({})", textureFile);
@@ -98,9 +98,7 @@ public class PngTexture implements Texture
             stbi_image_free(Objects.requireNonNull(data));
         } catch (final IOException exception)
         {
-            LOGGER.error("Could not read textures", exception);
-            System.exit(1);
-            throw new IllegalStateException("how");
+            throw new IllegalStateException("Could not read textures!", exception);
         }
     }
 
@@ -117,7 +115,7 @@ public class PngTexture implements Texture
     }
 
     @Override
-    public Texture setTall(boolean tall)
+    public Texture setTall(final boolean tall)
     {
         isTall = tall;
         return this;
@@ -130,7 +128,7 @@ public class PngTexture implements Texture
     }
 
     @Override
-    public Texture setHorizontallyMirrored(boolean horizontallyMirrored)
+    public Texture setHorizontallyMirrored(final boolean horizontallyMirrored)
     {
         isHorizontallyMirrored = horizontallyMirrored;
         return this;
@@ -143,7 +141,7 @@ public class PngTexture implements Texture
     }
 
     @Override
-    public Texture setVerticallyMirrored(boolean verticallyMirrored)
+    public Texture setVerticallyMirrored(final boolean verticallyMirrored)
     {
         isVerticallyMirrored = verticallyMirrored;
         return this;
@@ -156,7 +154,7 @@ public class PngTexture implements Texture
     }
 
     @Override
-    public Texture setPlayerTexture(boolean playerTexture)
+    public Texture setPlayerTexture(final boolean playerTexture)
     {
         isPlayerTexture = playerTexture;
         return this;
@@ -165,6 +163,6 @@ public class PngTexture implements Texture
     @Override
     public String toString()
     {
-        return this.name;
+        return this.fileName;
     }
 }

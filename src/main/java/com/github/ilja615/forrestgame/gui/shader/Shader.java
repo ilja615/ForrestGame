@@ -19,51 +19,38 @@
 
 package com.github.ilja615.forrestgame.gui.shader;
 
-import com.github.ilja615.forrestgame.gui.texture.PngTexture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Shader
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
-    public int program;
-    private int vertexShader, fragmentShader;
+    public final int program;
+    private final int vertexShader, fragmentShader;
 
-    public Shader()
+    public Shader(final String shader)
     {
-    }
-
-    public boolean create(String shader)
-    {
-        int success;
-
         vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, readSource(shader + ".vertex"));
-        glCompileShader(vertexShader);
 
-        success = glGetShaderi(vertexShader, GL_COMPILE_STATUS);
-        if (success == GL_FALSE)
+        glCompileShader(vertexShader);
+        if (glGetShaderi(vertexShader, GL_COMPILE_STATUS) == GL_FALSE)
         {
-            System.err.println("Vertex: \n" + glGetShaderInfoLog(vertexShader));
-            return false;
+            throw new IllegalStateException("Vertex shader failed to compile:\n" + glGetShaderInfoLog(vertexShader));
         }
 
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, readSource(shader + ".fragment"));
-        glCompileShader(fragmentShader);
 
-        success = glGetShaderi(fragmentShader, GL_COMPILE_STATUS);
-        if (success == GL_FALSE)
+        glCompileShader(fragmentShader);
+        if (glGetShaderi(fragmentShader, GL_COMPILE_STATUS) == GL_FALSE)
         {
-            LOGGER.error("Fragment: \n" + glGetShaderInfoLog(fragmentShader));
-            return false;
+            throw new IllegalStateException("Fragment shader failed to compile:\n" + glGetShaderInfoLog(fragmentShader));
         }
 
         program = glCreateProgram();
@@ -71,20 +58,21 @@ public class Shader
         glAttachShader(program, fragmentShader);
 
         glLinkProgram(program);
-        success = glGetProgrami(program, GL_LINK_STATUS);
-        if (success == GL_FALSE)
+        if (glGetProgrami(program, GL_LINK_STATUS) == GL_FALSE)
         {
-            LOGGER.error("Program Link: \n" + glGetProgramInfoLog(program));
-            return false;
+            throw new IllegalStateException("Program failed to link:\n" + glGetProgramInfoLog(program));
         }
+
         glValidateProgram(program);
-        success = glGetProgrami(program, GL_VALIDATE_STATUS);
-        if (success == GL_FALSE)
+        if (glGetProgrami(program, GL_VALIDATE_STATUS) == GL_FALSE)
         {
-            LOGGER.error("Program Validate: \n" + glGetProgramInfoLog(program));
-            return false;
+            throw new IllegalStateException("Program failed validation:\n" + glGetProgramInfoLog(program));
         }
-        return true;
+    }
+
+    public void use()
+    {
+        glUseProgram(program);
     }
 
     public void destroy()
@@ -96,40 +84,16 @@ public class Shader
         glDeleteProgram(program);
     }
 
-    public void useShader()
+    private String readSource(final String file)
     {
-        glUseProgram(program);
-    }
-
-    private String readSource(String file)
-    {
-        BufferedReader reader = null;
-        StringBuilder sourceBuilder = new StringBuilder();
-
-        try
+        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(
+                this.getClass().getResourceAsStream("/shaders/" + file)
+        ))))
         {
-            reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/shaders/" + file)));
-
-            String line;
-
-            while ((line = reader.readLine()) != null)
-            {
-                sourceBuilder.append(line + "\n");
-            }
-        } catch (IOException e)
+            return reader.lines().collect(Collectors.joining("\n"));
+        } catch (final IOException exception)
         {
-            e.printStackTrace();
-        } finally
-        {
-            try
-            {
-                reader.close();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            throw new IllegalStateException("Could not load shader " + file, exception);
         }
-
-        return sourceBuilder.toString();
     }
 }

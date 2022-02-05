@@ -138,12 +138,12 @@ public class TextureRenderer
         x += world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().x();
         y += world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().y();
 
-        float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
-        float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
+        final float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
+        final float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
 
-        float extraY = (texture.isTall()) ? 0.167f : 0.0f;
-        boolean hm = (texture.isHorizontallyMirrored());
-        boolean vm = (texture.isVerticallyMirrored());
+        final float extraY = (texture.isTall()) ? 0.167f : 0.0f;
+        final boolean hm = (texture.isHorizontallyMirrored());
+        final boolean vm = (texture.isVerticallyMirrored());
 
         glBegin(GL_QUADS);
         glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
@@ -157,14 +157,14 @@ public class TextureRenderer
         glEnd();
     }
 
-    public void renderPlayer(Entity player)
+    public void renderPlayer(final Entity player)
     {
-        Texture texture = player.getCurrentTexture();
+        final Texture texture = player.getCurrentTexture();
         texture.bind();
 
-        float extraY = (texture.isTall()) ? 0.167f : 0.0f;
-        boolean hm = (texture.isHorizontallyMirrored());
-        boolean vm = (texture.isVerticallyMirrored());
+        final float extraY = (texture.isTall()) ? 0.167f : 0.0f;
+        final boolean hm = (texture.isHorizontallyMirrored());
+        final boolean vm = (texture.isVerticallyMirrored());
 
         glTranslatef(0, 0.083f, 0);
         // glRotated(playerAngle,0,0,1);
@@ -182,22 +182,22 @@ public class TextureRenderer
         glTranslatef(0, -0.083f, 0);
     }
 
-    public void renderWallTile(int x, int y)
+    public void renderWallTile(final int x, final int y)
     {
-        float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
-        float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
-        WallTile wallTile = (WallTile) world.getTileAt(x, y);
+        final float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
+        final float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
+        final WallTile wallTile = (WallTile) world.getTileAt(x, y);
         final int finalX = x + world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().x();
         final int finalY = y + world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().y();
         wallTile.QUADRANT_TEXTURES.forEach((secondary, texture) ->
         {
             texture.bind();
 
-            boolean hm = texture.isHorizontallyMirrored();
-            boolean vm = texture.isVerticallyMirrored();
+            final boolean hm = texture.isHorizontallyMirrored();
+            final boolean vm = texture.isVerticallyMirrored();
 
-            float u = secondary.getVertical() == Direction.UP ? 0.0834f : 0.0f;
-            float r = secondary.getHorizontal() == Direction.RIGHT ? 0.0834f : 0.0f;
+            final float u = secondary.getVertical() == Direction.UP ? 0.0834f : 0.0f;
+            final float r = secondary.getHorizontal() == Direction.RIGHT ? 0.0834f : 0.0f;
 
             glBegin(GL_QUADS);
             glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);

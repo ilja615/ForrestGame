@@ -32,48 +32,53 @@ import static org.lwjgl.opengl.GL11.*;
 public class TextRenderer
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(TextRenderer.class);
-    private static final char[] characters = "abcdefghijklmnopqrstuvwxyz1234567890 :?!-".toCharArray();
-    private final Map<String, Texture> characterToTextureMap;
+    private static final char[] supportedCharacters = "abcdefghijklmnopqrstuvwxyz1234567890 :?!-".toCharArray();
+    private final Map<String, Texture> charactersToTextures;
 
     public TextRenderer()
     {
         final ImmutableMap.Builder<String, Texture> builder = ImmutableMap.builder();
 
-        for (final char c : characters)
+        for (final char character : supportedCharacters)
         {
-            final String textureName = TextRenderer.getTextureName(c);
-            final Texture texture = new PngTexture("font/" + textureName);
-            LOGGER.debug("Mapping texture name {} to {}", c, "font/" + textureName);
+            final String textureName = getTextureName(character);
+            final Texture texture = new PngTexture(textureName);
+            LOGGER.debug("Mapping texture name {} to {}", character, textureName);
             builder.put(textureName, texture);
         }
 
-        characterToTextureMap = builder.build();
+        charactersToTextures = builder.build();
     }
 
     private static String getTextureName(final char character)
     {
-        return switch (character)
-                {
-                    case ' ' -> "space";
-                    case ':' -> "colon";
-                    case '?' -> "question";
-                    case '!' -> "exclamation";
-                    case '-' -> "dash";
-                    default -> String.valueOf(character);
-                };
+        if (Character.isDigit(character)) return "font/digits/" + character;
+        else if (Character.isLetter(character)) return "font/letters/" + character;
+        else return switch (character)
+                    {
+                        case ':' -> "font/punctuation/colon";
+                        case '-' -> "font/punctuation/dash";
+                        case '?' -> "font/punctuation/question_mark";
+                        case '!' -> "font/punctuation/exclamation_point";
+                        case ' ' -> "font/other/space";
+                        default -> throw new IllegalStateException("Unknown character '" + character + "'");
+                    };
     }
 
     public void drawString(final String string, float x, final float y, float size)
     {
         size /= 10;
 
-        for (int i = 0; i < string.length(); i++)
+        for (int index = 0; index < string.length(); index++)
         {
-            if (characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))) == null)
-                LOGGER.error("Not able to draw the texture for the character: " + string.charAt(i));
-            else
+            final String textureName = TextRenderer.getTextureName(string.charAt(index));
+
+            if (charactersToTextures.get(textureName) == null)
             {
-                characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))).bind();
+                LOGGER.error("Unable to draw the texture for the character '" + string.charAt(index) + "'");
+            } else
+            {
+                charactersToTextures.get(textureName).bind();
 
                 x += size;
 

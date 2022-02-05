@@ -61,8 +61,7 @@ public class ForrestGame implements Game
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         // Create the shaders
-        final Shader shader = new Shader();
-        shader.create("basic");
+        final Shader shader = new Shader("basic");
 
         final Game game = new ForrestGame(window);
         final World world = new World(game, shader);
@@ -73,7 +72,7 @@ public class ForrestGame implements Game
             glClear(GL_COLOR_BUFFER_BIT);
 
             // Use the shaders
-            shader.useShader();
+            shader.use();
 
             world.tick();
 

@@ -217,7 +217,7 @@ public class Player implements Entity
     {
         if (world.isWithinWorld(coordinate))
         {
-            if (!world.getTileAt(coordinate).isObstacle())
+            if (world.getTileAt(coordinate).isObstacle())
             {
                 if (world.getEntityAt(coordinate) != null)
                 {
@@ -270,13 +270,13 @@ public class Player implements Entity
     }
 
     @Override
-    public boolean onPlayerAttemptingWalk(Entity player, Coordinate coordinate)
+    public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         return false;
     }
 
     @Override
-    public void die(Stat deathCausingStat)
+    public void die(final Stat deathCausingStat)
     {
         switch (deathCausingStat)
         {
@@ -291,7 +291,7 @@ public class Player implements Entity
         // it is not an automatical mover but a controlled mover
     }
 
-    private int getAnimationFrame(int framesTime, int amountFrames)
+    private int getAnimationFrame(final int framesTime, final int amountFrames)
     {
         this.animationTimer += (1 / (float) framesTime);
         return ((int) this.animationTimer) % amountFrames;

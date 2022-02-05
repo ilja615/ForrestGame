@@ -57,7 +57,7 @@ public interface Entity extends Tickable
     Texture getCurrentTexture();
 
     // Entities use middle layer by default
-    default Map<Coordinate, Texture> whichLayer(TextureRenderer tr)
+    default Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_MIDDLE;
     }

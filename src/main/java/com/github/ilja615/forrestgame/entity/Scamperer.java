@@ -60,7 +60,7 @@ public class Scamperer implements Entity
     }
 
     @Override
-    public void setCoordinate(Coordinate coordinate)
+    public void setCoordinate(final Coordinate coordinate)
     {
         this.coordinate = coordinate;
     }
@@ -90,7 +90,7 @@ public class Scamperer implements Entity
     }
 
     @Override
-    public boolean onPlayerAttemptingWalk(Entity player, Coordinate coordinate)
+    public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         this.statTracker.decrement(StatTracker.Stat.HEALTH);
         if (player instanceof Player)
@@ -104,7 +104,7 @@ public class Scamperer implements Entity
     }
 
     @Override
-    public void die(StatTracker.Stat deathCausingStat)
+    public void die(final StatTracker.Stat deathCausingStat)
     {
         world.getEntities().remove(this);
     }
@@ -121,8 +121,8 @@ public class Scamperer implements Entity
 
         if (!path.isEmpty())
         {
-            Coordinate newPos = path.get(1);
-            if (world.isWithinWorld(newPos) && !world.getTileAt(newPos).isObstacle() && world.getEntityAt(newPos) == null)
+            final Coordinate newPos = path.get(1);
+            if (world.isWithinWorld(newPos) && world.getTileAt(newPos).isObstacle() && world.getEntityAt(newPos) == null)
             {
                 this.coordinate = newPos;
             }

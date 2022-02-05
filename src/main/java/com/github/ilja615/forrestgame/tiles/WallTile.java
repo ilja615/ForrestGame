@@ -40,10 +40,10 @@ public class WallTile extends Tile
     @Override
     public boolean isObstacle()
     {
-        return true;
+        return false;
     }
 
-    public void adaptQuadrantTexturesList(World world, Coordinate thisPos)
+    public void adaptQuadrantTexturesList(final World world, final Coordinate thisPos)
     {
         Arrays.stream(Direction.Secondary.values()).iterator().forEachRemaining(secondary ->
         {
@@ -52,13 +52,13 @@ public class WallTile extends Tile
         System.out.println(thisPos + " | " + QUADRANT_TEXTURES);
     }
 
-    private Texture getGoodTexture(Direction.Secondary secondary, Coordinate thisPos, World world)
+    private Texture getGoodTexture(final Direction.Secondary secondary, final Coordinate thisPos, final World world)
     {
-        Coordinate firstPos = thisPos.move(secondary.getHorizontal(), 1);
-        Coordinate otherPos = thisPos.move(secondary.getVertical(), 1);
+        final Coordinate firstPos = thisPos.move(secondary.getHorizontal(), 1);
+        final Coordinate otherPos = thisPos.move(secondary.getVertical(), 1);
 
-        Tile firstNeighbourTile = world.isWithinWorld(firstPos) ? world.getTileAt(firstPos) : world.airTile;
-        Tile otherNeighbourTile = world.isWithinWorld(otherPos) ? world.getTileAt(otherPos) : world.airTile;
+        final Tile firstNeighbourTile = world.isWithinWorld(firstPos) ? world.getTileAt(firstPos) : world.airTile;
+        final Tile otherNeighbourTile = world.isWithinWorld(otherPos) ? world.getTileAt(otherPos) : world.airTile;
 
         if (firstNeighbourTile instanceof AirTile || otherNeighbourTile instanceof AirTile)
             return Textures.WALL_AIR_PIECE;
@@ -94,8 +94,8 @@ public class WallTile extends Tile
 
         if (firstNeighbourTile instanceof WallTile && otherNeighbourTile instanceof WallTile)
         {
-            Coordinate thirdPos = thisPos.move(secondary, 1);
-            Tile thirdNeighbourTile = world.isWithinWorld(thirdPos) ? world.getTileAt(thirdPos) : world.airTile;
+            final Coordinate thirdPos = thisPos.move(secondary, 1);
+            final Tile thirdNeighbourTile = world.isWithinWorld(thirdPos) ? world.getTileAt(thirdPos) : world.airTile;
 
             if (!(thirdNeighbourTile instanceof FloorTile))
                 return Textures.WALL_AIR_PIECE;

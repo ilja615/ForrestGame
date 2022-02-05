@@ -32,30 +32,34 @@ public class UiRenderer
 {
     public void renderHealth(final Entity player)
     {
-//        for (int i = 0; i < player.getStatTracker().get(StatTracker.Stat.HEALTH); i++)
-//        {
-//            renderTexture(Textures.HEALTH, -1.1f + i * 0.0835f, 0.8f, 0.167f);
-//        }
+        /*
+        for (int i = 0; i < player.getStatTracker().get(StatTracker.Stat.HEALTH); i++)
+        {
+            renderTexture(Textures.HEALTH, -1.1f + i * 0.0835f, 0.8f, 0.167f);
+        }
+        */
         renderTexture(Textures.HEALTH, 0.05f, 0.8f, 0.167f);
         player.getWorld().getTextRenderer().drawString("x" + player.getStatTracker().get(StatTracker.Stat.HEALTH).toString(), 0.35f, 0.81f, 0.5f);
     }
 
     public void renderEnergy(final Entity player)
     {
-//        for (int i = 0; i < player.getStatTracker().get(StatTracker.Stat.HUNGER); i++)
-//        {
-//            renderTexture(Textures.ENERGY, -0.1f + i * 0.0835f, 0.8f, 0.167f);
-//        }
+        /*
+        for (int i = 0; i < player.getStatTracker().get(StatTracker.Stat.HUNGER); i++)
+        {
+            renderTexture(Textures.ENERGY, -0.1f + i * 0.0835f, 0.8f, 0.167f);
+        }
+        */
         renderTexture(Textures.ENERGY, 0.4f, 0.8f, 0.167f);
         player.getWorld().getTextRenderer().drawString("x" + player.getStatTracker().get(StatTracker.Stat.HUNGER).toString(), 0.7f, 0.81f, 0.5f);
     }
 
-    public void renderTimeIcon(TimeTracker.Period period)
+    public void renderTimeIcon(final TimeTracker.Period period)
     {
         renderTexture(period.getTexture(), -1.08f, 0.74f, 0.167f);
     }
 
-    public void renderTexture(final Texture texture, float x, float y, float size)
+    public void renderTexture(final Texture texture, float x, final float y, final float size)
     {
         texture.bind();
         x += size;

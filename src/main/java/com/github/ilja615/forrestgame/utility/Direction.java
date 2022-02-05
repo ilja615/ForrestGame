@@ -33,7 +33,7 @@ public enum Direction
         private final Direction horizontal;
         private final Direction vertical;
 
-        Secondary(Direction horizontal, Direction vertical)
+        Secondary(final Direction horizontal, final Direction vertical)
         {
             this.horizontal = horizontal;
             this.vertical = vertical;

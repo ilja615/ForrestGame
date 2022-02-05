@@ -19,97 +19,90 @@
 
 package com.github.ilja615.forrestgame.gui.texture;
 
-public interface Textures
+public final class Textures
 {
     // tiles and items
-    Texture AIR = new PngTexture("textures/air");
-    Texture GRASS_0 = new PngTexture("textures/grass_0");
-    Texture GRASS_1 = new PngTexture("textures/grass_1");
-    Texture GRASS_2 = new PngTexture("textures/grass_2");
-    Texture GRASS_3 = new PngTexture("textures/grass_3");
-    Texture[] MUSHROOM = new Texture[]
-            {
-                    new PngTexture("textures/mushroom_0"),
-                    new PngTexture("textures/mushroom_1")
-            };
-    Texture SIGN = new PngTexture("textures/sign");
-    Texture TREE = new PngTexture("textures/tree").setTall(true);
-    Texture CRATE = new PngTexture("textures/crate");
-
-    Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
-
+    public static final Texture AIR = new PngTexture("air");
+    public static final Texture GRASS_0 = new PngTexture("grass_0");
+    public static final Texture GRASS_1 = new PngTexture("grass_1");
+    public static final Texture GRASS_2 = new PngTexture("grass_2");
+    public static final Texture GRASS_3 = new PngTexture("grass_3");
+    public static final Texture[] MUSHROOM = new Texture[]{new PngTexture("mushroom_0"), new PngTexture("mushroom_1")};
+    public static final Texture SIGN = new PngTexture("sign");
+    public static final Texture TREE = new PngTexture("tree").setTall(true);
+    public static final Texture CRATE = new PngTexture("crate");
+    public static final Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
     // wall
-    Texture WALL_AIR_PIECE = new PngTexture("textures/wall_air");
-    Texture WALL_STRAIGHT_PIECE = new PngTexture("textures/wall_straight");
-    Texture WALL_STRAIGHT_PIECE_MIRRORED = new PngTexture("textures/wall_straight").setVerticallyMirrored(true);
-    Texture WALL_STRAIGHT_VERTICAL_PIECE = new PngTexture("textures/wall_straight_vertical");
-    Texture WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture("textures/wall_straight_vertical").setHorizontallyMirrored(true);
-    Texture WALL_INNER_CORNER_PIECE = new PngTexture("textures/wall_inner_corner");
-    Texture WALL_INNER_CORNER_PIECE_HM = new PngTexture("textures/wall_inner_corner").setHorizontallyMirrored(true);
-    Texture WALL_INNER_CORNER_PIECE_VM = new PngTexture("textures/wall_inner_corner").setVerticallyMirrored(true);
-    Texture WALL_INNER_CORNER_PIECE_HVM = new PngTexture("textures/wall_inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-    Texture WALL_OUTER_CORNER_PIECE = new PngTexture("textures/wall_outer_corner");
-    Texture WALL_OUTER_CORNER_PIECE_HM = new PngTexture("textures/wall_outer_corner_other");
-    Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture("textures/wall_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-    Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/wall_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-
+    public static final Texture WALL_AIR_PIECE = new PngTexture("wall_air");
+    public static final Texture WALL_STRAIGHT_PIECE = new PngTexture("wall_straight");
+    public static final Texture WALL_STRAIGHT_PIECE_MIRRORED = new PngTexture("wall_straight").setVerticallyMirrored(true);
+    public static final Texture WALL_STRAIGHT_VERTICAL_PIECE = new PngTexture("wall_straight_vertical");
+    public static final Texture WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture("wall_straight_vertical").setHorizontallyMirrored(true);
+    public static final Texture WALL_INNER_CORNER_PIECE = new PngTexture("wall_inner_corner");
+    public static final Texture WALL_INNER_CORNER_PIECE_HM = new PngTexture("wall_inner_corner").setHorizontallyMirrored(true);
+    public static final Texture WALL_INNER_CORNER_PIECE_VM = new PngTexture("wall_inner_corner").setVerticallyMirrored(true);
+    public static final Texture WALL_INNER_CORNER_PIECE_HVM = new PngTexture("wall_inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    public static final Texture WALL_OUTER_CORNER_PIECE = new PngTexture("wall_outer_corner");
+    public static final Texture WALL_OUTER_CORNER_PIECE_HM = new PngTexture("wall_outer_corner_other");
+    public static final Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture("wall_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    public static final Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture("wall_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
     // player
-    Texture PLAYER_UP = new PngTexture("textures/player_up").setPlayerTexture(true);
-    Texture PLAYER_DOWN = new PngTexture("textures/player_down").setPlayerTexture(true);
-    Texture PLAYER_LEFT = new PngTexture("textures/player_side").setHorizontallyMirrored(true).setPlayerTexture(true);
-    Texture PLAYER_RIGHT = new PngTexture("textures/player_side").setPlayerTexture(true);
-
-    Texture[] PLAYER_UP_WALK = new Texture[]
+    public static final Texture PLAYER_UP = new PngTexture("player_up").setPlayerTexture(true);
+    public static final Texture PLAYER_DOWN = new PngTexture("player_down").setPlayerTexture(true);
+    public static final Texture PLAYER_LEFT = new PngTexture("player_side").setHorizontallyMirrored(true).setPlayerTexture(true);
+    public static final Texture PLAYER_RIGHT = new PngTexture("player_side").setPlayerTexture(true);
+    public static final Texture[] PLAYER_UP_WALK = new Texture[]
             {
-                    new PngTexture("textures/player_up_walking_0").setPlayerTexture(true),
-                    new PngTexture("textures/player_up_walking_1").setPlayerTexture(true),
-                    new PngTexture("textures/player_up_walking_2").setPlayerTexture(true),
-                    new PngTexture("textures/player_up_walking_3").setPlayerTexture(true)
+                    new PngTexture("player_up_walking_0").setPlayerTexture(true),
+                    new PngTexture("player_up_walking_1").setPlayerTexture(true),
+                    new PngTexture("player_up_walking_2").setPlayerTexture(true),
+                    new PngTexture("player_up_walking_3").setPlayerTexture(true)
             };
-    Texture[] PLAYER_DOWN_WALK = new Texture[]
+    public static final Texture[] PLAYER_DOWN_WALK = new Texture[]
             {
-                    new PngTexture("textures/player_down_walking_0").setPlayerTexture(true),
-                    new PngTexture("textures/player_down_walking_1").setPlayerTexture(true),
-                    new PngTexture("textures/player_down_walking_2").setPlayerTexture(true),
-                    new PngTexture("textures/player_down_walking_3").setPlayerTexture(true)
+                    new PngTexture("player_down_walking_0").setPlayerTexture(true),
+                    new PngTexture("player_down_walking_1").setPlayerTexture(true),
+                    new PngTexture("player_down_walking_2").setPlayerTexture(true),
+                    new PngTexture("player_down_walking_3").setPlayerTexture(true)
             };
-    Texture[] PLAYER_LEFT_WALK = new Texture[]
+    public static final Texture[] PLAYER_LEFT_WALK = new Texture[]
             {
-                    new PngTexture("textures/player_side_walking_0").setHorizontallyMirrored(true).setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_1").setHorizontallyMirrored(true).setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_2").setHorizontallyMirrored(true).setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_3").setHorizontallyMirrored(true).setPlayerTexture(true)
+                    new PngTexture("player_side_walking_0").setHorizontallyMirrored(true).setPlayerTexture(true),
+                    new PngTexture("player_side_walking_1").setHorizontallyMirrored(true).setPlayerTexture(true),
+                    new PngTexture("player_side_walking_2").setHorizontallyMirrored(true).setPlayerTexture(true),
+                    new PngTexture("player_side_walking_3").setHorizontallyMirrored(true).setPlayerTexture(true)
             };
-    Texture[] PLAYER_RIGHT_WALK = new Texture[]
+    public static final Texture[] PLAYER_RIGHT_WALK = new Texture[]
             {
-                    new PngTexture("textures/player_side_walking_0").setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_1").setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_2").setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_3").setPlayerTexture(true)
+                    new PngTexture("player_side_walking_0").setPlayerTexture(true),
+                    new PngTexture("player_side_walking_1").setPlayerTexture(true),
+                    new PngTexture("player_side_walking_2").setPlayerTexture(true),
+                    new PngTexture("player_side_walking_3").setPlayerTexture(true)
             };
-
     // scamperer
-    Texture SCAMPERER = new PngTexture("textures/scamperer");
-
+    public static final Texture SCAMPERER = new PngTexture("scamperer");
     // particles
-    Texture[] CHOP_PARTICLE = new Texture[]
+    public static final Texture[] CHOP_PARTICLE = new Texture[]
             {
-                    new PngTexture("textures/chop_particle_0"),
-                    new PngTexture("textures/chop_particle_1"),
-                    new PngTexture("textures/chop_particle_2"),
-                    new PngTexture("textures/chop_particle_3")
+                    new PngTexture("chop_particle_0"),
+                    new PngTexture("chop_particle_1"),
+                    new PngTexture("chop_particle_2"),
+                    new PngTexture("chop_particle_3")
             };
-
     // other gui
-    Texture VIEWPORT = new PngTexture("textures/viewport");
-    Texture HEALTH = new PngTexture("textures/ui_health");
-    Texture ENERGY = new PngTexture("textures/ui_energy");
-
+    public static final Texture VIEWPORT = new PngTexture("viewport");
+    public static final Texture HEALTH = new PngTexture("ui_health");
+    public static final Texture ENERGY = new PngTexture("ui_energy");
     // time gui
-    Texture SUNRISE = new PngTexture("textures/ui_time_sunrise");
-    Texture MORNING = new PngTexture("textures/ui_time_morning");
-    Texture AFTERNOON = new PngTexture("textures/ui_time_afternoon");
-    Texture SUNSET = new PngTexture("textures/ui_time_sunset");
-    Texture EVENING = new PngTexture("textures/ui_time_evening");
-    Texture NIGHT = new PngTexture("textures/ui_time_night");
+    public static final Texture SUNRISE = new PngTexture("ui_time_sunrise");
+    public static final Texture MORNING = new PngTexture("ui_time_morning");
+    public static final Texture AFTERNOON = new PngTexture("ui_time_afternoon");
+    public static final Texture SUNSET = new PngTexture("ui_time_sunset");
+    public static final Texture EVENING = new PngTexture("ui_time_evening");
+    public static final Texture NIGHT = new PngTexture("ui_time_night");
+
+    private Textures()
+    {
+        throw new IllegalStateException("This will be reported to the authorities.");
+    }
 }

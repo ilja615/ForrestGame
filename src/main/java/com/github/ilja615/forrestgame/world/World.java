@@ -144,7 +144,7 @@ public class World implements Tickable
                     tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.AIR);
                 } else
                 {
-                    Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GRASS_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
+                    final Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GRASS_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
                     tiles[x + (y * WORLD_WIDTH)] = new FloorTile(texture);
                 }
             }
@@ -169,7 +169,7 @@ public class World implements Tickable
         {
             for (int y = 0; y < WORLD_HEIGHT; y++)
             {
-                Coordinate mutableCoordinate = new Coordinate(x, y);
+                final Coordinate mutableCoordinate = new Coordinate(x, y);
                 if (isWithinWorld(mutableCoordinate))
                     if (getTileAt(x, y) instanceof WallTile)
                         ((WallTile) getTileAt(x, y)).adaptQuadrantTexturesList(this, new Coordinate(x, y));
@@ -198,8 +198,8 @@ public class World implements Tickable
         // Note this for loop is a bit smaller because it skips the very outer edge
         for (int i = 0; i < ThreadLocalRandom.current().nextInt(5) + 2; i++)
         {
-            int startX = 1 + ThreadLocalRandom.current().nextInt(WORLD_WIDTH - 1);
-            int startY = 1 + ThreadLocalRandom.current().nextInt(WORLD_HEIGHT - 1);
+            final int startX = 1 + ThreadLocalRandom.current().nextInt(WORLD_WIDTH - 1);
+            final int startY = 1 + ThreadLocalRandom.current().nextInt(WORLD_HEIGHT - 1);
             for (int x = startX; x < startX + ThreadLocalRandom.current().nextInt(3) + 2; x++)
             {
                 for (int y = startY; y < startY + ThreadLocalRandom.current().nextInt(3) + 2; y++)
@@ -246,9 +246,9 @@ public class World implements Tickable
                 {
                     final int random = ThreadLocalRandom.current().nextInt(10);
 
-                    switch (random)
+                    if (random == 0)
                     {
-                        case 0 -> entities.add(new Scamperer(this, new Coordinate(x, y)));
+                        entities.add(new Scamperer(this, new Coordinate(x, y)));
                     }
                 }
             }
@@ -398,8 +398,8 @@ public class World implements Tickable
             uiRenderer.renderTimeIcon(this.getTimeTracker().getPeriodFromTime(this.timeTracker.getCurrentTime()));
         } else
         {
-            String s = this.getTimeTracker().getCurrentTimeString();
-            float size = 20.0f / (s.length() + 2);
+            final String s = this.getTimeTracker().getCurrentTimeString();
+            final float size = 20.0f / (s.length() + 2);
             textRenderer.drawString(s, -1f, -0.05f * size, size);
         }
     }
@@ -418,25 +418,25 @@ public class World implements Tickable
         player.setMobile(true);
     }
 
-    public boolean isWithinWorld(Coordinate coordinate)
+    public boolean isWithinWorld(final Coordinate coordinate)
     {
-        int i = coordinate.x() + coordinate.y() * WORLD_WIDTH;
+        final int i = coordinate.x() + coordinate.y() * WORLD_WIDTH;
         return i >= 0 && i < tiles.length && coordinate.x() >= 0 && coordinate.x() < WORLD_WIDTH && coordinate.y() >= 0 && coordinate.y() < WORLD_HEIGHT;
     }
 
-    public Tile getTileAt(int x, int y)
+    public Tile getTileAt(final int x, final int y)
     {
         return this.tiles[x + y * WORLD_WIDTH];
     }
 
-    public Tile getTileAt(Coordinate coordinate)
+    public Tile getTileAt(final Coordinate coordinate)
     {
         return this.getTileAt(coordinate.x(), coordinate.y());
     }
 
-    public Entity getEntityAt(Coordinate coordinate)
+    public Entity getEntityAt(final Coordinate coordinate)
     {
-        for (Entity e : getEntities())
+        for (final Entity e : getEntities())
         {
             if (e.getCoordinate().equals(coordinate)) return e;
         }
