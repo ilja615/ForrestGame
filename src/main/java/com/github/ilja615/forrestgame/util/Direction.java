@@ -1,27 +1,27 @@
 /*
- * Copyright (c) 2021 ilja615.
+ * Copyright (c) 2021-2022 the ForrestGame contributors.
  *
- * This file is part of Forrest Game.
+ * This file is part of ForrestGame.
  *
- * Forrest Game is free software: you can redistribute it and/or modify
+ * ForrestGame is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Forrest Game is distributed in the hope that it will be useful,
+ * ForrestGame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
+ * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.github.ilja615.forrestgame.util;
 
 public enum Direction
 {
-    UP(0,1), DOWN(0, -1),
+    UP(0, 1), DOWN(0, -1),
     LEFT(-1, 0), RIGHT(1, 0);
 
     private final int x;

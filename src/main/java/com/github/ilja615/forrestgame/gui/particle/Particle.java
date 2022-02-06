@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2021 ilja615.
+ * Copyright (c) 2021-2022 the ForrestGame contributors.
  *
- * This file is part of Forrest Game.
+ * This file is part of ForrestGame.
  *
- * Forrest Game is free software: you can redistribute it and/or modify
+ * ForrestGame is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Forrest Game is distributed in the hope that it will be useful,
+ * ForrestGame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
+ * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.github.ilja615.forrestgame.gui.particle;
@@ -26,13 +26,13 @@ import com.github.ilja615.forrestgame.world.World;
 
 public class Particle implements Tickable
 {
-    private int currentFrame = 0;
-    private float animationTimer = 0.0f;
     private final Coordinate coordinate;
     private final Texture[] TEXTURES;
     private final int amountLifeCycles;
-    private int completedCycles = 0;
     private final World world;
+    private int currentFrame = 0;
+    private float animationTimer = 0.0f;
+    private int completedCycles = 0;
     private boolean expired = false;
 
     public Particle(Coordinate coord, int amountCycles, World world, Texture[] textures)

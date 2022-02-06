@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2021 ilja615.
+ * Copyright (c) 2021-2022 the ForrestGame contributors.
  *
- * This file is part of Forrest Game.
+ * This file is part of ForrestGame.
  *
- * Forrest Game is free software: you can redistribute it and/or modify
+ * ForrestGame is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Forrest Game is distributed in the hope that it will be useful,
+ * ForrestGame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
+ * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.github.ilja615.forrestgame.gui.renderer;
@@ -30,19 +30,18 @@ import com.github.ilja615.forrestgame.world.World;
 
 import java.util.ArrayList;
 
-import static com.github.ilja615.forrestgame.gui.texture.Textures.VIEWPORT;
 import static org.lwjgl.opengl.GL11.*;
 
 public class TextureRenderer
 {
+    public final ArrayList<Pair<Coordinate, Texture>> LAYER_BACK = new ArrayList<>(); // For things between the floor and the entities
+    public final ArrayList<Pair<Coordinate, Texture>> LAYER_MIDDLE = new ArrayList<>(); // For entities
+    public final ArrayList<Pair<Coordinate, Texture>> LAYER_FRONT = new ArrayList<>(); // For foreground things
     private final World world;
     private float partialX = 0f;
     private float partialY = 0f;
     // Whether the texture reindeer should be enabled on not
     private boolean enabled = true;
-    public final ArrayList<Pair<Coordinate, Texture>> LAYER_BACK = new ArrayList<>(); // For things between the floor and the entities
-    public final ArrayList<Pair<Coordinate, Texture>> LAYER_MIDDLE = new ArrayList<>(); // For entities
-    public final ArrayList<Pair<Coordinate, Texture>> LAYER_FRONT = new ArrayList<>(); // For foreground things
 
     public TextureRenderer(final World world)
     {
@@ -88,7 +87,9 @@ public class TextureRenderer
     public void clearLists()
     {
         // Clear the lists
-        LAYER_BACK.clear(); LAYER_MIDDLE.clear(); LAYER_FRONT.clear();
+        LAYER_BACK.clear();
+        LAYER_MIDDLE.clear();
+        LAYER_FRONT.clear();
     }
 
     public void renderBoard()
@@ -146,9 +147,9 @@ public class TextureRenderer
 
         glBegin(GL_QUADS);
         glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
-        glVertex2f(  -0.0834f + worldStarterX + ((float) x + partialX) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY) / 6.0f);
+        glVertex2f(-0.0834f + worldStarterX + ((float) x + partialX) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY) / 6.0f);
         glTexCoord2f(hm ? 0 : 1, vm ? 1 : 0);
-        glVertex2f(0.0834f + worldStarterX + + ((float) x + partialX) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY) / 6.0f);
+        glVertex2f(0.0834f + worldStarterX + +((float) x + partialX) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY) / 6.0f);
         glTexCoord2f(hm ? 0 : 1, vm ? 0 : 1);
         glVertex2f(0.0834f + worldStarterX + ((float) x + partialX) / 6.0f, 0.083f + worldStarterY + ((float) y + partialY) / 6.0f);
         glTexCoord2f(hm ? 1 : 0, vm ? 0 : 1);
@@ -187,7 +188,7 @@ public class TextureRenderer
         float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
         if (world instanceof World)
         {
-            World playerWorld = (World) world;
+            World playerWorld = world;
             WallTile wallTile = (WallTile) playerWorld.getTileAt(x, y);
             final int finalX = x + world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
             final int finalY = y + world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
@@ -203,13 +204,13 @@ public class TextureRenderer
 
                 glBegin(GL_QUADS);
                 glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
-                glVertex2f(  -0.0834f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+                glVertex2f(-0.0834f + r + worldStarterX + ((float) finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float) finalY + partialY) / 6.0f);
                 glTexCoord2f(hm ? 0 : 1, vm ? 1 : 0);
-                glVertex2f(0.0f + r + worldStarterX + + ((float)finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+                glVertex2f(0.0f + r + worldStarterX + +((float) finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float) finalY + partialY) / 6.0f);
                 glTexCoord2f(hm ? 0 : 1, vm ? 0 : 1);
-                glVertex2f(0.0f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+                glVertex2f(0.0f + r + worldStarterX + ((float) finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float) finalY + partialY) / 6.0f);
                 glTexCoord2f(hm ? 1 : 0, vm ? 0 : 1);
-                glVertex2f(-0.084f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+                glVertex2f(-0.084f + r + worldStarterX + ((float) finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float) finalY + partialY) / 6.0f);
                 glEnd();
             });
         }

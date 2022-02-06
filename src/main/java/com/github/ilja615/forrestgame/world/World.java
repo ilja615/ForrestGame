@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2021 ilja615.
+ * Copyright (c) 2021-2022 the ForrestGame contributors.
  *
- * This file is part of Forrest Game.
+ * This file is part of ForrestGame.
  *
- * Forrest Game is free software: you can redistribute it and/or modify
+ * ForrestGame is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Forrest Game is distributed in the hope that it will be useful,
+ * ForrestGame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
+ * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.github.ilja615.forrestgame.world;
@@ -30,7 +30,10 @@ import com.github.ilja615.forrestgame.gui.renderer.UiRenderer;
 import com.github.ilja615.forrestgame.gui.shader.Shader;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
-import com.github.ilja615.forrestgame.tiles.*;
+import com.github.ilja615.forrestgame.tiles.AirTile;
+import com.github.ilja615.forrestgame.tiles.FloorTile;
+import com.github.ilja615.forrestgame.tiles.Tile;
+import com.github.ilja615.forrestgame.tiles.WallTile;
 import com.github.ilja615.forrestgame.tiles.items.*;
 import com.github.ilja615.forrestgame.util.*;
 import org.lwjgl.glfw.GLFW;
@@ -47,23 +50,22 @@ import static org.lwjgl.opengl.GL20.glUniform1f;
 
 public class World implements Tickable
 {
-    public int WORLD_WIDTH;
-    public int WORLD_HEIGHT;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(World.class);
-    private Tile[] tiles;
+    public final AirTile airTile;
     private final ArrayList<Particle> particles = new ArrayList<>();
     private final Game game;
-    private Entity player;
+    private final Entity player;
     private final ArrayList<Entity> entities = new ArrayList<>();
     private final TextRenderer textRenderer = new TextRenderer();
     private final UiRenderer uiRenderer = new UiRenderer();
-    private TextureRenderer textureRenderer;
-    private Coordinate startCoordinate;
+    private final TextureRenderer textureRenderer;
     // private final List<Coordinate> path = new ArrayList<>();
-    private TimeTracker timeTracker;
+    private final TimeTracker timeTracker;
     private final Shader shader;
-    public final AirTile airTile;
+    public int WORLD_WIDTH;
+    public int WORLD_HEIGHT;
+    private Tile[] tiles;
+    private Coordinate startCoordinate;
     private int enemyTurnWait;
 
     public World(final Game game, final Shader shader)
@@ -164,7 +166,7 @@ public class World implements Tickable
         {
             for (int y = 0; y < WORLD_HEIGHT; y++)
             {
-                Coordinate mutableCoordinate = new Coordinate(x,y);
+                Coordinate mutableCoordinate = new Coordinate(x, y);
                 if (isWithinWorld(mutableCoordinate))
                     if (getTileAt(x, y) instanceof WallTile)
                         ((WallTile) getTileAt(x, y)).adaptQuadrantTexturesList(this, new Coordinate(x, y));
@@ -279,7 +281,8 @@ public class World implements Tickable
                     break;
                 }
             }
-        } else {
+        } else
+        {
             int pos = WORLD_WIDTH - 1;
             coordinate = new Coordinate(0, 0);
             while (true)
@@ -349,9 +352,9 @@ public class World implements Tickable
     @Override
     public void tick()
     {
-        glUniform1f(glGetUniformLocation(this.shader.program,"redComponent"), this.timeTracker.getRedComponent());
-        glUniform1f(glGetUniformLocation(this.shader.program,"greenComponent"), this.timeTracker.getGreenComponent());
-        glUniform1f(glGetUniformLocation(this.shader.program,"blueComponent"), this.timeTracker.getBlueComponent());
+        glUniform1f(glGetUniformLocation(this.shader.program, "redComponent"), this.timeTracker.getRedComponent());
+        glUniform1f(glGetUniformLocation(this.shader.program, "greenComponent"), this.timeTracker.getGreenComponent());
+        glUniform1f(glGetUniformLocation(this.shader.program, "blueComponent"), this.timeTracker.getBlueComponent());
 
         // Tick all objects
         player.tick();
@@ -367,7 +370,8 @@ public class World implements Tickable
         if (enemyTurnWait > 0)
         {
             enemyTurnWait--;
-            if (enemyTurnWait == 0) onEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
+            if (enemyTurnWait == 0)
+                onEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
         }
 
         if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
@@ -389,9 +393,10 @@ public class World implements Tickable
             uiRenderer.renderHealth(player);
             textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.5f);
             uiRenderer.renderTimeIcon(this.getTimeTracker().getPeriodFromTime(this.timeTracker.getCurrentTime()));
-        } else {
+        } else
+        {
             String s = this.getTimeTracker().getCurrentTimeString();
-            float size = 20.0f/(s.length()+2);
+            float size = 20.0f / (s.length() + 2);
             textRenderer.drawString(s, -1f, -0.05f * size, size);
         }
     }
