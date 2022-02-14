@@ -49,7 +49,7 @@ dependencies {
     implementation("com.google.guava:guava:31.0.1-jre") // collections
     compileOnly("org.jetbrains:annotations:23.0.0") // annotations
     implementation(platform("org.lwjgl:lwjgl-bom:3.3.0")) // lwjgl
-    implementation("org.joml:joml:1.10.3") // joml
+    implementation("org.joml:joml:1.10.4") // joml
     implementation(group = "org.lwjgl", name = "lwjgl")
     implementation(group = "org.lwjgl", name = "lwjgl-assimp")
     implementation(group = "org.lwjgl", name = "lwjgl-bgfx")
