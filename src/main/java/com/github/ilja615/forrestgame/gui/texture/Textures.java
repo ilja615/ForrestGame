@@ -61,8 +61,6 @@ public interface Textures
     Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture("textures/wall_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
     Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/wall_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
 
-<<<<<<< Updated upstream
-=======
     // dirt
     Texture DIRT_STRAIGHT_PIECE = new PngTexture("textures/dirt_straight");
     Texture DIRT_STRAIGHT_PIECE_MIRRORED = new PngTexture("textures/dirt_straight").setVerticallyMirrored(true);
@@ -79,7 +77,6 @@ public interface Textures
 
 ////// ENTITIES
 
->>>>>>> Stashed changes
     // player
     Texture PLAYER_UP = new PngTexture("textures/player_up").setPlayerTexture(true);
     Texture PLAYER_DOWN = new PngTexture("textures/player_down").setPlayerTexture(true);

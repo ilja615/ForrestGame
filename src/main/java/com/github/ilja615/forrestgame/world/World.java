@@ -30,10 +30,7 @@ import com.github.ilja615.forrestgame.gui.renderer.UiRenderer;
 import com.github.ilja615.forrestgame.gui.shader.Shader;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
-import com.github.ilja615.forrestgame.tiles.AirTile;
-import com.github.ilja615.forrestgame.tiles.FloorTile;
-import com.github.ilja615.forrestgame.tiles.Tile;
-import com.github.ilja615.forrestgame.tiles.WallTile;
+import com.github.ilja615.forrestgame.tiles.*;
 import com.github.ilja615.forrestgame.tiles.items.*;
 import com.github.ilja615.forrestgame.util.*;
 import org.lwjgl.glfw.GLFW;
@@ -176,21 +173,6 @@ public class World implements Tickable
         startCoordinate = placeStart();
         final Coordinate end = placeEndSign();
 
-<<<<<<< Updated upstream
-        // After placing obstacles, it should give all the walls their correct texture
-        for (int x = 0; x < WORLD_WIDTH; x++)
-        {
-            for (int y = 0; y < WORLD_HEIGHT; y++)
-            {
-                Coordinate mutableCoordinate = new Coordinate(x, y);
-                if (isWithinWorld(mutableCoordinate))
-                    if (getTileAt(x, y) instanceof WallTile)
-                        ((WallTile) getTileAt(x, y)).adaptQuadrantTexturesList(this, new Coordinate(x, y));
-            }
-        }
-
-=======
->>>>>>> Stashed changes
         // A check if there exists a valid path , if not , the entire world must be re-created
         // idk if theres a use for path yet - xf8b
         final ShortPathFinder pathFinder = new ShortPathFinder();
@@ -422,13 +404,8 @@ public class World implements Tickable
 
         if (enemyTurnWait > 0)
         {
-            enemyTurnWait--;
-<<<<<<< Updated upstream
-            if (enemyTurnWait == 0)
+            enemyTurnWait--;if (enemyTurnWait == 0)
                 onEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
-=======
-            if (enemyTurnWait == 0) nextEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
->>>>>>> Stashed changes
         }
 
         if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
