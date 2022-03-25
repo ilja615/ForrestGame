@@ -45,7 +45,7 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.8.2")) // testing
     testImplementation("org.junit.jupiter:junit-jupiter") // testing
-    implementation("ch.qos.logback:logback-classic:1.2.10") // logging
+    implementation("ch.qos.logback:logback-classic:1.2.11") // logging
     implementation("com.google.guava:guava:31.0.1-jre") // collections
     compileOnly("org.jetbrains:annotations:23.0.0") // annotations
     implementation(platform("org.lwjgl:lwjgl-bom:3.3.0")) // lwjgl
