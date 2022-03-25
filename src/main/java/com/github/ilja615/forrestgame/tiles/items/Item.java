@@ -41,7 +41,7 @@ public interface Item
      *
      * @return if this tile is an obstacle
      */
-    boolean isObstacle();
+    boolean isObstacle(Entity incomingEntity);
 
     /**
      * Fires when the player attempts to walk on this item.

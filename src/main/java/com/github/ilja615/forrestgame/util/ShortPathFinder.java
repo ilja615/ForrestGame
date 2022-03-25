@@ -19,6 +19,8 @@
 
 package com.github.ilja615.forrestgame.util;
 
+import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.world.World;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class ShortPathFinder
      * @param to    the ending coordinate
      * @return the shortest path from {@code from} to {@code to}. If no path is found, this returns an empty list.
      */
-    public List<Coordinate> findPath(final World world, final Coordinate from, final Coordinate to)
+    public List<Coordinate> findPath(final World world, final Coordinate from, final Coordinate to, final Entity entity)
     {
         nodes = new Node[world.WORLD_WIDTH][world.WORLD_HEIGHT];
 
@@ -92,9 +94,9 @@ public class ShortPathFinder
                     final int xp = x + current.getX();
                     final int yp = y + current.getY();
 
-                    if (world.isWithinWorld(new Coordinate(xp, yp)))
+                    if ((entity instanceof Player && world.isWithinWorld(new Coordinate(xp, yp))) || (!(entity instanceof Player) && world.isWithinView(new Coordinate(xp, yp))))
                     {
-                        if (!world.getTileAt(xp, yp).isObstacle())
+                        if (!world.getTileAt(xp, yp).isObstacle(entity))
                         {
                             // Movement cost :
                             final float movementCost = 1.0f;

@@ -20,6 +20,7 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
@@ -46,9 +47,9 @@ public class CrateItem implements Item
     }
 
     @Override
-    public boolean isObstacle()
+    public boolean isObstacle(Entity incomingEntity)
     {
-        return false;
+        return !(incomingEntity instanceof Player);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class CrateItem implements Item
         Coordinate playerOldCoordinate = player.getCoordinate();
         Coordinate coordinateThatCratePushedTo = coordinate.relative(coordinate.getX() - playerOldCoordinate.getX(), coordinate.getY() - playerOldCoordinate.getY());
         Tile destination = player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * player.getWorld().WORLD_WIDTH)];
-        if (!destination.hasItem() && !destination.isObstacle() && player.getWorld().getEntityAt(coordinateThatCratePushedTo) == null)
+        if (!destination.hasItem() && !destination.isObstacle(player) && player.getWorld().getEntityAt(coordinateThatCratePushedTo) == null)
         {
             player.getWorld().getTiles()[coordinateThatCratePushedTo.getX() + (coordinateThatCratePushedTo.getY() * player.getWorld().WORLD_WIDTH)].setItem(this);
             player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);

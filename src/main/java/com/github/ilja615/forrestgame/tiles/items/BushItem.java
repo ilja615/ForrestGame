@@ -55,9 +55,9 @@ public class BushItem implements Item
     }
 
     @Override
-    public boolean isObstacle()
+    public boolean isObstacle(Entity incomingEntity)
     {
-        return false;
+        return !(incomingEntity instanceof Player || this.stage == 0);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class BushItem implements Item
                 ((Player) player).currentDoingAction = Player.Action.SLASHING;
             }
             player.getStatTracker().decrement(Stat.HUNGER);
-            player.getWorld().onEnemyTurnCalled();
+            player.getWorld().onEnemyTurn();
             player.getWorld().getParticles().add(new Particle(coordinate, 1, player.getWorld(), Textures.CHOP_PARTICLE));
 
             return false;

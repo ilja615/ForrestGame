@@ -44,10 +44,10 @@ public class Tile
      *
      * @return if this tile is an obstacle
      */
-    public boolean isObstacle()
+    public boolean isObstacle(Entity incomingEntity)
     {
         if (this.hasItem())
-            return this.item.isObstacle();
+            return this.item.isObstacle(incomingEntity);
         else return false;
     }
 

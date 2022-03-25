@@ -20,6 +20,7 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -44,9 +45,9 @@ public class SignItem implements Item
     }
 
     @Override
-    public boolean isObstacle()
+    public boolean isObstacle(Entity incomingEntity)
     {
-        return false;
+        return !(incomingEntity instanceof Player);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class MushroomItem implements Item
     }
 
     @Override
-    public boolean isObstacle()
+    public boolean isObstacle(Entity incomingEntity)
     {
         return false;
     }

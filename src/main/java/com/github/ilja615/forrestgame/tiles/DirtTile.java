@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2021-2022 the ForrestGame contributors.
+ * Copyright (c) 2021 ilja615.
  *
- * This file is part of ForrestGame.
+ * This file is part of Forrest Game.
  *
- * ForrestGame is free software: you can redistribute it and/or modify
+ * Forrest Game is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * ForrestGame is distributed in the hope that it will be useful,
+ * Forrest Game is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
+ * along with Forrest Game.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package com.github.ilja615.forrestgame.tiles;
@@ -29,25 +29,13 @@ import com.github.ilja615.forrestgame.world.World;
 import java.util.Arrays;
 import java.util.EnumMap;
 
-public class WallTile extends Tile implements ConnectedTextureTile
+public class DirtTile extends FloorTile implements ConnectedTextureTile
 {
     public EnumMap<Direction.Secondary, Texture> QUADRANT_TEXTURES = new EnumMap<>(Direction.Secondary.class);
 
-    public WallTile(final Texture texture)
+    public DirtTile(final Texture texture)
     {
         super(texture);
-    }
-
-    @Override
-    public EnumMap<Direction.Secondary, Texture> getQuadrantTextures()
-    {
-        return QUADRANT_TEXTURES;
-    }
-
-    @Override
-    public boolean isObstacle(Entity incomingEntity)
-    {
-        return true;
     }
 
     public void adaptQuadrantTexturesList(World world, Coordinate thisPos)
@@ -57,6 +45,12 @@ public class WallTile extends Tile implements ConnectedTextureTile
             QUADRANT_TEXTURES.put(secondary, getGoodTexture(secondary, thisPos, world));
         });
         System.out.println(thisPos + " | " + QUADRANT_TEXTURES);
+    }
+
+    @Override
+    public EnumMap<Direction.Secondary, Texture> getQuadrantTextures()
+    {
+        return QUADRANT_TEXTURES;
     }
 
     private Texture getGoodTexture(Direction.Secondary secondary, Coordinate thisPos, World world)
@@ -70,60 +64,54 @@ public class WallTile extends Tile implements ConnectedTextureTile
         if (firstNeighbourTile instanceof AirTile || otherNeighbourTile instanceof AirTile)
             return Textures.AIR_PIECE;
 
-        if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof FloorTile)
+        if (!(firstNeighbourTile instanceof DirtTile) && !(otherNeighbourTile instanceof DirtTile))
         {
             if (secondary.getHorizontal() == Direction.RIGHT)
             {
                 if (secondary.getVertical() == Direction.UP)
                 {
-                    return Textures.WALL_OUTER_CORNER_PIECE_VM;
-                } else
-                {
-                    return Textures.WALL_OUTER_CORNER_PIECE;
+                    return Textures.DIRT_OUTER_CORNER_PIECE_VM;
+                } else {
+                    return Textures.DIRT_OUTER_CORNER_PIECE;
                 }
-            } else
-            {
+            } else {
                 if (secondary.getVertical() == Direction.UP)
                 {
-                    return Textures.WALL_OUTER_CORNER_PIECE_HVM;
-                } else
-                {
-                    return Textures.WALL_OUTER_CORNER_PIECE_HM;
+                    return Textures.DIRT_OUTER_CORNER_PIECE_HVM;
+                } else {
+                    return Textures.DIRT_OUTER_CORNER_PIECE_HM;
                 }
             }
         }
 
-        if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof WallTile)
-            return secondary.getHorizontal() == Direction.RIGHT ? Textures.WALL_STRAIGHT_VERTICAL_PIECE : Textures.WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED;
+        if (!(firstNeighbourTile instanceof DirtTile) && otherNeighbourTile instanceof DirtTile)
+            return secondary.getHorizontal() == Direction.RIGHT ? Textures.DIRT_STRAIGHT_VERTICAL_PIECE : Textures.DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED;
 
-        if (firstNeighbourTile instanceof WallTile && otherNeighbourTile instanceof FloorTile)
-            return secondary.getVertical() == Direction.UP ? Textures.WALL_STRAIGHT_PIECE : Textures.WALL_STRAIGHT_PIECE_MIRRORED;
+        if (firstNeighbourTile instanceof DirtTile && !(otherNeighbourTile instanceof DirtTile))
+            return secondary.getVertical() == Direction.UP ? Textures.DIRT_STRAIGHT_PIECE : Textures.DIRT_STRAIGHT_PIECE_MIRRORED;
 
-        if (firstNeighbourTile instanceof WallTile && otherNeighbourTile instanceof WallTile)
+        if (firstNeighbourTile instanceof DirtTile && otherNeighbourTile instanceof DirtTile)
         {
             Coordinate thirdPos = thisPos.move(secondary, 1);
             Tile thirdNeighbourTile = world.isWithinWorld(thirdPos) ? world.getTileAt(thirdPos) : world.airTile;
 
-            if (!(thirdNeighbourTile instanceof FloorTile))
+            if (thirdNeighbourTile instanceof DirtTile)
                 return Textures.AIR_PIECE;
 
             if (secondary.getHorizontal() == Direction.RIGHT)
             {
                 if (secondary.getVertical() == Direction.UP)
                 {
-                    return Textures.WALL_INNER_CORNER_PIECE_VM;
-                } else
-                {
-                    return Textures.WALL_INNER_CORNER_PIECE;
+                    return Textures.DIRT_INNER_CORNER_PIECE_VM;
+                } else {
+                    return Textures.DIRT_INNER_CORNER_PIECE;
                 }
-            } else
-            {
+            } else {
                 if (secondary.getVertical() == Direction.UP)
                 {
-                    return Textures.WALL_INNER_CORNER_PIECE_HVM;
-                } else
-                {
-                    return Textures.WALL_INNER_CORNER_PIECE_HM;
+                    return Textures.DIRT_INNER_CORNER_PIECE_HVM;
+                } else {
+                    return Textures.DIRT_INNER_CORNER_PIECE_HM;
                 }
             }
         }

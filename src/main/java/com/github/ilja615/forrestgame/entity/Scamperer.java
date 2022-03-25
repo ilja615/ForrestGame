@@ -98,7 +98,7 @@ public class Scamperer implements Entity
             ((Player) player).wait += 120;
             ((Player) player).currentDoingAction = Player.Action.SLASHING;
         }
-        world.onEnemyTurnCalled();
+        world.onEnemyTurn();
         player.getWorld().getParticles().add(new Particle(coordinate, 1, player.getWorld(), Textures.CHOP_PARTICLE));
         return false;
     }
@@ -113,7 +113,7 @@ public class Scamperer implements Entity
     public void automaticallyMove()
     {
         final ShortPathFinder pathFinder = new ShortPathFinder();
-        final List<Coordinate> path = pathFinder.findPath(this.world, this.coordinate, this.world.getPlayer().getCoordinate());
+        final List<Coordinate> path = pathFinder.findPath(this.world, this.coordinate, this.world.getPlayer().getCoordinate(), this);
 
         LOGGER.info("Found path {}", path.stream()
                 .map(Coordinate::toString)
@@ -122,9 +122,16 @@ public class Scamperer implements Entity
         if (!path.isEmpty())
         {
             Coordinate newPos = path.get(1);
-            if (world.isWithinWorld(newPos) && !world.getTileAt(newPos).isObstacle() && world.getEntityAt(newPos) == null)
+            if (world.isWithinWorld(newPos) && !world.getTileAt(newPos).isObstacle(this))
             {
-                this.coordinate = newPos;
+                if (world.getPlayer().getCoordinate().equals(newPos)) {
+                    // Attack the player
+                    world.getPlayer().getStatTracker().decrement(StatTracker.Stat.HEALTH);
+                    world.getParticles().add(new Particle(world.getPlayer().getCoordinate(), 1, world, Textures.CHOP_PARTICLE));
+                } else {
+                    if (world.getEntityAt(newPos) == null)
+                        this.coordinate = newPos;
+                }
             }
         }
     }

@@ -21,8 +21,8 @@ package com.github.ilja615.forrestgame.gui.renderer;
 
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.tiles.ConnectedTextureTile;
 import com.github.ilja615.forrestgame.tiles.Tile;
-import com.github.ilja615.forrestgame.tiles.WallTile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Direction;
 import com.github.ilja615.forrestgame.util.Pair;
@@ -106,8 +106,10 @@ public class TextureRenderer
                 {
                     final Tile tile = world.getTiles()[x + (y * world.WORLD_WIDTH)];
 
-                    if (tile instanceof WallTile)
-                        renderWallTile(x, y);
+                    if (tile instanceof ConnectedTextureTile)
+                    {
+                        renderConnectedTextureTile(x, y);
+                    }
                     else
                     {
                         final Texture texture = tile.getTexture();
@@ -182,12 +184,15 @@ public class TextureRenderer
         glTranslatef(0, -0.083f, 0);
     }
 
-    public void renderWallTile(int x, int y)
+    public void renderConnectedTextureTile(int x, int y)
     {
         float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
         float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
-        if (world instanceof World)
+        final int finalX = x + world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
+        final int finalY = y + world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
+        ((ConnectedTextureTile) world.getTileAt(x, y)).getQuadrantTextures().forEach((secondary, texture) ->
         {
+<<<<<<< Updated upstream
             World playerWorld = world;
             WallTile wallTile = (WallTile) playerWorld.getTileAt(x, y);
             final int finalX = x + world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
@@ -214,5 +219,26 @@ public class TextureRenderer
                 glEnd();
             });
         }
+=======
+            texture.bind();
+
+            boolean hm = texture.isHorizontallyMirrored();
+            boolean vm = texture.isVerticallyMirrored();
+
+            float u = secondary.getVertical() == Direction.UP ? 0.0834f : 0.0f;
+            float r = secondary.getHorizontal() == Direction.RIGHT ? 0.0834f : 0.0f;
+
+            glBegin(GL_QUADS);
+            glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
+            glVertex2f(  -0.0834f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+            glTexCoord2f(hm ? 0 : 1, vm ? 1 : 0);
+            glVertex2f(0.0f + r + worldStarterX + + ((float)finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+            glTexCoord2f(hm ? 0 : 1, vm ? 0 : 1);
+            glVertex2f(0.0f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+            glTexCoord2f(hm ? 1 : 0, vm ? 0 : 1);
+            glVertex2f(-0.084f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+            glEnd();
+        });
+>>>>>>> Stashed changes
     }
 }

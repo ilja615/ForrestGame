@@ -21,7 +21,7 @@ package com.github.ilja615.forrestgame.gui.texture;
 
 public interface Textures
 {
-    // tiles and items
+////// TILES AND ITEMS
     Texture AIR = new PngTexture("textures/air");
     Texture GRASS_0 = new PngTexture("textures/grass_0");
     Texture GRASS_1 = new PngTexture("textures/grass_1");
@@ -35,11 +35,19 @@ public interface Textures
     Texture SIGN = new PngTexture("textures/sign");
     Texture TREE = new PngTexture("textures/tree").setTall(true);
     Texture CRATE = new PngTexture("textures/crate");
+    Texture PATH_DECORATION_0 = new PngTexture("textures/path_decoration_0");
+    Texture PATH_DECORATION_1 = new PngTexture("textures/path_decoration_1");
+    Texture PATH_DECORATION_2 = new PngTexture("textures/path_decoration_2");
+    Texture PATH_DECORATION_3 = new PngTexture("textures/path_decoration_3");
+    Texture PATH_DECORATION_4 = new PngTexture("textures/path_decoration_4");
 
     Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
+    Texture[] PATH_DECORATION_ALTERNATIVES = new Texture[]{PATH_DECORATION_0, PATH_DECORATION_1, PATH_DECORATION_2, PATH_DECORATION_3, PATH_DECORATION_4};
+
+////// PIECES FOR CONNECTED TEXTURES
+    Texture AIR_PIECE = new PngTexture("textures/small_air");
 
     // wall
-    Texture WALL_AIR_PIECE = new PngTexture("textures/wall_air");
     Texture WALL_STRAIGHT_PIECE = new PngTexture("textures/wall_straight");
     Texture WALL_STRAIGHT_PIECE_MIRRORED = new PngTexture("textures/wall_straight").setVerticallyMirrored(true);
     Texture WALL_STRAIGHT_VERTICAL_PIECE = new PngTexture("textures/wall_straight_vertical");
@@ -53,6 +61,25 @@ public interface Textures
     Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture("textures/wall_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
     Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/wall_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
 
+<<<<<<< Updated upstream
+=======
+    // dirt
+    Texture DIRT_STRAIGHT_PIECE = new PngTexture("textures/dirt_straight");
+    Texture DIRT_STRAIGHT_PIECE_MIRRORED = new PngTexture("textures/dirt_straight").setVerticallyMirrored(true);
+    Texture DIRT_STRAIGHT_VERTICAL_PIECE = new PngTexture("textures/dirt_straight_vertical");
+    Texture DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture("textures/dirt_straight_vertical").setHorizontallyMirrored(true);
+    Texture DIRT_INNER_CORNER_PIECE = new PngTexture("textures/dirt_inner_corner");
+    Texture DIRT_INNER_CORNER_PIECE_HM = new PngTexture("textures/dirt_inner_corner").setHorizontallyMirrored(true);
+    Texture DIRT_INNER_CORNER_PIECE_VM = new PngTexture("textures/dirt_inner_corner").setVerticallyMirrored(true);
+    Texture DIRT_INNER_CORNER_PIECE_HVM = new PngTexture("textures/dirt_inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    Texture DIRT_OUTER_CORNER_PIECE = new PngTexture("textures/dirt_outer_corner");
+    Texture DIRT_OUTER_CORNER_PIECE_HM = new PngTexture("textures/dirt_outer_corner_other");
+    Texture DIRT_OUTER_CORNER_PIECE_VM = new PngTexture("textures/dirt_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    Texture DIRT_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/dirt_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+
+////// ENTITIES
+
+>>>>>>> Stashed changes
     // player
     Texture PLAYER_UP = new PngTexture("textures/player_up").setPlayerTexture(true);
     Texture PLAYER_DOWN = new PngTexture("textures/player_down").setPlayerTexture(true);
@@ -90,6 +117,8 @@ public interface Textures
 
     // scamperer
     Texture SCAMPERER = new PngTexture("textures/scamperer");
+
+////// GUI
 
     // particles
     Texture[] CHOP_PARTICLE = new Texture[]

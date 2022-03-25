@@ -217,7 +217,7 @@ public class Player implements Entity
     {
         if (world.isWithinWorld(coordinate))
         {
-            if (!world.getTileAt(coordinate).isObstacle())
+            if (!world.getTileAt(coordinate).isObstacle(this))
             {
                 if (world.getEntityAt(coordinate) != null)
                 {
@@ -227,7 +227,7 @@ public class Player implements Entity
                 if (world.getTileAt(coordinate).onPlayerAttemptingWalk(this, coordinate))
                 {
                     this.scheduledCoordinate = coordinate;
-                    world.onEnemyTurnCalled();
+                    world.onEnemyTurn();
 
                     switch (direction)
                     {

@@ -43,7 +43,7 @@ public class TreeItem implements Item
     }
 
     @Override
-    public boolean isObstacle()
+    public boolean isObstacle(Entity incomingEntity)
     {
         return true;
     }

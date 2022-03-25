@@ -56,6 +56,7 @@ public class World implements Tickable
     private final Game game;
     private final Entity player;
     private final ArrayList<Entity> entities = new ArrayList<>();
+    private ArrayList<Entity> this_turn_entity_stack = new ArrayList<>();
     private final TextRenderer textRenderer = new TextRenderer();
     private final UiRenderer uiRenderer = new UiRenderer();
     private final TextureRenderer textureRenderer;
@@ -119,6 +120,20 @@ public class World implements Tickable
         return entities;
     }
 
+    public boolean isWithinView(Coordinate coordinate)
+    {
+        return coordinate.getX() >= player.getCoordinate().getX() - 5 &&
+                coordinate.getX() <= player.getCoordinate().getX() + 5 &&
+                coordinate.getY() >= player.getCoordinate().getY() - 4 &&
+                coordinate.getY() <= player.getCoordinate().getY() + 3;
+    }
+
+    public ArrayList<Entity> getEntitiesWithinView()
+    {
+        return entities.stream().filter
+                (entity -> isWithinView(entity.getCoordinate())).collect(Collectors.toCollection(ArrayList::new));
+    }
+
     public void generate()
     {
         WORLD_WIDTH = 6 + ThreadLocalRandom.current().nextInt(7) * 2;
@@ -161,6 +176,7 @@ public class World implements Tickable
         startCoordinate = placeStart();
         final Coordinate end = placeEndSign();
 
+<<<<<<< Updated upstream
         // After placing obstacles, it should give all the walls their correct texture
         for (int x = 0; x < WORLD_WIDTH; x++)
         {
@@ -173,10 +189,12 @@ public class World implements Tickable
             }
         }
 
+=======
+>>>>>>> Stashed changes
         // A check if there exists a valid path , if not , the entire world must be re-created
         // idk if theres a use for path yet - xf8b
         final ShortPathFinder pathFinder = new ShortPathFinder();
-        final List<Coordinate> path = pathFinder.findPath(this, startCoordinate, end);
+        final List<Coordinate> path = pathFinder.findPath(this, startCoordinate, end, player);
 
         if (path.isEmpty())
         {
@@ -187,7 +205,25 @@ public class World implements Tickable
             LOGGER.info("Found path {}", path.stream()
                     .map(Coordinate::toString)
                     .collect(Collectors.joining(" -> ")));
+
+            for (Coordinate coordinate : path.subList(0, path.size() - 1))
+            {
+                if (isWithinWorld(coordinate))
+                {
+                    tiles[coordinate.getX() + coordinate.getY()*WORLD_WIDTH] = new DirtTile(Textures.AIR);
+
+                    // Sometimes add an item
+                    int item = ThreadLocalRandom.current().nextInt(10);
+                    if (item < Textures.PATH_DECORATION_ALTERNATIVES.length)
+                    {
+                        tiles[coordinate.getX() + coordinate.getY()*WORLD_WIDTH].setItem(new DecorationItem(Textures.PATH_DECORATION_ALTERNATIVES[item]));
+                    }
+                }
+            }
         }
+
+        // Will do other stuff at the very end
+        postGeneration();
     }
 
     public void placeRockClusters()
@@ -241,7 +277,7 @@ public class World implements Tickable
             {
                 if (getTileAt(x, y) instanceof FloorTile && !getTileAt(x, y).hasItem())
                 {
-                    final int random = ThreadLocalRandom.current().nextInt(10);
+                    final int random = ThreadLocalRandom.current().nextInt(26 - 2*(timeTracker.getCurrentTime() % 6));
 
                     switch (random)
                     {
@@ -349,6 +385,23 @@ public class World implements Tickable
         this.generate();
     }
 
+    private void postGeneration()
+    {
+        // It should give all the walls and dirt their correct texture
+        for (int x = 0; x < WORLD_WIDTH; x++)
+        {
+            for (int y = 0; y < WORLD_HEIGHT; y++)
+            {
+                Coordinate mutableCoordinate = new Coordinate(x,y);
+                if (isWithinWorld(mutableCoordinate))
+                {
+                    if (getTileAt(x, y) instanceof ConnectedTextureTile)
+                        ((ConnectedTextureTile) getTileAt(x, y)).adaptQuadrantTexturesList(this, new Coordinate(x, y));
+                }
+            }
+        }
+    }
+
     @Override
     public void tick()
     {
@@ -370,8 +423,12 @@ public class World implements Tickable
         if (enemyTurnWait > 0)
         {
             enemyTurnWait--;
+<<<<<<< Updated upstream
             if (enemyTurnWait == 0)
                 onEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
+=======
+            if (enemyTurnWait == 0) nextEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
+>>>>>>> Stashed changes
         }
 
         if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
@@ -401,18 +458,36 @@ public class World implements Tickable
         }
     }
 
-    public void onEnemyTurnCalled()
+    public void onEnemyTurn()
     {
-        if (getEntities().size() > 0)
-            enemyTurnWait = 200; // Wait for the enemies their turn if there is any enemies
-        else
-            enemyTurnWait = 1;
+        this_turn_entity_stack = getEntitiesWithinView();
+
+        if (this_turn_entity_stack.size() > 0)
+        {
+            enemyTurnWait = 200;
+        } else {
+            player.setMobile(true);
+            // There were no enemies
+        }
     }
 
-    private void onEnemyTurn()
+    private void nextEnemyTurn()
     {
-        getEntities().forEach(e -> e.automaticallyMove());
-        player.setMobile(true);
+        if (this_turn_entity_stack.size() > 0)
+        {
+            this_turn_entity_stack.get(0).automaticallyMove();
+            this_turn_entity_stack.remove(0);
+            if (this_turn_entity_stack.size() > 0)
+            {
+                enemyTurnWait = 100; // next one
+            }
+        }
+
+        if (this_turn_entity_stack.isEmpty())
+        {
+            player.setMobile(true);
+            // No enemies left
+        }
     }
 
     public boolean isWithinWorld(Coordinate coordinate)
