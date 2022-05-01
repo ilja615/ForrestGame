@@ -32,10 +32,29 @@ import java.util.EnumMap;
 public class WallTile extends Tile implements ConnectedTextureTile
 {
     public EnumMap<Direction.Secondary, Texture> QUADRANT_TEXTURES = new EnumMap<>(Direction.Secondary.class);
+    private boolean isSingular = false;
 
-    public WallTile(final Texture texture)
+    public WallTile(Texture texture)
     {
         super(texture);
+    }
+
+    @Override
+    public void postGenerationEvent(World world, Coordinate thisPos)
+    {
+        super.postGenerationEvent(world, thisPos);
+        Tile upTile = world.isWithinWorld(thisPos.up()) ? world.getTileAt(thisPos.up()) : world.airTile;
+        Tile downTile = world.isWithinWorld(thisPos.down()) ? world.getTileAt(thisPos.down()) : world.airTile;
+        Tile leftTile = world.isWithinWorld(thisPos.left()) ? world.getTileAt(thisPos.left()) : world.airTile;
+        Tile rightTile = world.isWithinWorld(thisPos.right()) ? world.getTileAt(thisPos.right()) : world.airTile;
+        if (!(upTile instanceof WallTile) && !(downTile instanceof WallTile) && !(leftTile instanceof WallTile) && !(rightTile instanceof WallTile))
+            isSingular = true;
+    }
+
+    @Override
+    public Texture getTexture()
+    {
+        return this.texture;
     }
 
     @Override
@@ -50,6 +69,13 @@ public class WallTile extends Tile implements ConnectedTextureTile
         return true;
     }
 
+    @Override
+    public boolean shouldShowConnectedTextures()
+    {
+        return !this.isSingular;
+    }
+
+    @Override
     public void adaptQuadrantTexturesList(World world, Coordinate thisPos)
     {
         Arrays.stream(Direction.Secondary.values()).iterator().forEachRemaining(secondary ->
@@ -67,6 +93,10 @@ public class WallTile extends Tile implements ConnectedTextureTile
         Tile firstNeighbourTile = world.isWithinWorld(firstPos) ? world.getTileAt(firstPos) : world.airTile;
         Tile otherNeighbourTile = world.isWithinWorld(otherPos) ? world.getTileAt(otherPos) : world.airTile;
 
+        if (firstNeighbourTile instanceof AirTile && otherNeighbourTile instanceof FloorTile)
+            return secondary.getVertical() == Direction.UP ? Textures.WALL_STRAIGHT_PIECE : Textures.WALL_STRAIGHT_PIECE_MIRRORED;
+        if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof AirTile)
+            return secondary.getHorizontal() == Direction.RIGHT ? Textures.WALL_STRAIGHT_VERTICAL_PIECE : Textures.WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED;
         if (firstNeighbourTile instanceof AirTile || otherNeighbourTile instanceof AirTile)
             return Textures.AIR_PIECE;
 

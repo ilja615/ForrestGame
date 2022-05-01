@@ -133,11 +133,13 @@ public class World implements Tickable
 
     public void generate()
     {
-        WORLD_WIDTH = 6 + ThreadLocalRandom.current().nextInt(7) * 2;
-        WORLD_HEIGHT = 6 + ThreadLocalRandom.current().nextInt(6) * 2;
+        WORLD_WIDTH = 12 + ThreadLocalRandom.current().nextInt(6) * 2;
+        WORLD_HEIGHT = 12 + ThreadLocalRandom.current().nextInt(5) * 2;
+//        WORLD_WIDTH = 4 + ThreadLocalRandom.current().nextInt(3) * 2;
+//        WORLD_HEIGHT = 4 + ThreadLocalRandom.current().nextInt(3) * 2;
         this.tiles = new Tile[WORLD_WIDTH * WORLD_HEIGHT];
 
-        if (!(WORLD_WIDTH > 4 && WORLD_HEIGHT > 4))
+        if (!(WORLD_WIDTH >= 4 && WORLD_HEIGHT >= 4))
         {
             LOGGER.error("The board size is too small, it has to be minimal 4x4.");
             this.onBoardFailureToCreate();
@@ -150,7 +152,7 @@ public class World implements Tickable
             {
                 if (x == 0 || y == 0 || x == WORLD_WIDTH - 1 || y == WORLD_HEIGHT - 1)
                 {
-                    tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.AIR);
+                    tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
                 } else
                 {
                     Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GRASS_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
@@ -159,7 +161,7 @@ public class World implements Tickable
             }
         }
 
-        // TODO : Make a new carver system
+        // TODO: Make cool worldgen
 
         // Adds bush and wall obstacles scattered around the world
         placeRockClusters();
@@ -220,7 +222,7 @@ public class World implements Tickable
                 for (int y = startY; y < startY + ThreadLocalRandom.current().nextInt(3) + 2; y++)
                 {
                     if (isWithinWorld(new Coordinate(x, y)) && getTileAt(x, y) instanceof FloorTile)
-                        tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.AIR);
+                        tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
                 }
             }
         }
@@ -240,7 +242,7 @@ public class World implements Tickable
                     switch (random)
                     {
                         case 0, 1, 2, 3 -> tiles[x + (y * WORLD_WIDTH)].setItem(new BushItem());
-                        case 4 -> tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.AIR);
+                        case 4 -> tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
                         case 6 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
                         case 7 -> tiles[x + (y * WORLD_WIDTH)].setItem(new TreeItem(Textures.TREE));
                         case 8 -> tiles[x + (y * WORLD_WIDTH)].setItem(new CrateItem(Textures.CRATE));
@@ -377,41 +379,20 @@ public class World implements Tickable
                 Coordinate mutableCoordinate = new Coordinate(x,y);
                 if (isWithinWorld(mutableCoordinate))
                 {
-                    if (getTileAt(x, y) instanceof ConnectedTextureTile)
+                    Tile tile = getTileAt(x, y);
+                    tile.postGenerationEvent(this, mutableCoordinate);
+                    if (tile instanceof ConnectedTextureTile)
                         ((ConnectedTextureTile) getTileAt(x, y)).adaptQuadrantTexturesList(this, new Coordinate(x, y));
                 }
             }
         }
     }
 
-    @Override
-    public void tick()
+    public void frame()
     {
         glUniform1f(glGetUniformLocation(this.shader.program, "redComponent"), this.timeTracker.getRedComponent());
         glUniform1f(glGetUniformLocation(this.shader.program, "greenComponent"), this.timeTracker.getGreenComponent());
         glUniform1f(glGetUniformLocation(this.shader.program, "blueComponent"), this.timeTracker.getBlueComponent());
-
-        // Tick all objects
-        player.tick();
-        particles.forEach(Particle::tick);
-        entities.forEach(Entity::tick);
-
-        // Clear the particles that should be removed
-        particles.removeIf(Particle::isExpired);
-
-        if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
-        if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();
-
-        if (enemyTurnWait > 0)
-        {
-            enemyTurnWait--;if (enemyTurnWait == 0)
-                onEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
-        }
-
-        if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
-        {
-            player.setCoordinate(startCoordinate);
-        }
 
         if (textureRenderer.isEnabled())
         {
@@ -435,13 +416,40 @@ public class World implements Tickable
         }
     }
 
+    @Override
+    public void tick()
+    {
+        // Tick all objects
+        player.tick();
+        particles.forEach(Particle::tick);
+        entities.forEach(Entity::tick);
+
+        // Clear the particles that should be removed
+        particles.removeIf(Particle::isExpired);
+
+        if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
+        if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();
+
+        if (enemyTurnWait > 0)
+        {
+            enemyTurnWait--;if (enemyTurnWait == 0)
+                nextEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
+        }
+
+        if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
+        {
+            player.setCoordinate(startCoordinate);
+        }
+    }
+
     public void onEnemyTurn()
     {
+        player.setMobile(false);
         this_turn_entity_stack = getEntitiesWithinView();
 
         if (this_turn_entity_stack.size() > 0)
         {
-            enemyTurnWait = 200;
+            enemyTurnWait = 4; // next one
         } else {
             player.setMobile(true);
             // There were no enemies
@@ -456,7 +464,7 @@ public class World implements Tickable
             this_turn_entity_stack.remove(0);
             if (this_turn_entity_stack.size() > 0)
             {
-                enemyTurnWait = 100; // next one
+                enemyTurnWait = 2; // next one
             }
         }
 

@@ -95,11 +95,11 @@ public class Scamperer implements Entity
         this.statTracker.decrement(StatTracker.Stat.HEALTH);
         if (player instanceof Player)
         {
-            ((Player) player).wait += 120;
+            ((Player) player).wait += 5;
             ((Player) player).currentDoingAction = Player.Action.SLASHING;
         }
         world.onEnemyTurn();
-        player.getWorld().getParticles().add(new Particle(coordinate, 1, player.getWorld(), Textures.CHOP_PARTICLE));
+        player.getWorld().getParticles().add(new Particle(coordinate, 1, 1, player.getWorld(), Textures.CHOP_PARTICLE));
         return false;
     }
 
@@ -127,7 +127,7 @@ public class Scamperer implements Entity
                 if (world.getPlayer().getCoordinate().equals(newPos)) {
                     // Attack the player
                     world.getPlayer().getStatTracker().decrement(StatTracker.Stat.HEALTH);
-                    world.getParticles().add(new Particle(world.getPlayer().getCoordinate(), 1, world, Textures.CHOP_PARTICLE));
+                    world.getParticles().add(new Particle(world.getPlayer().getCoordinate(), 1, 1, world, Textures.CHOP_PARTICLE));
                 } else {
                     if (world.getEntityAt(newPos) == null)
                         this.coordinate = newPos;

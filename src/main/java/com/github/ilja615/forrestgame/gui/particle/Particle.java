@@ -31,16 +31,18 @@ public class Particle implements Tickable
     private final int amountLifeCycles;
     private final World world;
     private int currentFrame = 0;
-    private float animationTimer = 0.0f;
+    private int animationTimer = 0;
     private int completedCycles = 0;
     private boolean expired = false;
+    private int ticksPerFrame;
 
-    public Particle(Coordinate coord, int amountCycles, World world, Texture[] textures)
+    public Particle(Coordinate coord, int amountCycles, int tpf, World world, Texture[] textures)
     {
         this.coordinate = coord;
         this.amountLifeCycles = amountCycles;
         this.world = world;
         this.TEXTURES = textures;
+        this.ticksPerFrame = tpf;
     }
 
     public Texture getCurrentTexture()
@@ -71,11 +73,11 @@ public class Particle implements Tickable
     @Override
     public void tick()
     {
-        this.animationTimer += 0.04f;
-        if (this.animationTimer > 1.0f)
+        this.animationTimer += 1;
+        if (this.animationTimer > this.ticksPerFrame)
         {
             this.currentFrame++;
-            this.animationTimer = 0.0f;
+            this.animationTimer = 0;
 
             if (this.currentFrame >= this.TEXTURES.length)
             {

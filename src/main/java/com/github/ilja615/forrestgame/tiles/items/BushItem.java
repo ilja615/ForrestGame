@@ -70,12 +70,12 @@ public class BushItem implements Item
             player.setMobile(false);
             if (player instanceof Player)
             {
-                ((Player) player).wait += 120;
+                ((Player) player).wait += 5;
                 ((Player) player).currentDoingAction = Player.Action.SLASHING;
             }
             player.getStatTracker().decrement(Stat.HUNGER);
             player.getWorld().onEnemyTurn();
-            player.getWorld().getParticles().add(new Particle(coordinate, 1, player.getWorld(), Textures.CHOP_PARTICLE));
+            player.getWorld().getParticles().add(new Particle(coordinate, 1, 1, player.getWorld(), Textures.CHOP_PARTICLE));
 
             return false;
         } else

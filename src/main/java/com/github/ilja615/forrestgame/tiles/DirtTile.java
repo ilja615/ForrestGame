@@ -19,7 +19,6 @@
 
 package com.github.ilja615.forrestgame.tiles;
 
-import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -61,8 +60,12 @@ public class DirtTile extends FloorTile implements ConnectedTextureTile
         Tile firstNeighbourTile = world.isWithinWorld(firstPos) ? world.getTileAt(firstPos) : world.airTile;
         Tile otherNeighbourTile = world.isWithinWorld(otherPos) ? world.getTileAt(otherPos) : world.airTile;
 
-        if (firstNeighbourTile instanceof AirTile || otherNeighbourTile instanceof AirTile)
+        if (firstNeighbourTile instanceof AirTile && otherNeighbourTile instanceof AirTile)
             return Textures.AIR_PIECE;
+        if (firstNeighbourTile instanceof AirTile)
+            return secondary.getVertical() == Direction.UP ? Textures.DIRT_STRAIGHT_PIECE : Textures.DIRT_STRAIGHT_PIECE_MIRRORED;
+        if (otherNeighbourTile instanceof AirTile)
+            return secondary.getHorizontal() == Direction.RIGHT ? Textures.DIRT_STRAIGHT_VERTICAL_PIECE : Textures.DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED;
 
         if (!(firstNeighbourTile instanceof DirtTile) && !(otherNeighbourTile instanceof DirtTile))
         {

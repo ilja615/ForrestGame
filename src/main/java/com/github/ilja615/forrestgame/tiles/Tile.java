@@ -23,10 +23,11 @@ import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.tiles.items.Item;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.world.World;
 
 public class Tile
 {
-    private final Texture texture;
+    protected final Texture texture;
     private Item item = null;
 
     public Tile(final Texture texture)
@@ -79,4 +80,6 @@ public class Tile
     {
         this.item = item;
     }
+
+    public void postGenerationEvent(World world, Coordinate thisPos) {}
 }

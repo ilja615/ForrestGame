@@ -33,7 +33,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Player implements Entity
 {
-    private static final float SCROLL_SPEED = 0.008f;
+    private static final float SCROLL_SPEED = 0.1f;
     private final World world;
     private final StatTracker statTracker;
     public Direction facing = Direction.DOWN;
@@ -102,7 +102,11 @@ public class Player implements Entity
         } else if (partialX <= -1 || partialX >= 1)
         {
             partialX = 0;
-            if (this.scheduledCoordinate != null) this.setCoordinate(this.scheduledCoordinate);
+            if (this.scheduledCoordinate != null)
+            {
+                this.setCoordinate(this.scheduledCoordinate);
+                world.onEnemyTurn(); // Enemy turn when player stopped walking
+            }
         }
 
         world.getTextureRenderer().setPartialX(partialX);
@@ -116,7 +120,11 @@ public class Player implements Entity
         } else if (partialY <= -1 || partialY >= 1)
         {
             partialY = 0;
-            if (this.scheduledCoordinate != null) this.setCoordinate(this.scheduledCoordinate);
+            if (this.scheduledCoordinate != null)
+            {
+                this.setCoordinate(this.scheduledCoordinate);
+                world.onEnemyTurn(); // Enemy turn when player stopped walking
+            }
         }
 
         world.getTextureRenderer().setPartialY(partialY);
@@ -227,7 +235,6 @@ public class Player implements Entity
                 if (world.getTileAt(coordinate).onPlayerAttemptingWalk(this, coordinate))
                 {
                     this.scheduledCoordinate = coordinate;
-                    world.onEnemyTurn();
 
                     switch (direction)
                     {
@@ -261,10 +268,10 @@ public class Player implements Entity
             // Walking
             return switch (this.facing)
                     {
-                        case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(200, 4)];
-                        case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(200, 4)];
-                        case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(200, 4)];
-                        case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(200, 4)];
+                        case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(100, 4)];
+                        case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(100, 4)];
+                        case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(100, 4)];
+                        case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(100, 4)];
                     };
         }
     }

@@ -60,6 +60,8 @@ public interface Textures
     Texture WALL_OUTER_CORNER_PIECE_HM = new PngTexture("textures/wall_outer_corner_other");
     Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture("textures/wall_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
     Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/wall_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    Texture WALL_SINGLE = new PngTexture("textures/wall_single");
+
 
     // dirt
     Texture DIRT_STRAIGHT_PIECE = new PngTexture("textures/dirt_straight");

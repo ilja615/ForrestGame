@@ -57,7 +57,7 @@ public class SignItem implements Item
         World world = player.getWorld();
         world.getTimeTracker().incrementCurrentTime();
         world.getTextureRenderer().setDisabled();
-        world.getTimeTracker().waitTicks = 1000;
+        world.getTimeTracker().waitTicks = 20;
         world.generate();
 
         return false;

@@ -35,6 +35,8 @@ public class ForrestGame implements Game
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ForrestGame.class);
     private final long window;
+    private static long currentMillis;
+    private static long previousMillis;
 
     private ForrestGame(final long window)
     {
@@ -75,7 +77,15 @@ public class ForrestGame implements Game
             // Use the shaders
             shader.useShader();
 
-            world.tick();
+            currentMillis = System.currentTimeMillis();
+            int deltaTime = (int) (currentMillis - previousMillis);
+            if (deltaTime > 100)
+            {
+                world.tick();
+                previousMillis = currentMillis;
+            }
+
+            world.frame();
 
             glfwSwapBuffers(window);
         }

@@ -12,4 +12,8 @@ public interface ConnectedTextureTile
     void adaptQuadrantTexturesList(World world, Coordinate thisPos);
 
     EnumMap<Direction.Secondary, Texture> getQuadrantTextures();
+
+    default boolean shouldShowConnectedTextures(){
+        return true;
+    }
 }

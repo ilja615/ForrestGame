@@ -106,7 +106,7 @@ public class TextureRenderer
                 {
                     final Tile tile = world.getTiles()[x + (y * world.WORLD_WIDTH)];
 
-                    if (tile instanceof ConnectedTextureTile)
+                    if (tile instanceof ConnectedTextureTile connectedTextureTile && connectedTextureTile.shouldShowConnectedTextures())
                     {
                         renderConnectedTextureTile(x, y);
                     }

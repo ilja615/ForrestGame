@@ -85,12 +85,12 @@ public class TimeTracker
 
     public enum Period
     {
-        SUNRISE(Textures.SUNRISE, true, 0.5f),
+        SUNRISE(Textures.SUNRISE, true, 0.6f),
         MORNING(Textures.MORNING, true),
         AFTERNOON(Textures.AFTERNOON, true),
-        SUNSET(Textures.SUNSET, false, 0.6f, 0.5f, 0.45f),
-        EVENING(Textures.EVENING, false, 0.35f, 0.35f, 0.35f),
-        NIGHT(Textures.NIGHT, false, 0.2f, 0.2f, 0.3f);
+        SUNSET(Textures.SUNSET, false, 0.7f, 0.6f, 0.55f),
+        EVENING(Textures.EVENING, false, 0.45f),
+        NIGHT(Textures.NIGHT, false, 0.3f, 0.3f, 0.4f);
 
         public final float red;
         public final float green;
