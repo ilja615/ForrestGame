@@ -82,7 +82,6 @@ public class WallTile extends Tile implements ConnectedTextureTile
         {
             QUADRANT_TEXTURES.put(secondary, getGoodTexture(secondary, thisPos, world));
         });
-        System.out.println(thisPos + " | " + QUADRANT_TEXTURES);
     }
 
     private Texture getGoodTexture(Direction.Secondary secondary, Coordinate thisPos, World world)

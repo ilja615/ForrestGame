@@ -109,6 +109,16 @@ public class Coordinate
         return new Coordinate(this.x + secondaryDirection.getX() * amount, this.y + secondaryDirection.getY() * amount);
     }
 
+    public Coordinate move(final Direction direction)
+    {
+        return move(direction, 1);
+    }
+
+    public Coordinate move(final Direction.Secondary secondaryDirection)
+    {
+        return move(secondaryDirection, 1);
+    }
+
     @Override
     public boolean equals(final Object object)
     {

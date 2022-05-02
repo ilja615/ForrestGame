@@ -33,7 +33,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Player implements Entity
 {
-    private static final float SCROLL_SPEED = 0.1f;
+    private static final float SCROLL_SPEED = 0.2f;
     private final World world;
     private final StatTracker statTracker;
     public Direction facing = Direction.DOWN;
@@ -43,6 +43,7 @@ public class Player implements Entity
     private Coordinate scheduledCoordinate;
     private boolean mobile = true;
     private float animationTimer = 0.0f;
+    private int ANIMATIONFRAMESTIME = 60;
 
     public Player(final World world, final Coordinate startPos)
     {
@@ -268,10 +269,10 @@ public class Player implements Entity
             // Walking
             return switch (this.facing)
                     {
-                        case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(100, 4)];
-                        case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(100, 4)];
-                        case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(100, 4)];
-                        case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(100, 4)];
+                        case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(ANIMATIONFRAMESTIME, 4)];
+                        case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(ANIMATIONFRAMESTIME, 4)];
+                        case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(ANIMATIONFRAMESTIME, 4)];
+                        case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(ANIMATIONFRAMESTIME, 4)];
                     };
         }
     }

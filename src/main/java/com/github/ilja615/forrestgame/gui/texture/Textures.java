@@ -64,6 +64,7 @@ public interface Textures
 
 
     // dirt
+    Texture DIRT_FULL_PIECE = new PngTexture("textures/dirt_full");
     Texture DIRT_STRAIGHT_PIECE = new PngTexture("textures/dirt_straight");
     Texture DIRT_STRAIGHT_PIECE_MIRRORED = new PngTexture("textures/dirt_straight").setVerticallyMirrored(true);
     Texture DIRT_STRAIGHT_VERTICAL_PIECE = new PngTexture("textures/dirt_straight_vertical");

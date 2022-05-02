@@ -43,6 +43,10 @@ public enum Direction
         return y;
     }
 
+    public boolean isVertical() { return y!=0; }
+
+    public boolean isHorizontal() { return x!=0; }
+
     public enum Secondary
     {
         TOP_RIGHT(UP, RIGHT),

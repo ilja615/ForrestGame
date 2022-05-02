@@ -43,7 +43,6 @@ public class DirtTile extends FloorTile implements ConnectedTextureTile
         {
             QUADRANT_TEXTURES.put(secondary, getGoodTexture(secondary, thisPos, world));
         });
-        System.out.println(thisPos + " | " + QUADRANT_TEXTURES);
     }
 
     @Override
@@ -99,7 +98,7 @@ public class DirtTile extends FloorTile implements ConnectedTextureTile
             Tile thirdNeighbourTile = world.isWithinWorld(thirdPos) ? world.getTileAt(thirdPos) : world.airTile;
 
             if (thirdNeighbourTile instanceof DirtTile)
-                return Textures.AIR_PIECE;
+                return Textures.DIRT_FULL_PIECE;
 
             if (secondary.getHorizontal() == Direction.RIGHT)
             {
