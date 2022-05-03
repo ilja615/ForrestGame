@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Scamperer implements Entity
 {
@@ -115,10 +114,6 @@ public class Scamperer implements Entity
         final ShortPathFinder pathFinder = new ShortPathFinder();
         final List<Coordinate> path = pathFinder.findPath(this.world, this.coordinate, this.world.getPlayer().getCoordinate(), this);
 
-        LOGGER.info("Found path {}", path.stream()
-                .map(Coordinate::toString)
-                .collect(Collectors.joining(" -> ")));
-
         if (!path.isEmpty())
         {
             Coordinate newPos = path.get(1);
@@ -134,5 +129,14 @@ public class Scamperer implements Entity
                 }
             }
         }
+    }
+
+    @Override
+    public boolean willAutomaticallyMove()
+    {
+        final ShortPathFinder pathFinder = new ShortPathFinder();
+        final List<Coordinate> path = pathFinder.findPath(this.world, this.coordinate, this.world.getPlayer().getCoordinate(), this);
+
+        return !path.isEmpty();
     }
 }

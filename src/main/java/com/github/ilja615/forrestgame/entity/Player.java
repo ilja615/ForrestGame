@@ -299,6 +299,13 @@ public class Player implements Entity
         // it is not an automatical mover but a controlled mover
     }
 
+    @Override
+    public boolean willAutomaticallyMove()
+    {
+        // it is not an automatical mover but a controlled mover
+        return false;
+    }
+
     private int getAnimationFrame(int framesTime, int amountFrames)
     {
         this.animationTimer += (1 / (float) framesTime);

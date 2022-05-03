@@ -22,6 +22,7 @@ package com.github.ilja615.forrestgame.tiles;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
+import com.github.ilja615.forrestgame.tiles.items.Item;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Direction;
 import com.github.ilja615.forrestgame.world.World;
@@ -158,5 +159,11 @@ public class WallTile extends Tile implements ConnectedTextureTile
         }
 
         return Textures.AIR_PIECE;
+    }
+
+    @Override
+    public void setItem(Item item)
+    {
+        // Can not set the item
     }
 }

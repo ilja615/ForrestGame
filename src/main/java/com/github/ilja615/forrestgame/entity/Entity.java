@@ -75,4 +75,6 @@ public interface Entity extends Tickable
     void die(StatTracker.Stat deathCausingStat);
 
     void automaticallyMove();
+
+    boolean willAutomaticallyMove();
 }
