@@ -31,6 +31,11 @@ public record Coordinate(int x, int y)
         else return amount;
     }
 
+    public Coordinate relativeMove(final int xAmount, final int yAmount)
+    {
+        return new Coordinate(this.x + xAmount, this.y + yAmount);
+    }
+
     public Coordinate up()
     {
         return up(1);
@@ -38,7 +43,7 @@ public record Coordinate(int x, int y)
 
     public Coordinate up(final int amount)
     {
-        return new Coordinate(this.x, this.y + validateMovement(amount));
+        return relativeMove(0, +validateMovement(amount));
     }
 
     public Coordinate down()
@@ -48,7 +53,7 @@ public record Coordinate(int x, int y)
 
     public Coordinate down(final int amount)
     {
-        return new Coordinate(this.x, this.y - validateMovement(amount));
+        return relativeMove(0, -validateMovement(amount));
     }
 
     public Coordinate left()
@@ -58,7 +63,7 @@ public record Coordinate(int x, int y)
 
     public Coordinate left(final int amount)
     {
-        return new Coordinate(this.x - validateMovement(amount), this.y);
+        return relativeMove(-validateMovement(amount), 0);
     }
 
     public Coordinate right()
@@ -68,22 +73,7 @@ public record Coordinate(int x, int y)
 
     public Coordinate right(final int amount)
     {
-        return new Coordinate(this.x + validateMovement(amount), this.y);
-    }
-
-    public Coordinate relative(final int deltaX, final int deltaY)
-    {
-        return new Coordinate(this.x + deltaX, this.y + deltaY);
-    }
-
-    public Coordinate move(final Direction direction, final int amount)
-    {
-        return new Coordinate(this.x + direction.getX() * amount, this.y + direction.getY() * amount);
-    }
-
-    public Coordinate move(final Direction.Secondary secondaryDirection, final int amount)
-    {
-        return new Coordinate(this.x + secondaryDirection.getX() * amount, this.y + secondaryDirection.getY() * amount);
+        return relativeMove(+validateMovement(amount), 0);
     }
 
     public Coordinate move(final Direction direction)
@@ -91,9 +81,31 @@ public record Coordinate(int x, int y)
         return move(direction, 1);
     }
 
-    public Coordinate move(final Direction.Secondary secondaryDirection)
+    public Coordinate move(final Direction direction, final int amount)
     {
-        return move(secondaryDirection, 1);
+        return switch (direction)
+                {
+                    case UP -> up(amount);
+                    case DOWN -> down(amount);
+                    case LEFT -> left(amount);
+                    case RIGHT -> right(amount);
+                };
+    }
+
+    public Coordinate move(final Direction.Diagonal diagonalDirection)
+    {
+        return move(diagonalDirection, 1);
+    }
+
+    public Coordinate move(final Direction.Diagonal diagonalDirection, final int amount)
+    {
+        return switch (diagonalDirection)
+                {
+                    case UP_AND_LEFT -> up(amount).left(amount);
+                    case UP_AND_RIGHT -> up(amount).right(amount);
+                    case DOWN_AND_LEFT -> down(amount).left(amount);
+                    case DOWN_AND_RIGHT -> down(amount).right(amount);
+                };
     }
 
     @Override
@@ -101,9 +113,9 @@ public record Coordinate(int x, int y)
     {
         if (this == object) return true;
         if (object == null || this.getClass() != object.getClass()) return false;
-        final Coordinate other = (Coordinate) object;
+        final Coordinate otherCoordinate = (Coordinate) object;
 
-        return this.x == other.x && this.y == other.y;
+        return this.x == otherCoordinate.x && this.y == otherCoordinate.y;
     }
 
     @Override

@@ -27,27 +27,27 @@ import com.github.ilja615.forrestgame.world.World;
 public class Particle implements Tickable
 {
     private final Coordinate coordinate;
-    private final Texture[] TEXTURES;
+    private final Texture[] textures;
     private final int amountLifeCycles;
     private final World world;
+    private final int ticksPerFrame;
     private int currentFrame = 0;
     private int animationTimer = 0;
     private int completedCycles = 0;
     private boolean expired = false;
-    private final int ticksPerFrame;
 
-    public Particle(Coordinate coord, int amountCycles, int tpf, World world, Texture[] textures)
+    public Particle(final Coordinate coordinate, final int amountCycles, final int ticksPerFrame, final World world, final Texture[] textures)
     {
-        this.coordinate = coord;
+        this.coordinate = coordinate;
         this.amountLifeCycles = amountCycles;
         this.world = world;
-        this.TEXTURES = textures;
-        this.ticksPerFrame = tpf;
+        this.textures = textures;
+        this.ticksPerFrame = ticksPerFrame;
     }
 
     public Texture getCurrentTexture()
     {
-        return TEXTURES[currentFrame % TEXTURES.length];
+        return textures[currentFrame % textures.length];
     }
 
     public int getCurrentFrame()
@@ -55,7 +55,7 @@ public class Particle implements Tickable
         return this.currentFrame;
     }
 
-    public void setCurrentFrame(int currentFrame)
+    public void setCurrentFrame(final int currentFrame)
     {
         this.currentFrame = currentFrame;
     }
@@ -79,12 +79,10 @@ public class Particle implements Tickable
             this.currentFrame++;
             this.animationTimer = 0;
 
-            if (this.currentFrame >= this.TEXTURES.length)
+            if (this.currentFrame >= this.textures.length)
             {
-                if (++this.completedCycles >= this.amountLifeCycles)
-                    this.expired = true;
-                else
-                    this.currentFrame = 0;
+                if (++this.completedCycles >= this.amountLifeCycles) this.expired = true;
+                else this.currentFrame = 0;
             }
         }
     }

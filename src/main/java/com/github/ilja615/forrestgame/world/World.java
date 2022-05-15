@@ -49,6 +49,7 @@ import static org.lwjgl.opengl.GL20.glUniform1f;
 public class World implements Tickable
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(World.class);
+    public final AirTile airTile;
     private final ArrayList<Particle> particles = new ArrayList<>();
     private final Game game;
     private final Entity player;
@@ -61,15 +62,14 @@ public class World implements Tickable
     private final Shader shader;
     private final int ROOM_MIN_SIZE = 2;
     private final int ROOM_MAX_SIZE = 6;
-    public int WORLD_WIDTH;
-    public int WORLD_HEIGHT;
     private final ArrayList<Room> rooms = new ArrayList<>();
     private final ArrayList<Coordinate> noObstacleZone = new ArrayList<>();
-    public AirTile airTile;
+    public int WORLD_WIDTH;
+    public int WORLD_HEIGHT;
+    public Room finalRoom = null;
     private Tile[] tiles;
     private Coordinate startCoordinate;
     private int enemyTurnWait;
-    public Room finalRoom = null;
     private ArrayList<Entity> this_turn_entity_stack = new ArrayList<>();
     private int currentX = 1;
     private int currentY = 1;
@@ -125,24 +125,22 @@ public class World implements Tickable
         return entities;
     }
 
-    public boolean isWithinView(Coordinate coordinate)
+    public boolean isWithinView(final Coordinate coordinate)
     {
-        return coordinate.x() >= player.getCoordinate().x() - 5 &&
-                coordinate.x() <= player.getCoordinate().x() + 5 &&
-                coordinate.y() >= player.getCoordinate().y() - 4 &&
-                coordinate.y() <= player.getCoordinate().y() + 3;
+        return coordinate.x() >= player.getCoordinate().x() - 5
+                && coordinate.x() <= player.getCoordinate().x() + 5
+                && coordinate.y() >= player.getCoordinate().y() - 4
+                && coordinate.y() <= player.getCoordinate().y() + 3;
     }
 
     public ArrayList<Entity> getEntitiesWithinView()
     {
-        return entities.stream().filter
-                (entity -> isWithinView(entity.getCoordinate())).collect(Collectors.toCollection(ArrayList::new));
+        return entities.stream().filter(entity -> isWithinView(entity.getCoordinate())).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<Entity> getEntitiesWithinViewThatWillWalk()
     {
-        return getEntitiesWithinView().stream().filter
-                (Entity::willAutomaticallyMove).collect(Collectors.toCollection(ArrayList::new));
+        return getEntitiesWithinView().stream().filter(Entity::willAutomaticallyMove).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public void generate()
@@ -159,7 +157,7 @@ public class World implements Tickable
 
         if (!(WORLD_WIDTH >= 4 && WORLD_HEIGHT >= 4))
         {
-            LOGGER.error("The board size is too small, it has to be minimal 4x4.");
+            LOGGER.error("The board size is too small (it needs to be at least 4x4).");
             this.onBoardFailureToCreate();
         }
 
@@ -182,7 +180,7 @@ public class World implements Tickable
 
         while (placedRooms < ThreadLocalRandom.current().nextInt(5) + 2) // Make more rooms and paths
         {
-            Pair<ArrayList<Coordinate>, Direction> path = makePath(room);
+            final Pair<ArrayList<Coordinate>, Direction> path = makePath(room);
             if (path.first().isEmpty() || path.second() == null)
             {
                 onBoardFailureToCreate();
@@ -201,7 +199,7 @@ public class World implements Tickable
 
         for (int b = 0; b < ThreadLocalRandom.current().nextInt(7) + 4; b++) // Get random rooms and make side-branches of them.
         {
-            Pair<ArrayList<Coordinate>, Direction> path = makePath(rooms.get(ThreadLocalRandom.current().nextInt(rooms.size())));
+            final Pair<ArrayList<Coordinate>, Direction> path = makePath(rooms.get(ThreadLocalRandom.current().nextInt(rooms.size())));
             if (!path.first().isEmpty() && path.second() != null)
             {
                 room = makeRoom(path.second());
@@ -227,7 +225,7 @@ public class World implements Tickable
         final Coordinate end = placeEndSign();
 
         // A final check if there exists a valid path , if not , the entire world must be re-created
-        final ShortPathFinder pathFinder = new ShortPathFinder();
+        final ShortPathfinder pathFinder = new ShortPathfinder();
         final List<Coordinate> path = pathFinder.findPath(this, startCoordinate, end, player);
 
         if (path.isEmpty())
@@ -240,14 +238,14 @@ public class World implements Tickable
                     .map(Coordinate::toString)
                     .collect(Collectors.joining(" -> ")));
 
-            for (Coordinate coordinate : path.subList(0, path.size() - 1))
+            for (final Coordinate coordinate : path.subList(0, path.size() - 1))
             {
                 if (isWithinWorld(coordinate))
                 {
                     tiles[coordinate.x() + coordinate.y() * WORLD_WIDTH] = new DirtTile(Textures.AIR);
 
                     // Sometimes add an item
-                    int item = ThreadLocalRandom.current().nextInt(10);
+                    final int item = ThreadLocalRandom.current().nextInt(10);
                     if (item < Textures.PATH_DECORATION_ALTERNATIVES.length)
                     {
                         tiles[coordinate.x() + coordinate.y() * WORLD_WIDTH].setItem(new DecorationItem(Textures.PATH_DECORATION_ALTERNATIVES[item]));
@@ -260,21 +258,67 @@ public class World implements Tickable
         postGeneration();
     }
 
-    private Room makeRoom(Direction dir)
+    private Room makeRoom(final Direction direction)
     {
         final int random = ThreadLocalRandom.current().nextInt(4);
-        if (random == 0)
-            return makeMushroomRoom(dir);
+        if (random == 0) return makeMushroomRoom(direction);
 
         Room room = null;
         int roomTries = 0;
-        boolean successfullRoom = false;
-        while (!successfullRoom && roomTries < 20)
+        boolean successfulRoom = false;
+
+        while (!successfulRoom && roomTries < 20)
         {
-            System.out.println(roomTries);
+            LOGGER.info(String.valueOf(roomTries));
             roomTries++;
-            int roomSizeX = ThreadLocalRandom.current().nextInt(ROOM_MAX_SIZE - ROOM_MIN_SIZE) + ROOM_MIN_SIZE;
-            int roomSizeY = ThreadLocalRandom.current().nextInt(ROOM_MAX_SIZE - ROOM_MIN_SIZE) + ROOM_MIN_SIZE;
+            final int roomSizeX = ThreadLocalRandom.current().nextInt(ROOM_MAX_SIZE - ROOM_MIN_SIZE) + ROOM_MIN_SIZE;
+            final int roomSizeY = ThreadLocalRandom.current().nextInt(ROOM_MAX_SIZE - ROOM_MIN_SIZE) + ROOM_MIN_SIZE;
+            int roomStarterPosX = direction == Direction.LEFT ? currentX - roomSizeX : currentX; // Shifting room if necessary
+            int roomStarterPosY = direction == Direction.DOWN ? currentY - roomSizeY : currentY; // Shifting room if necessary
+            if (direction.isVertical())
+                roomStarterPosX -= ThreadLocalRandom.current().nextInt(roomSizeX); // Extra shifting room, for more variation
+            if (direction.isHorizontal())
+                roomStarterPosY -= ThreadLocalRandom.current().nextInt(roomSizeY); // Extra shifting room, for more variation
+            room = new Room(roomStarterPosX, roomStarterPosY, roomSizeX, roomSizeY);
+            successfulRoom = true;
+
+            for (final Coordinate coordinate : room)
+            {
+                if (!isWithinWorld(coordinate) || getTileAt(coordinate) instanceof FloorTile) // the room may not overlap another room
+                {
+                    successfulRoom = false;
+                }
+            }
+
+            if (successfulRoom)
+            {
+                for (final Coordinate coord : room)
+                {
+                    final Texture texture = ThreadLocalRandom.current().nextBoolean()
+                            ? Textures.GRASS_0
+                            : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
+                    setTileAt(coord, new FloorTile(texture));
+                }
+            }
+        }
+
+        if (!successfulRoom) room = null;
+
+        return room;
+    }
+
+    private Room makeMushroomRoom(final Direction dir)
+    {
+        Room room = null;
+        int roomTries = 0;
+        boolean successfulRoom = false;
+
+        while (!successfulRoom && roomTries < 20)
+        {
+            LOGGER.info(String.valueOf(roomTries));
+            roomTries++;
+            final int roomSizeX = ThreadLocalRandom.current().nextInt(3) + 2; // MushroomRoom is a bit smaller
+            final int roomSizeY = ThreadLocalRandom.current().nextInt(3) + 2; // MushroomRoom is a bit smaller
             int roomStarterPosX = dir == Direction.LEFT ? currentX - roomSizeX : currentX; // Shifting room if necessary
             int roomStarterPosY = dir == Direction.DOWN ? currentY - roomSizeY : currentY; // Shifting room if necessary
             if (dir.isVertical())
@@ -282,90 +326,57 @@ public class World implements Tickable
             if (dir.isHorizontal())
                 roomStarterPosY -= ThreadLocalRandom.current().nextInt(roomSizeY); // Extra shifting room, for more variation
             room = new Room(roomStarterPosX, roomStarterPosY, roomSizeX, roomSizeY);
-            successfullRoom = true;
-            for (Coordinate coord : room)
+            successfulRoom = true;
+
+            for (final Coordinate coordinate : room)
             {
-                if (!isWithinWorld(coord) || getTileAt(coord) instanceof FloorTile) // the room may not overlap another room
+                if (!isWithinWorld(coordinate) || getTileAt(coordinate) instanceof FloorTile) // the room may not overlap another room
                 {
-                    successfullRoom = false;
+                    successfulRoom = false;
                 }
             }
-            if (successfullRoom)
+
+            if (successfulRoom)
             {
-                for (Coordinate coord : room)
+                for (final Coordinate coordinate : room)
                 {
-                    Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GRASS_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
-                    setTileAt(coord, new FloorTile(texture));
+                    final Texture texture = ThreadLocalRandom.current().nextBoolean()
+                            ? Textures.GRASS_0
+                            : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
+                    setTileAt(coordinate, new FloorTile(texture));
+                    getTileAt(coordinate).setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
+                    noObstacleZone.add(coordinate);
                 }
             }
         }
-        if (!successfullRoom)
-            room = null;
+
+        if (!successfulRoom) room = null;
+
         return room;
     }
 
-    private Room makeMushroomRoom(Direction dir)
+    private Pair<ArrayList<Coordinate>, Direction> makePath(final Room fromRoom)
     {
-        Room room = null;
-        int roomTries = 0;
-        boolean successfullRoom = false;
-        while (!successfullRoom && roomTries < 20)
-        {
-            System.out.println(roomTries);
-            roomTries++;
-            int roomSizeX = ThreadLocalRandom.current().nextInt(3) + 2; // MushroomRoom is bit smaller
-            int roomSizeY = ThreadLocalRandom.current().nextInt(3) + 2; // MushroomRoom is bit smaller
-            int roomStarterPosX = dir == Direction.LEFT ? currentX - roomSizeX : currentX; // Shifting room if necessary
-            int roomStarterPosY = dir == Direction.DOWN ? currentY - roomSizeY : currentY; // Shifting room if necessary
-            if (dir.isVertical())
-                roomStarterPosX -= ThreadLocalRandom.current().nextInt(roomSizeX); // Extra shifting room, for more variation
-            if (dir.isHorizontal())
-                roomStarterPosY -= ThreadLocalRandom.current().nextInt(roomSizeY); // Extra shifting room, for more variation
-            room = new Room(roomStarterPosX, roomStarterPosY, roomSizeX, roomSizeY);
-            successfullRoom = true;
-            for (Coordinate coord : room)
-            {
-                if (!isWithinWorld(coord) || getTileAt(coord) instanceof FloorTile) // the room may not overlap another room
-                {
-                    successfullRoom = false;
-                }
-            }
-            if (successfullRoom)
-            {
-                for (Coordinate coord : room)
-                {
-                    Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GRASS_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
-                    setTileAt(coord, new FloorTile(texture));
-                    getTileAt(coord).setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
-                    noObstacleZone.add(coord);
-                }
-            }
-        }
-        if (!successfullRoom)
-            room = null;
-        return room;
-    }
-
-    private Pair<ArrayList<Coordinate>, Direction> makePath(Room fromRoom)
-    {
-        ArrayList<Coordinate> path = new ArrayList<>();
+        final ArrayList<Coordinate> path = new ArrayList<>();
         int pathTries = 0;
         boolean successfulPath = false;
         Direction directionOfTheSuccessfulPath = null;
+
         while (!successfulPath && pathTries < 20)
         {
             pathTries++;
             path.clear();
-            Pair<Coordinate, Direction> continuation = fromRoom.randomOfWall();
+            final Pair<Coordinate, Direction> continuation = fromRoom.randomOfWall();
             currentX = continuation.first().x();
             currentY = continuation.first().y();
-            int pathwayLength = ThreadLocalRandom.current().nextInt(4) + 3;
+            final int pathwayLength = ThreadLocalRandom.current().nextInt(4) + 3;
             successfulPath = true;
             for (int i = 1; i < pathwayLength; i++)
             {
                 path.add(new Coordinate(currentX, currentY));
-                currentX += continuation.second().getX();
-                currentY += continuation.second().getY();
+                currentX += continuation.second().getXMovement();
+                currentY += continuation.second().getYMovement();
+
                 if (!isWithinWorld(currentX, currentY) || getTileAt(currentX, currentY) instanceof FloorTile) // the room may not overlap another room
                 {
                     successfulPath = false;
@@ -374,14 +385,18 @@ public class World implements Tickable
             if (successfulPath)
             {
                 directionOfTheSuccessfulPath = continuation.second();
-                for (Coordinate c : path)
+
+                for (final Coordinate c : path)
                 {
-                    Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GRASS_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
+                    final Texture texture = ThreadLocalRandom.current().nextBoolean()
+                            ? Textures.GRASS_0
+                            : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
                     setTileAt(c, new FloorTile(texture));
                     noObstacleZone.add(c);
                 }
             }
         }
+
         return new Pair<>(path, directionOfTheSuccessfulPath);
     }
 
@@ -390,16 +405,22 @@ public class World implements Tickable
         // Note this for loop is a bit smaller because it skips the very outer edge
         for (int i = 0; i < ThreadLocalRandom.current().nextInt(5) + 2; i++)
         {
-            int startX = 1 + ThreadLocalRandom.current().nextInt(WORLD_WIDTH - 1);
-            int startY = 1 + ThreadLocalRandom.current().nextInt(WORLD_HEIGHT - 1);
+            final int startX = 1 + ThreadLocalRandom.current().nextInt(WORLD_WIDTH - 1);
+            final int startY = 1 + ThreadLocalRandom.current().nextInt(WORLD_HEIGHT - 1);
+
             for (int x = startX; x < startX + ThreadLocalRandom.current().nextInt(3) + 2; x++)
             {
                 for (int y = startY; y < startY + ThreadLocalRandom.current().nextInt(3) + 2; y++)
                 {
-                    Coordinate c = new Coordinate(x, y);
+                    final Coordinate c = new Coordinate(x, y);
+
                     if (isWithinWorld(c) && getTileAt(c) instanceof FloorTile)
+                    {
                         if (noObstacleZone.contains(c))
+                        {
                             tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
+                        }
+                    }
                 }
             }
         }
@@ -412,16 +433,17 @@ public class World implements Tickable
         {
             for (int y = 1; y < WORLD_HEIGHT - 1; y++)
             {
-                Coordinate c = new Coordinate(x, y);
+                final Coordinate c = new Coordinate(x, y);
+
                 if (getTileAt(c) instanceof FloorTile)
                 {
                     final int random = ThreadLocalRandom.current().nextInt(24);
+
                     if (noObstacleZone.contains(c))
                     {
-                        switch (random)
+                        if (random == 6 || random == 7)
                         {
-                            case 6, 7 ->
-                                    tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
+                            tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
                         }
                     } else
                     {
@@ -450,10 +472,7 @@ public class World implements Tickable
                 {
                     final int random = ThreadLocalRandom.current().nextInt(26 - 2 * (timeTracker.getCurrentTime() % 6));
 
-                    switch (random)
-                    {
-                        case 0 -> entities.add(new Scamperer(this, new Coordinate(x, y)));
-                    }
+                    if (random == 0) entities.add(new Scamperer(this, new Coordinate(x, y)));
                 }
             }
         }
@@ -462,7 +481,7 @@ public class World implements Tickable
     public Coordinate placeEndSign()
     {
         Coordinate coordinate = null;
-        ArrayList<Coordinate> potential = finalRoom.wallsExcludingCorners();
+        final ArrayList<Coordinate> potential = finalRoom.wallsExcludingCorners();
 
         for (int i = potential.size() - 1; i >= 1; i--) // Shuffle potential places with Fisher-Yates shuffle to randomize.
         {
@@ -470,17 +489,19 @@ public class World implements Tickable
             Collections.swap(potential, i, ThreadLocalRandom.current().nextInt(i + 1));
         }
 
-        for (Coordinate c : potential)
+        for (final Coordinate c : potential)
         {
             if (isWithinWorld(c) && getTileAt(c) instanceof WallTile)
+            {
                 if (amountFloorNeighbour(c) == 1)
                 {
                     coordinate = c;
                     setTileAt(coordinate, new FloorTile(Textures.GRASS_0));
                     getTileAt(coordinate).setItem(new SignItem(Textures.SIGN));
-                    LOGGER.info("placed end at: {}", coordinate);
+                    LOGGER.info("Placed end at: {}", coordinate);
                     break;
                 }
+            }
         }
 
         if (coordinate == null)
@@ -507,13 +528,13 @@ public class World implements Tickable
                 {
                     tiles[pos] = new FloorTile(Textures.GRASS_0);
                     coordinate = new Coordinate(0, (pos + 1) / WORLD_WIDTH);
-                    LOGGER.info("placed start at: {}", coordinate);
+                    LOGGER.info("Placed start at: {}", coordinate);
                     player.setCoordinate(coordinate);
                     break;
                 }
             } else
             {
-                LOGGER.error("Failed to create player start pos");
+                LOGGER.error("Failed to create player start position.");
                 this.onBoardFailureToCreate();
                 break;
             }
@@ -535,13 +556,17 @@ public class World implements Tickable
         {
             for (int y = 0; y < WORLD_HEIGHT; y++)
             {
-                Coordinate mutableCoordinate = new Coordinate(x, y);
+                final Coordinate mutableCoordinate = new Coordinate(x, y);
+
                 if (isWithinWorld(mutableCoordinate))
                 {
-                    Tile tile = getTileAt(x, y);
+                    final Tile tile = getTileAt(x, y);
                     tile.postGenerationEvent(this, mutableCoordinate);
+
                     if (tile instanceof ConnectedTextureTile)
+                    {
                         ((ConnectedTextureTile) getTileAt(x, y)).adaptQuadrantTexturesList(this, new Coordinate(x, y));
+                    }
                 }
             }
         }
@@ -558,7 +583,7 @@ public class World implements Tickable
         if (textureRenderer.isEnabled())
         {
             // Board
-            textureRenderer.clearLists();
+            textureRenderer.clearLayers();
             textureRenderer.LAYER_MIDDLE.put(player.getCoordinate(), player.getCurrentTexture());
             entities.forEach(entity -> entity.whichLayer(textureRenderer).put(entity.getCoordinate(), entity.getCurrentTexture()));
             textureRenderer.renderBoard(); // Tiles and items get added to the lists in here and the rendering gets called.
@@ -571,8 +596,8 @@ public class World implements Tickable
             uiRenderer.renderTimeIcon(this.getTimeTracker().getPeriodFromTime(this.timeTracker.getCurrentTime()));
         } else
         {
-            String s = this.getTimeTracker().getCurrentTimeString();
-            float size = 20.0f / (s.length() + 2);
+            final String s = this.getTimeTracker().getCurrentTimeString();
+            final float size = 20.0f / (s.length() + 2);
             textRenderer.drawString(s, -1f, -0.05f * size, size);
         }
     }
@@ -638,42 +663,51 @@ public class World implements Tickable
         }
     }
 
-    public boolean isWithinWorld(Coordinate coordinate)
+    public boolean isWithinWorld(final Coordinate coordinate)
     {
-        int i = coordinate.x() + coordinate.y() * WORLD_WIDTH;
-        return i >= 0 && i < tiles.length && coordinate.x() >= 0 && coordinate.x() < WORLD_WIDTH && coordinate.y() >= 0 && coordinate.y() < WORLD_HEIGHT;
+        final int i = coordinate.x() + coordinate.y() * WORLD_WIDTH;
+        return i >= 0
+                && i < tiles.length
+                && coordinate.x() >= 0
+                && coordinate.x() < WORLD_WIDTH
+                && coordinate.y() >= 0
+                && coordinate.y() < WORLD_HEIGHT;
     }
 
-    public boolean isWithinWorld(int x, int y)
+    public boolean isWithinWorld(final int x, final int y)
     {
         return isWithinWorld(new Coordinate(x, y));
     }
 
-    public Tile getTileAt(int x, int y)
+    public Tile getTileAt(final int x, final int y)
     {
         return this.tiles[x + y * WORLD_WIDTH];
     }
 
-    public void setTileAt(int x, int y, Tile tile)
+    public void setTileAt(final int x, final int y, final Tile tile)
     {
         if (isWithinWorld(x, y))
+        {
             if (!(x == 0 || y == 0 || x == WORLD_WIDTH - 1 || y == WORLD_HEIGHT - 1) || tile instanceof WallTile) // Can not place tile at edge except wall.
+            {
                 this.tiles[x + y * WORLD_WIDTH] = tile;
+            }
+        }
     }
 
-    public Tile getTileAt(Coordinate coordinate)
+    public Tile getTileAt(final Coordinate coordinate)
     {
         return this.getTileAt(coordinate.x(), coordinate.y());
     }
 
-    public void setTileAt(Coordinate coordinate, Tile tile)
+    public void setTileAt(final Coordinate coordinate, final Tile tile)
     {
         this.setTileAt(coordinate.x(), coordinate.y(), tile);
     }
 
-    public Entity getEntityAt(Coordinate coordinate)
+    public Entity getEntityAt(final Coordinate coordinate)
     {
-        for (Entity e : getEntities())
+        for (final Entity e : getEntities())
         {
             if (e.getCoordinate().equals(coordinate)) return e;
         }
@@ -681,14 +715,15 @@ public class World implements Tickable
         return null;
     }
 
-    public int amountFloorNeighbour(Coordinate coordinate)
+    public int amountFloorNeighbour(final Coordinate coordinate)
     {
         int amount = 0;
-        for (Direction d : Direction.values())
+
+        for (final Direction d : Direction.values())
         {
-            if (isWithinWorld(coordinate.move(d)) && getTileAt(coordinate.move(d)) instanceof FloorTile)
-                amount++;
+            if (isWithinWorld(coordinate.move(d)) && getTileAt(coordinate.move(d)) instanceof FloorTile) amount++;
         }
+
         return amount;
     }
 }

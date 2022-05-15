@@ -45,7 +45,7 @@ public class MushroomItem implements Item
     }
 
     @Override
-    public boolean isObstacle(Entity incomingEntity)
+    public boolean isObstacle(final Entity incomingEntity)
     {
         return false;
     }
@@ -60,7 +60,7 @@ public class MushroomItem implements Item
     }
 
     @Override
-    public Map<Coordinate, Texture> whichLayer(TextureRenderer tr)
+    public Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

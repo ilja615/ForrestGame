@@ -24,73 +24,57 @@ public enum Direction
     UP(0, 1), DOWN(0, -1),
     LEFT(-1, 0), RIGHT(1, 0);
 
-    private final int x;
-    private final int y;
+    private final int xMovement;
+    private final int yMovement;
 
-    Direction(int x, int y)
+    Direction(final int xMovement, final int yMovement)
     {
-        this.x = x;
-        this.y = y;
+        this.xMovement = xMovement;
+        this.yMovement = yMovement;
     }
 
-    public int getX()
+    public int getXMovement()
     {
-        return x;
+        return xMovement;
     }
 
-    public int getY()
+    public int getYMovement()
     {
-        return y;
+        return yMovement;
     }
 
     public boolean isVertical()
     {
-        return y != 0;
+        return yMovement != 0;
     }
 
     public boolean isHorizontal()
     {
-        return x != 0;
+        return xMovement != 0;
     }
 
-    public enum Secondary
+    public enum Diagonal
     {
-        TOP_RIGHT(UP, RIGHT),
-        TOP_LEFT(UP, LEFT),
-        BOTTOM_RIGHT(DOWN, RIGHT),
-        BOTTOM_LEFT(DOWN, LEFT);
+        UP_AND_LEFT(UP, LEFT), UP_AND_RIGHT(UP, RIGHT),
+        DOWN_AND_LEFT(DOWN, LEFT), DOWN_AND_RIGHT(DOWN, RIGHT);
 
-        private final Direction vertical;
-        private final Direction horizontal;
-        private final int x;
-        private final int y;
+        private final Direction verticalDirection;
+        private final Direction horizontalDirection;
 
-        Secondary(Direction vertical, Direction horizontal)
+        Diagonal(final Direction verticalDirection, final Direction horizontalDirection)
         {
-            this.vertical = vertical;
-            this.horizontal = horizontal;
-            this.y = this.vertical.y;
-            this.x = this.horizontal.x;
+            this.verticalDirection = verticalDirection;
+            this.horizontalDirection = horizontalDirection;
         }
 
-        public Direction getVertical()
+        public Direction getVerticalDirection()
         {
-            return vertical;
+            return verticalDirection;
         }
 
-        public Direction getHorizontal()
+        public Direction getHorizontalDirection()
         {
-            return horizontal;
-        }
-
-        public int getX()
-        {
-            return x;
-        }
-
-        public int getY()
-        {
-            return y;
+            return horizontalDirection;
         }
     }
 }

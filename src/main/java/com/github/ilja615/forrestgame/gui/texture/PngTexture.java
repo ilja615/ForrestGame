@@ -42,21 +42,27 @@ public class PngTexture implements Texture
     private static final Logger LOGGER = LoggerFactory.getLogger(PngTexture.class);
     private final int id;
     private final String name;
-    private boolean isTall;
-    private boolean isHorizontallyMirrored;
-    private boolean isVerticallyMirrored;
-    private boolean isPlayerTexture;
+    private final boolean tall;
+    private final boolean horizontallyMirrored;
+    private final boolean verticallyMirrored;
+    private final boolean playerTexture;
 
-    public PngTexture(final String fileName)
+    private PngTexture(final Builder builder)
     {
-        this.name = fileName;
+        this.name = builder.fileName;
+        this.tall = builder.tall;
+        this.horizontallyMirrored = builder.horizontallyMirrored;
+        this.verticallyMirrored = builder.verticallyMirrored;
+        this.playerTexture = builder.playerTexture;
+
         final IntBuffer width = BufferUtils.createIntBuffer(1);
         final IntBuffer height = BufferUtils.createIntBuffer(1);
         final IntBuffer comp = BufferUtils.createIntBuffer(1);
 
         try
         {
-            final Path textureFile = Paths.get(System.getProperty("java.io.tmpdir"), "forrestgame").resolve(fileName + ".png");
+            final Path textureFile = Paths.get(System.getProperty("java.io.tmpdir"), "forrestgame")
+                    .resolve(this.name + ".png");
 
             if (Files.notExists(textureFile))
             {
@@ -64,16 +70,16 @@ public class PngTexture implements Texture
 
                 if (Files.notExists(forrestGameFolder))
                 {
-                    LOGGER.debug("Creating cached textures folder ({})", forrestGameFolder);
+                    LOGGER.debug("Creating cached textures folder located at {}.", forrestGameFolder);
                 }
+
                 Files.createDirectories(forrestGameFolder);
 
-                try (final InputStream inputStream = Objects.requireNonNull(Thread.currentThread()
-                        .getContextClassLoader()
-                        .getResourceAsStream(fileName + ".png")))
+                try (final InputStream inputStream = Objects.requireNonNull(this.getClass()
+                        .getResourceAsStream("/textures/" + this.name + ".png")))
                 {
                     Files.copy(inputStream, textureFile, StandardCopyOption.REPLACE_EXISTING);
-                    LOGGER.debug("Creating cached texture file ({})", textureFile);
+                    LOGGER.debug("Creating cached texture file located at {}.", textureFile);
                 }
             }
 
@@ -85,7 +91,7 @@ public class PngTexture implements Texture
                     4
             );
 
-            LOGGER.debug("Loaded texture file {}", textureFile);
+            LOGGER.debug("Loaded texture file {}.", textureFile);
 
             this.id = glGenTextures();
 
@@ -98,9 +104,7 @@ public class PngTexture implements Texture
             stbi_image_free(Objects.requireNonNull(data));
         } catch (final IOException exception)
         {
-            LOGGER.error("Could not read textures", exception);
-            System.exit(1);
-            throw new IllegalStateException("how");
+            throw new IllegalStateException("Could not read the texture file " + this.name + ".", exception);
         }
     }
 
@@ -113,58 +117,74 @@ public class PngTexture implements Texture
     @Override
     public boolean isTall()
     {
-        return isTall;
-    }
-
-    @Override
-    public Texture setTall(boolean tall)
-    {
-        isTall = tall;
-        return this;
+        return tall;
     }
 
     @Override
     public boolean isHorizontallyMirrored()
     {
-        return isHorizontallyMirrored;
-    }
-
-    @Override
-    public Texture setHorizontallyMirrored(boolean horizontallyMirrored)
-    {
-        isHorizontallyMirrored = horizontallyMirrored;
-        return this;
+        return horizontallyMirrored;
     }
 
     @Override
     public boolean isVerticallyMirrored()
     {
-        return isVerticallyMirrored;
-    }
-
-    @Override
-    public Texture setVerticallyMirrored(boolean verticallyMirrored)
-    {
-        isVerticallyMirrored = verticallyMirrored;
-        return this;
+        return verticallyMirrored;
     }
 
     @Override
     public boolean isPlayerTexture()
     {
-        return isPlayerTexture;
-    }
-
-    @Override
-    public Texture setPlayerTexture(boolean playerTexture)
-    {
-        isPlayerTexture = playerTexture;
-        return this;
+        return playerTexture;
     }
 
     @Override
     public String toString()
     {
         return this.name;
+    }
+
+    public static class Builder
+    {
+        private final String fileName;
+        private boolean tall;
+        private boolean horizontallyMirrored;
+        private boolean verticallyMirrored;
+        private boolean playerTexture;
+
+        public Builder(final String fileName)
+        {
+            this.fileName = fileName;
+        }
+
+        public PngTexture.Builder setTall(final boolean tall)
+        {
+            this.tall = tall;
+            return this;
+        }
+
+        public PngTexture.Builder setHorizontallyMirrored(final boolean horizontallyMirrored)
+        {
+            this.horizontallyMirrored = horizontallyMirrored;
+            return this;
+        }
+
+        public PngTexture.Builder setVerticallyMirrored(final boolean verticallyMirrored)
+        {
+            this.verticallyMirrored = verticallyMirrored;
+            return this;
+        }
+
+
+        public PngTexture.Builder setPlayerTexture(final boolean playerTexture)
+        {
+            this.playerTexture = playerTexture;
+            return this;
+        }
+
+        public Texture build()
+        {
+            return new PngTexture(this);
+        }
     }
 }

@@ -45,10 +45,9 @@ public class Tile
      *
      * @return if this tile is an obstacle
      */
-    public boolean isObstacle(Entity incomingEntity)
+    public boolean isObstacle(final Entity incomingEntity)
     {
-        if (this.hasItem())
-            return this.item.isObstacle(incomingEntity);
+        if (this.hasItem()) return this.item.isObstacle(incomingEntity);
         else return false;
     }
 
@@ -75,12 +74,12 @@ public class Tile
         return item;
     }
 
-    public void setItem(Item item)
+    public void setItem(final Item item)
     {
         this.item = item;
     }
 
-    public void postGenerationEvent(World world, Coordinate thisPos)
+    public void postGenerationEvent(final World world, final Coordinate thisPos)
     {
     }
 }

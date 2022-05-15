@@ -23,17 +23,14 @@ import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
-import com.github.ilja615.forrestgame.util.ShortPathFinder;
+import com.github.ilja615.forrestgame.util.ShortPathfinder;
 import com.github.ilja615.forrestgame.world.World;
 import com.google.common.collect.ImmutableMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class Scamperer implements Entity
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(World.class);
     private final World world;
     private final StatTracker statTracker;
     private Coordinate coordinate;
@@ -59,7 +56,7 @@ public class Scamperer implements Entity
     }
 
     @Override
-    public void setCoordinate(Coordinate coordinate)
+    public void setCoordinate(final Coordinate coordinate)
     {
         this.coordinate = coordinate;
     }
@@ -89,7 +86,7 @@ public class Scamperer implements Entity
     }
 
     @Override
-    public boolean onPlayerAttemptingWalk(Entity player, Coordinate coordinate)
+    public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         this.statTracker.decrement(StatTracker.Stat.HEALTH);
         if (player instanceof Player)
@@ -103,7 +100,7 @@ public class Scamperer implements Entity
     }
 
     @Override
-    public void die(StatTracker.Stat deathCausingStat)
+    public void die(final StatTracker.Stat deathCausingStat)
     {
         world.getEntities().remove(this);
     }
@@ -111,12 +108,12 @@ public class Scamperer implements Entity
     @Override
     public void automaticallyMove()
     {
-        final ShortPathFinder pathFinder = new ShortPathFinder();
+        final ShortPathfinder pathFinder = new ShortPathfinder();
         final List<Coordinate> path = pathFinder.findPath(this.world, this.coordinate, this.world.getPlayer().getCoordinate(), this);
 
         if (!path.isEmpty())
         {
-            Coordinate newPos = path.get(1);
+            final Coordinate newPos = path.get(1);
             if (world.isWithinWorld(newPos) && !world.getTileAt(newPos).isObstacle(this))
             {
                 if (world.getPlayer().getCoordinate().equals(newPos))
@@ -136,7 +133,7 @@ public class Scamperer implements Entity
     @Override
     public boolean willAutomaticallyMove()
     {
-        final ShortPathFinder pathFinder = new ShortPathFinder();
+        final ShortPathfinder pathFinder = new ShortPathfinder();
         final List<Coordinate> path = pathFinder.findPath(this.world, this.coordinate, this.world.getPlayer().getCoordinate(), this);
 
         return !path.isEmpty();

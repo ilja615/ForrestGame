@@ -24,19 +24,15 @@ import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.world.World;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * A path finder. Finds the shortest path to get from A to B.
+ * A pathfinder. Finds the shortest path to get from A to B.
  */
-public class ShortPathFinder
+public class ShortPathfinder
 {
     private static final int MAX_SEARCH_DISTANCE = 32;
-    private Node[][] nodes;
-
-    public ShortPathFinder()
-    {
-    }
 
     /**
      * Finds the shortest path from {@code from} to {@code to}.
@@ -48,7 +44,7 @@ public class ShortPathFinder
      */
     public List<Coordinate> findPath(final World world, final Coordinate from, final Coordinate to, final Entity entity)
     {
-        nodes = new Node[world.WORLD_WIDTH][world.WORLD_HEIGHT];
+        final Node[][] nodes = new Node[world.WORLD_WIDTH][world.WORLD_HEIGHT];
 
         for (int x = 0; x < world.WORLD_WIDTH; x++)
         {
@@ -59,11 +55,10 @@ public class ShortPathFinder
         }
 
         // this is codde for to find a path who is short !!!
-        if (!world.isWithinWorld(to))
-            return new ArrayList<>();
+        if (!world.isWithinWorld(to)) return new ArrayList<>();
 
         final List<Node> closed = new ArrayList<>();
-        final List<Node> open = new SortedList<>();
+        final List<Node> open = new ArrayList<>();
 
         open.add(nodes[from.x()][from.y()]);
 
@@ -78,7 +73,7 @@ public class ShortPathFinder
             if (current == nodes[to.x()][to.y()]) break;
 
             open.remove(current);
-            //closed.add(current);
+            // closed.add(current);
 
             for (int x = -1; x < 2; x++)
             {
@@ -89,7 +84,7 @@ public class ShortPathFinder
                     // it can't go diagonal.
                     if (x != 0 && y != 0) continue;
                     // idk why it has to continue when going left or down idk.
-                    //if (x < 0 || y < 0) continue;
+                    // if (x < 0 || y < 0) continue;
                     // determine the location of the neighbor and evaluate it
                     final int xp = x + current.getX();
                     final int yp = y + current.getY();
@@ -98,11 +93,11 @@ public class ShortPathFinder
                     {
                         if (!world.getTileAt(xp, yp).isObstacle(entity))
                         {
-                            // Movement cost :
+                            // Movement cost:
                             final float movementCost = 1.0f;
                             final float nextStepCost = current.getCost() + movementCost;
                             final Node neighbor = nodes[xp][yp];
-                            //  map.pathFinderVisited(xp, yp);
+                            // map.pathFinderVisited(xp, yp);
 
                             // if the node hasn't already been processed and discarded then
                             // reset it's cost to our current cost and add it as a next possible
@@ -123,8 +118,10 @@ public class ShortPathFinder
                                 neighbor.setCost(nextStepCost);
                                 neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.x() - xp) + Math.sqrt(to.y() - yp)));
                                 open.add(neighbor);
-                                //closed.add(neighbor);
+                                // closed.add(neighbor);
                             }
+
+                            Collections.sort(open);
                         }
                     }
                 }
@@ -132,10 +129,9 @@ public class ShortPathFinder
         }
 
         // in this case is no path soo it has to return empty :T
-        if (nodes[to.x()][to.y()].getParent() == null)
-            return new ArrayList<>();
+        if (nodes[to.x()][to.y()].getParent() == null) return new ArrayList<>();
 
-        // in this case is ther path whoo yey \o/ !!! :D :] happy momment'
+        // in this case is ther path whoo yey \o/ !!! :D :] happy momment' ! !  ! ! :))
         final List<Coordinate> path = new ArrayList<>();
         Node target = nodes[to.x()][to.y()];
 

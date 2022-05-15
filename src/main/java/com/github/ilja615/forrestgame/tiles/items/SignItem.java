@@ -44,7 +44,7 @@ public class SignItem implements Item
     }
 
     @Override
-    public boolean isObstacle(Entity incomingEntity)
+    public boolean isObstacle(final Entity incomingEntity)
     {
         return !(incomingEntity instanceof Player);
     }
@@ -53,7 +53,7 @@ public class SignItem implements Item
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         // The code for moving to the next stage
-        World world = player.getWorld();
+        final World world = player.getWorld();
         world.getTimeTracker().incrementCurrentTime();
         world.getTextureRenderer().setDisabled();
         world.getTimeTracker().waitTicks = 20;
@@ -63,7 +63,7 @@ public class SignItem implements Item
     }
 
     @Override
-    public Map<Coordinate, Texture> whichLayer(TextureRenderer tr)
+    public Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

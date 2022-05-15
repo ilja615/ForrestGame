@@ -26,6 +26,7 @@ public final class KeyInput
 {
     private KeyInput()
     {
+        throw new IllegalStateException("This incident will be reported.");
     }
 
     /**
