@@ -28,10 +28,10 @@ version = "0.1.0"
 
 val lwjglNatives = (System.getProperty("os.name")!! to System.getProperty("os.arch")!!).let { (name, arch) ->
     when {
-        arrayOf("Linux", "FreeBSD", "SunOS", "Unit").any { name.startsWith(it) } -> "natives-linux"
-        arrayOf("Mac OS X", "Darwin").any { name.startsWith(it) } ->
+        arrayOf("Linux", "FreeBSD", "SunOS", "Unit").any(name::startsWith) -> "natives-linux"
+        arrayOf("Mac OS X", "Darwin").any(name::startsWith) ->
             "natives-macos${if (arch.startsWith("aarch64")) "-arm64" else ""}"
-        arrayOf("Windows").any { name.startsWith(it) } -> "natives-windows"
+        arrayOf("Windows").any(name::startsWith) -> "natives-windows"
         else -> throw Error("Unrecognized or unsupported platform. Please set \"lwjglNatives\" manually")
     }
 }
