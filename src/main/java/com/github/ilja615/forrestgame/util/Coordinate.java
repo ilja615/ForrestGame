@@ -19,31 +19,16 @@
 
 package com.github.ilja615.forrestgame.util;
 
-import java.util.Objects;
-
 /**
- * A pair of a x coordinate and a y coordinate.
+ * A (x, y) coordinate pair.
  * Contains utilities to make movement easier.
  */
-public class Coordinate
+public record Coordinate(int x, int y)
 {
-    private final int x;
-    private final int y;
-
-    public Coordinate(final int x, final int y)
+    private int validateMovement(final int amount)
     {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX()
-    {
-        return x;
-    }
-
-    public int getY()
-    {
-        return y;
+        if (amount <= 0) throw new IllegalArgumentException("Amount must be greater than 0!");
+        else return amount;
     }
 
     public Coordinate up()
@@ -53,9 +38,7 @@ public class Coordinate
 
     public Coordinate up(final int amount)
     {
-        if (amount <= 0) throw new IllegalArgumentException("Amount must be greater than 0!");
-
-        return new Coordinate(this.x, this.y + amount);
+        return new Coordinate(this.x, this.y + validateMovement(amount));
     }
 
     public Coordinate down()
@@ -65,9 +48,7 @@ public class Coordinate
 
     public Coordinate down(final int amount)
     {
-        if (amount <= 0) throw new IllegalArgumentException("Amount must be greater than 0!");
-
-        return new Coordinate(this.x, this.y - amount);
+        return new Coordinate(this.x, this.y - validateMovement(amount));
     }
 
     public Coordinate left()
@@ -77,9 +58,7 @@ public class Coordinate
 
     public Coordinate left(final int amount)
     {
-        if (amount <= 0) throw new IllegalArgumentException("Amount must be greater than 0!");
-
-        return new Coordinate(this.x - amount, this.y);
+        return new Coordinate(this.x - validateMovement(amount), this.y);
     }
 
     public Coordinate right()
@@ -89,9 +68,7 @@ public class Coordinate
 
     public Coordinate right(final int amount)
     {
-        if (amount <= 0) throw new IllegalArgumentException("Amount must be greater than 0!");
-
-        return new Coordinate(this.x + amount, this.y);
+        return new Coordinate(this.x + validateMovement(amount), this.y);
     }
 
     public Coordinate relative(final int deltaX, final int deltaY)
@@ -130,14 +107,8 @@ public class Coordinate
     }
 
     @Override
-    public int hashCode()
-    {
-        return Objects.hash(x, y);
-    }
-
-    @Override
     public String toString()
     {
-        return x + "," + y;
+        return "(" + x + "," + y + ")";
     }
 }

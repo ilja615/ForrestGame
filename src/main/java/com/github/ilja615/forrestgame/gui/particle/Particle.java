@@ -34,7 +34,7 @@ public class Particle implements Tickable
     private int animationTimer = 0;
     private int completedCycles = 0;
     private boolean expired = false;
-    private int ticksPerFrame;
+    private final int ticksPerFrame;
 
     public Particle(Coordinate coord, int amountCycles, int tpf, World world, Texture[] textures)
     {

@@ -23,9 +23,8 @@ import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
-import com.github.ilja615.forrestgame.util.Pair;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 public class TreeItem implements Item
 {
@@ -55,7 +54,7 @@ public class TreeItem implements Item
     }
 
     @Override
-    public ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr)
+    public Map<Coordinate, Texture> whichLayer(TextureRenderer tr)
     {
         return tr.LAYER_FRONT;
     }

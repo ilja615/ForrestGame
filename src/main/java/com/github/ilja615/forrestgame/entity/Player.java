@@ -43,7 +43,7 @@ public class Player implements Entity
     private Coordinate scheduledCoordinate;
     private boolean mobile = true;
     private float animationTimer = 0.0f;
-    private int ANIMATIONFRAMESTIME = 60;
+    private final int ANIMATIONFRAMESTIME = 60;
 
     public Player(final World world, final Coordinate startPos)
     {

@@ -119,11 +119,13 @@ public class Scamperer implements Entity
             Coordinate newPos = path.get(1);
             if (world.isWithinWorld(newPos) && !world.getTileAt(newPos).isObstacle(this))
             {
-                if (world.getPlayer().getCoordinate().equals(newPos)) {
+                if (world.getPlayer().getCoordinate().equals(newPos))
+                {
                     // Attack the player
                     world.getPlayer().getStatTracker().decrement(StatTracker.Stat.HEALTH);
                     world.getParticles().add(new Particle(world.getPlayer().getCoordinate(), 1, 1, world, Textures.CHOP_PARTICLE));
-                } else {
+                } else
+                {
                     if (world.getEntityAt(newPos) == null)
                         this.coordinate = newPos;
                 }

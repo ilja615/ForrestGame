@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A {@link ArrayList<T>} which sorts itself every addition.
+ * A {@link java.util.ArrayList<T>} which sorts itself every addition.
  *
  * @param <T> the type of the object to be stored
  */

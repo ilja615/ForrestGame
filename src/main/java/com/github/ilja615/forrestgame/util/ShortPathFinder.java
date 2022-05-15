@@ -65,7 +65,7 @@ public class ShortPathFinder
         final List<Node> closed = new ArrayList<>();
         final List<Node> open = new SortedList<>();
 
-        open.add(nodes[from.getX()][from.getY()]);
+        open.add(nodes[from.x()][from.y()]);
 
         // idk if this is intentional, @ilja615
         // nodes[tx][ty].setParent(null);
@@ -75,7 +75,7 @@ public class ShortPathFinder
         while (maxDepth < MAX_SEARCH_DISTANCE && !open.isEmpty())
         {
             final Node current = open.get(0);
-            if (current == nodes[to.getX()][to.getY()]) break;
+            if (current == nodes[to.x()][to.y()]) break;
 
             open.remove(current);
             //closed.add(current);
@@ -111,7 +111,7 @@ public class ShortPathFinder
                             {
                                 neighbor.setParent(current);
                                 neighbor.setCost(nextStepCost);
-                                neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.getX() - xp) + Math.sqrt(to.getY() - yp)));
+                                neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.x() - xp) + Math.sqrt(to.y() - yp)));
                                 maxDepth = Math.max(maxDepth, neighbor.setParent(current));
                                 closed.add(neighbor);
                                 open.add(neighbor);
@@ -121,7 +121,7 @@ public class ShortPathFinder
                             {
                                 neighbor.setParent(current);
                                 neighbor.setCost(nextStepCost);
-                                neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.getX() - xp) + Math.sqrt(to.getY() - yp)));
+                                neighbor.setHeuristic((float) Math.sqrt(Math.sqrt(to.x() - xp) + Math.sqrt(to.y() - yp)));
                                 open.add(neighbor);
                                 //closed.add(neighbor);
                             }
@@ -132,20 +132,20 @@ public class ShortPathFinder
         }
 
         // in this case is no path soo it has to return empty :T
-        if (nodes[to.getX()][to.getY()].getParent() == null)
+        if (nodes[to.x()][to.y()].getParent() == null)
             return new ArrayList<>();
 
         // in this case is ther path whoo yey \o/ !!! :D :] happy momment'
         final List<Coordinate> path = new ArrayList<>();
-        Node target = nodes[to.getX()][to.getY()];
+        Node target = nodes[to.x()][to.y()];
 
-        while (target != nodes[from.getX()][from.getY()])
+        while (target != nodes[from.x()][from.y()])
         {
             path.add(0, new Coordinate(target.getX(), target.getY()));
             target = target.getParent();
         }
 
-        path.add(0, new Coordinate(from.getX(), from.getY()));
+        path.add(0, new Coordinate(from.x(), from.y()));
 
         // thats it, we have our path
         return path;
