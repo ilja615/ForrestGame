@@ -269,7 +269,7 @@ public class World implements Tickable
 
         while (!successfulRoom && roomTries < 20)
         {
-            LOGGER.info(String.valueOf(roomTries));
+            LOGGER.debug("Amount of room tries: {}.", roomTries);
             roomTries++;
             final int roomSizeX = ThreadLocalRandom.current().nextInt(ROOM_MAX_SIZE - ROOM_MIN_SIZE) + ROOM_MIN_SIZE;
             final int roomSizeY = ThreadLocalRandom.current().nextInt(ROOM_MAX_SIZE - ROOM_MIN_SIZE) + ROOM_MIN_SIZE;
@@ -315,7 +315,7 @@ public class World implements Tickable
 
         while (!successfulRoom && roomTries < 20)
         {
-            LOGGER.info(String.valueOf(roomTries));
+            LOGGER.debug("Amount of room tries: {}.", roomTries);
             roomTries++;
             final int roomSizeX = ThreadLocalRandom.current().nextInt(3) + 2; // MushroomRoom is a bit smaller
             final int roomSizeY = ThreadLocalRandom.current().nextInt(3) + 2; // MushroomRoom is a bit smaller

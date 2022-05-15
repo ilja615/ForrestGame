@@ -91,7 +91,7 @@ public class PngTexture implements Texture
                     4
             );
 
-            LOGGER.debug("Loaded texture file {}.", textureFile);
+            LOGGER.debug("Loaded the texture file {}.", textureFile);
 
             this.id = glGenTextures();
 
