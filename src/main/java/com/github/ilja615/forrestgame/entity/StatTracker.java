@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Tracks the {@link Stat}s of a {@link Entity}.
+ * Tracks the {@link com.github.ilja615.forrestgame.entity.StatTracker.Stat}s of a {@link com.github.ilja615.forrestgame.entity.Entity}.
  */
 public class StatTracker extends AbstractMap<Stat, Integer>
 {

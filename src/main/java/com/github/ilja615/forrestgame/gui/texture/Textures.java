@@ -21,7 +21,7 @@ package com.github.ilja615.forrestgame.gui.texture;
 
 public interface Textures
 {
-////// TILES AND ITEMS
+    ////// TILES AND ITEMS
     Texture AIR = new PngTexture("textures/air");
     Texture GRASS_0 = new PngTexture("textures/grass_0");
     Texture GRASS_1 = new PngTexture("textures/grass_1");
@@ -44,7 +44,7 @@ public interface Textures
     Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
     Texture[] PATH_DECORATION_ALTERNATIVES = new Texture[]{PATH_DECORATION_0, PATH_DECORATION_1, PATH_DECORATION_2, PATH_DECORATION_3, PATH_DECORATION_4};
 
-////// PIECES FOR CONNECTED TEXTURES
+    ////// PIECES FOR CONNECTED TEXTURES
     Texture AIR_PIECE = new PngTexture("textures/small_air");
 
     // wall

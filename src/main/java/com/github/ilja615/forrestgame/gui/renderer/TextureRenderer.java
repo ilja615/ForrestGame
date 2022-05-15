@@ -25,18 +25,18 @@ import com.github.ilja615.forrestgame.tiles.ConnectedTextureTile;
 import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Direction;
-import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class TextureRenderer
 {
-    public final ArrayList<Pair<Coordinate, Texture>> LAYER_BACK = new ArrayList<>(); // For things between the floor and the entities
-    public final ArrayList<Pair<Coordinate, Texture>> LAYER_MIDDLE = new ArrayList<>(); // For entities
-    public final ArrayList<Pair<Coordinate, Texture>> LAYER_FRONT = new ArrayList<>(); // For foreground things
+    public final Map<Coordinate, Texture> LAYER_BACK = new HashMap<>(); // For things between the floor and the entities
+    public final Map<Coordinate, Texture> LAYER_MIDDLE = new HashMap<>(); // For entities
+    public final Map<Coordinate, Texture> LAYER_FRONT = new HashMap<>(); // For foreground things
     private final World world;
     private float partialX = 0f;
     private float partialY = 0f;
@@ -95,12 +95,12 @@ public class TextureRenderer
     public void renderBoard()
     {
         // Add things to the list that need to be rendered
-        LAYER_MIDDLE.add(new Pair<>(world.getPlayer().getCoordinate(), world.getPlayer().getCurrentTexture()));
+        LAYER_MIDDLE.put(world.getPlayer().getCoordinate(), world.getPlayer().getCurrentTexture());
 
         // Renders all the tiles on the board. Tiles are rendered on "layer 0" so that is even behind layer back.
-        for (int y = world.getPlayer().getCoordinate().getY() + 4; y >= world.getPlayer().getCoordinate().getY() - 6; y--)
+        for (int y = world.getPlayer().getCoordinate().y() + 4; y >= world.getPlayer().getCoordinate().y() - 6; y--)
         {
-            for (int x = world.getPlayer().getCoordinate().getX() - 6; x <= world.getPlayer().getCoordinate().getX() + 6; x++)
+            for (int x = world.getPlayer().getCoordinate().x() - 6; x <= world.getPlayer().getCoordinate().x() + 6; x++)
             {
                 if (x >= 0 && x < world.WORLD_WIDTH && y >= 0 && y < world.WORLD_HEIGHT)
                 {
@@ -109,23 +109,22 @@ public class TextureRenderer
                     if (tile instanceof ConnectedTextureTile connectedTextureTile && connectedTextureTile.shouldShowConnectedTextures())
                     {
                         renderConnectedTextureTile(x, y);
-                    }
-                    else
+                    } else
                     {
                         final Texture texture = tile.getTexture();
                         renderTexture(texture, x, y);
                     }
 
                     if (tile.hasItem())
-                        tile.getItem().whichLayer(this).add(new Pair<>(new Coordinate(x, y), tile.getItem().getCurrentTexture()));
+                        tile.getItem().whichLayer(this).put(new Coordinate(x, y), tile.getItem().getCurrentTexture());
                 }
             }
         }
-        LAYER_BACK.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
-        LAYER_MIDDLE.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
-        LAYER_FRONT.forEach(coordinateTexturePair -> renderTexture(coordinateTexturePair.getSecondThing(), coordinateTexturePair.getFirstThing().getX(), coordinateTexturePair.getFirstThing().getY()));
+        LAYER_BACK.forEach((coordinate, texture) -> renderTexture(texture, coordinate.x(), coordinate.y()));
+        LAYER_MIDDLE.forEach((coordinate, texture) -> renderTexture(texture, coordinate.x(), coordinate.y()));
+        LAYER_FRONT.forEach((coordinate, texture) -> renderTexture(texture, coordinate.x(), coordinate.y()));
 
-        world.getParticles().forEach(particle -> renderTexture(particle.getCurrentTexture(), particle.getCoordinate().getX(), particle.getCoordinate().getY()));
+        world.getParticles().forEach(particle -> renderTexture(particle.getCurrentTexture(), particle.getCoordinate().x(), particle.getCoordinate().y()));
     }
 
     public void renderTexture(final Texture texture, int x, int y)
@@ -137,8 +136,8 @@ public class TextureRenderer
         }
         texture.bind();
 
-        x += world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
-        y += world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
+        x += world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().x();
+        y += world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().y();
 
         float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
         float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
@@ -188,8 +187,8 @@ public class TextureRenderer
     {
         float worldStarterX = (-0.0833f * world.WORLD_WIDTH);
         float worldStarterY = (-0.0833f * world.WORLD_HEIGHT);
-        final int finalX = x + world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().getX();
-        final int finalY = y + world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().getY();
+        final int finalX = x + world.WORLD_WIDTH / 2 - world.getPlayer().getCoordinate().x();
+        final int finalY = y + world.WORLD_HEIGHT / 2 - world.getPlayer().getCoordinate().y();
         ((ConnectedTextureTile) world.getTileAt(x, y)).getQuadrantTextures().forEach((secondary, texture) ->
         {
             texture.bind();
@@ -202,13 +201,13 @@ public class TextureRenderer
 
             glBegin(GL_QUADS);
             glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
-            glVertex2f(  -0.0834f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+            glVertex2f(-0.0834f + r + worldStarterX + ((float) finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float) finalY + partialY) / 6.0f);
             glTexCoord2f(hm ? 0 : 1, vm ? 1 : 0);
-            glVertex2f(0.0f + r + worldStarterX + + ((float)finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+            glVertex2f(0.0f + r + worldStarterX + +((float) finalX + partialX) / 6.0f, 0.167f + u + worldStarterY + ((float) finalY + partialY) / 6.0f);
             glTexCoord2f(hm ? 0 : 1, vm ? 0 : 1);
-            glVertex2f(0.0f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+            glVertex2f(0.0f + r + worldStarterX + ((float) finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float) finalY + partialY) / 6.0f);
             glTexCoord2f(hm ? 1 : 0, vm ? 0 : 1);
-            glVertex2f(-0.084f + r + worldStarterX + ((float)finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float)finalY + partialY) / 6.0f);
+            glVertex2f(-0.084f + r + worldStarterX + ((float) finalX + partialX) / 6.0f, 0.083f + u + worldStarterY + ((float) finalY + partialY) / 6.0f);
             glEnd();
         });
     }

@@ -23,9 +23,8 @@ import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
-import com.github.ilja615.forrestgame.util.Pair;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * What is Item? It is basically similar to Tile, except Tile is for the first layer and Item is for the second layer.
@@ -52,5 +51,5 @@ public interface Item
      */
     boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate);
 
-    ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr);
+    Map<Coordinate, Texture> whichLayer(TextureRenderer tr);
 }

@@ -34,10 +34,10 @@ import static org.lwjgl.opengl.GL11.*;
 public class ForrestGame implements Game
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ForrestGame.class);
-    private final long window;
     private static long currentMillis = 0;
     private static long previousMillis = 0;
     private static int addedMillis = 0;
+    private final long window;
 
     private ForrestGame(final long window)
     {
@@ -111,8 +111,7 @@ public class ForrestGame implements Game
     public void end(final EndReason reason)
     {
         glfwTerminate();
-        LOGGER.info("exit reason: " + reason.getMessage());
-        LOGGER.info("thx for playing");
+        LOGGER.info("The game was closed because you " + reason.getMessage() + ".");
         System.exit(0);
     }
 }

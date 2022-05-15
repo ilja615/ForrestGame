@@ -61,8 +61,7 @@ public class Tile
      */
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
-        if (this.hasItem())
-            return this.item.onPlayerAttemptingWalk(player, coordinate);
+        if (this.hasItem()) return this.item.onPlayerAttemptingWalk(player, coordinate);
         else return true;
     }
 
@@ -81,5 +80,7 @@ public class Tile
         this.item = item;
     }
 
-    public void postGenerationEvent(World world, Coordinate thisPos) {}
+    public void postGenerationEvent(World world, Coordinate thisPos)
+    {
+    }
 }

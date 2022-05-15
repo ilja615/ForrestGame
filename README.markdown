@@ -6,7 +6,9 @@ game about going in forrest
 
 ## License
 
-![The official GPL v3 logo](https://www.gnu.org/graphics/gplv3-127x51.png)
+![](https://www.gnu.org/graphics/gplv3-127x51.png) <!-- decorative and does not need alt text -->
+
+*Note: the copyright notice year range is inclusive (e.g. 2022-2025 would include 2022, 2023, 2024, and 2025).*
 
 Copyright (c) 2021-2022 the ForrestGame contributors.
 
