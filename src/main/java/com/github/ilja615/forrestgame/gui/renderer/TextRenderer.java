@@ -42,8 +42,8 @@ public class TextRenderer
         for (final char c : characters)
         {
             final String textureName = TextRenderer.getTextureName(c);
-            final Texture texture = new PngTexture.Builder("textures/font/" + textureName).build();
-            LOGGER.debug("Mapping texture name {} to {}", c, "textures/font/" + textureName);
+            final Texture texture = new PngTexture.Builder("font/" + textureName).build();
+            LOGGER.debug("Mapping texture name {} to {}", c, "font/" + textureName);
             builder.put(textureName, texture);
         }
 
