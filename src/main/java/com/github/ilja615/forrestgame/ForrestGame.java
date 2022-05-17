@@ -34,9 +34,6 @@ import static org.lwjgl.opengl.GL11.*;
 public class ForrestGame implements Game
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ForrestGame.class);
-    private static long currentMillis = 0;
-    private static long previousMillis = 0;
-    private static int addedMillis = 0;
     private final long window;
 
     private ForrestGame(final long window)
@@ -64,13 +61,13 @@ public class ForrestGame implements Game
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         // Create the shaders
-        final Shader shader = new Shader();
-        shader.create("basic");
+        final Shader shader = new Shader("basic");
 
         final Game game = new ForrestGame(window);
         final World world = new World(game, shader);
 
-        previousMillis = System.currentTimeMillis();
+        long previousTime = System.currentTimeMillis();
+        long addedMillis = 0;
 
         while (!glfwWindowShouldClose(window))
         {
@@ -78,17 +75,18 @@ public class ForrestGame implements Game
             glClear(GL_COLOR_BUFFER_BIT);
 
             // Use the shaders
-            shader.useShader();
+            shader.use();
 
-            currentMillis = System.currentTimeMillis();
-            int deltaTime = (int) (currentMillis - previousMillis);
-            addedMillis += deltaTime;
+            final long currentTime = System.currentTimeMillis();
+            addedMillis += currentTime - previousTime;
+
             if (addedMillis > 100)
             {
                 world.tick();
                 addedMillis = 0;
             }
-            previousMillis = currentMillis;
+
+            previousTime = currentTime;
 
             world.frame();
 
@@ -98,7 +96,7 @@ public class ForrestGame implements Game
         // Destroy the shaders
         shader.destroy();
 
-        game.end(EndReason.MANUAL_EXIT);
+        game.end(EndReason.MANUAL_CLOSE);
     }
 
     @Override

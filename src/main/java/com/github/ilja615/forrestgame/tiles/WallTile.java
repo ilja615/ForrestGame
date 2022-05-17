@@ -32,24 +32,26 @@ import java.util.EnumMap;
 
 public class WallTile extends Tile implements ConnectedTextureTile
 {
-    public EnumMap<Direction.Secondary, Texture> QUADRANT_TEXTURES = new EnumMap<>(Direction.Secondary.class);
+    public final EnumMap<Direction.Diagonal, Texture> QUADRANT_TEXTURES = new EnumMap<>(Direction.Diagonal.class);
     private boolean isSingular = false;
 
-    public WallTile(Texture texture)
+    public WallTile(final Texture texture)
     {
         super(texture);
     }
 
     @Override
-    public void postGenerationEvent(World world, Coordinate thisPos)
+    public void postGenerationEvent(final World world, final Coordinate thisPos)
     {
         super.postGenerationEvent(world, thisPos);
-        Tile upTile = world.isWithinWorld(thisPos.up()) ? world.getTileAt(thisPos.up()) : world.airTile;
-        Tile downTile = world.isWithinWorld(thisPos.down()) ? world.getTileAt(thisPos.down()) : world.airTile;
-        Tile leftTile = world.isWithinWorld(thisPos.left()) ? world.getTileAt(thisPos.left()) : world.airTile;
-        Tile rightTile = world.isWithinWorld(thisPos.right()) ? world.getTileAt(thisPos.right()) : world.airTile;
+        final Tile upTile = world.isWithinWorld(thisPos.up()) ? world.getTileAt(thisPos.up()) : world.airTile;
+        final Tile downTile = world.isWithinWorld(thisPos.down()) ? world.getTileAt(thisPos.down()) : world.airTile;
+        final Tile leftTile = world.isWithinWorld(thisPos.left()) ? world.getTileAt(thisPos.left()) : world.airTile;
+        final Tile rightTile = world.isWithinWorld(thisPos.right()) ? world.getTileAt(thisPos.right()) : world.airTile;
         if (!(upTile instanceof WallTile) && !(downTile instanceof WallTile) && !(leftTile instanceof WallTile) && !(rightTile instanceof WallTile))
+        {
             isSingular = true;
+        }
     }
 
     @Override
@@ -59,13 +61,13 @@ public class WallTile extends Tile implements ConnectedTextureTile
     }
 
     @Override
-    public EnumMap<Direction.Secondary, Texture> getQuadrantTextures()
+    public EnumMap<Direction.Diagonal, Texture> getQuadrantTextures()
     {
         return QUADRANT_TEXTURES;
     }
 
     @Override
-    public boolean isObstacle(Entity incomingEntity)
+    public boolean isObstacle(final Entity incomingEntity)
     {
         return true;
     }
@@ -77,34 +79,41 @@ public class WallTile extends Tile implements ConnectedTextureTile
     }
 
     @Override
-    public void adaptQuadrantTexturesList(World world, Coordinate thisPos)
+    public void adaptQuadrantTexturesList(final World world, final Coordinate thisPos)
     {
-        Arrays.stream(Direction.Secondary.values()).iterator().forEachRemaining(secondary ->
-        {
-            QUADRANT_TEXTURES.put(secondary, getGoodTexture(secondary, thisPos, world));
-        });
+        Arrays.stream(Direction.Diagonal.values())
+                .iterator()
+                .forEachRemaining(diagonal -> QUADRANT_TEXTURES.put(diagonal, getGoodTexture(diagonal, thisPos, world)));
     }
 
-    private Texture getGoodTexture(Direction.Secondary secondary, Coordinate thisPos, World world)
+    private Texture getGoodTexture(final Direction.Diagonal diagonal, final Coordinate thisPos, final World world)
     {
-        Coordinate firstPos = thisPos.move(secondary.getHorizontal(), 1);
-        Coordinate otherPos = thisPos.move(secondary.getVertical(), 1);
+        final Coordinate firstPos = thisPos.move(diagonal.getHorizontalDirection(), 1);
+        final Coordinate otherPos = thisPos.move(diagonal.getVerticalDirection(), 1);
 
-        Tile firstNeighbourTile = world.isWithinWorld(firstPos) ? world.getTileAt(firstPos) : world.airTile;
-        Tile otherNeighbourTile = world.isWithinWorld(otherPos) ? world.getTileAt(otherPos) : world.airTile;
+        final Tile firstNeighbourTile = world.isWithinWorld(firstPos) ? world.getTileAt(firstPos) : world.airTile;
+        final Tile otherNeighbourTile = world.isWithinWorld(otherPos) ? world.getTileAt(otherPos) : world.airTile;
 
         if (firstNeighbourTile instanceof AirTile && otherNeighbourTile instanceof FloorTile)
-            return secondary.getVertical() == Direction.UP ? Textures.WALL_STRAIGHT_PIECE : Textures.WALL_STRAIGHT_PIECE_MIRRORED;
+        {
+            return diagonal.getVerticalDirection() == Direction.UP ? Textures.WALL_STRAIGHT_PIECE : Textures.WALL_STRAIGHT_PIECE_MIRRORED;
+        }
+
         if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof AirTile)
-            return secondary.getHorizontal() == Direction.RIGHT ? Textures.WALL_STRAIGHT_VERTICAL_PIECE : Textures.WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED;
+        {
+            return diagonal.getHorizontalDirection() == Direction.RIGHT ? Textures.WALL_STRAIGHT_VERTICAL_PIECE : Textures.WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED;
+        }
+
         if (firstNeighbourTile instanceof AirTile || otherNeighbourTile instanceof AirTile)
+        {
             return Textures.AIR_PIECE;
+        }
 
         if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof FloorTile)
         {
-            if (secondary.getHorizontal() == Direction.RIGHT)
+            if (diagonal.getHorizontalDirection() == Direction.RIGHT)
             {
-                if (secondary.getVertical() == Direction.UP)
+                if (diagonal.getVerticalDirection() == Direction.UP)
                 {
                     return Textures.WALL_OUTER_CORNER_PIECE_VM;
                 } else
@@ -113,7 +122,7 @@ public class WallTile extends Tile implements ConnectedTextureTile
                 }
             } else
             {
-                if (secondary.getVertical() == Direction.UP)
+                if (diagonal.getVerticalDirection() == Direction.UP)
                 {
                     return Textures.WALL_OUTER_CORNER_PIECE_HVM;
                 } else
@@ -124,22 +133,25 @@ public class WallTile extends Tile implements ConnectedTextureTile
         }
 
         if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof WallTile)
-            return secondary.getHorizontal() == Direction.RIGHT ? Textures.WALL_STRAIGHT_VERTICAL_PIECE : Textures.WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED;
+        {
+            return diagonal.getHorizontalDirection() == Direction.RIGHT ? Textures.WALL_STRAIGHT_VERTICAL_PIECE : Textures.WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED;
+        }
 
         if (firstNeighbourTile instanceof WallTile && otherNeighbourTile instanceof FloorTile)
-            return secondary.getVertical() == Direction.UP ? Textures.WALL_STRAIGHT_PIECE : Textures.WALL_STRAIGHT_PIECE_MIRRORED;
+        {
+            return diagonal.getVerticalDirection() == Direction.UP ? Textures.WALL_STRAIGHT_PIECE : Textures.WALL_STRAIGHT_PIECE_MIRRORED;
+        }
 
         if (firstNeighbourTile instanceof WallTile && otherNeighbourTile instanceof WallTile)
         {
-            Coordinate thirdPos = thisPos.move(secondary, 1);
-            Tile thirdNeighbourTile = world.isWithinWorld(thirdPos) ? world.getTileAt(thirdPos) : world.airTile;
+            final Coordinate thirdPos = thisPos.move(diagonal);
+            final Tile thirdNeighbourTile = world.isWithinWorld(thirdPos) ? world.getTileAt(thirdPos) : world.airTile;
 
-            if (!(thirdNeighbourTile instanceof FloorTile))
-                return Textures.AIR_PIECE;
+            if (!(thirdNeighbourTile instanceof FloorTile)) return Textures.AIR_PIECE;
 
-            if (secondary.getHorizontal() == Direction.RIGHT)
+            if (diagonal.getHorizontalDirection() == Direction.RIGHT)
             {
-                if (secondary.getVertical() == Direction.UP)
+                if (diagonal.getVerticalDirection() == Direction.UP)
                 {
                     return Textures.WALL_INNER_CORNER_PIECE_VM;
                 } else
@@ -148,7 +160,7 @@ public class WallTile extends Tile implements ConnectedTextureTile
                 }
             } else
             {
-                if (secondary.getVertical() == Direction.UP)
+                if (diagonal.getVerticalDirection() == Direction.UP)
                 {
                     return Textures.WALL_INNER_CORNER_PIECE_HVM;
                 } else
@@ -162,7 +174,7 @@ public class WallTile extends Tile implements ConnectedTextureTile
     }
 
     @Override
-    public void setItem(Item item)
+    public void setItem(final Item item)
     {
         // Can not set the item
     }

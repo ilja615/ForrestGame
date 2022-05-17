@@ -22,123 +22,125 @@ package com.github.ilja615.forrestgame.gui.texture;
 public interface Textures
 {
     ////// TILES AND ITEMS
-    Texture AIR = new PngTexture("textures/air");
-    Texture GRASS_0 = new PngTexture("textures/grass_0");
-    Texture GRASS_1 = new PngTexture("textures/grass_1");
-    Texture GRASS_2 = new PngTexture("textures/grass_2");
-    Texture GRASS_3 = new PngTexture("textures/grass_3");
+    Texture AIR = new PngTexture.Builder("tiles/air/default").build();
+    Texture GRASS_0 = new PngTexture.Builder("tiles/grass/0").build();
+    Texture GRASS_1 = new PngTexture.Builder("tiles/grass/1").build();
+    Texture GRASS_2 = new PngTexture.Builder("tiles/grass/2").build();
+    Texture GRASS_3 = new PngTexture.Builder("tiles/grass/3").build();
+    Texture BUSH_0 = new PngTexture.Builder("items/bush/0").build();
+    Texture BUSH_1 = new PngTexture.Builder("items/bush/1").build();
+    Texture BUSH_2 = new PngTexture.Builder("items/bush/2").build();
     Texture[] MUSHROOM = new Texture[]
             {
-                    new PngTexture("textures/mushroom_0"),
-                    new PngTexture("textures/mushroom_1")
+                    new PngTexture.Builder("items/mushroom/0").build(),
+                    new PngTexture.Builder("items/mushroom/1").build()
             };
-    Texture SIGN = new PngTexture("textures/sign");
-    Texture TREE = new PngTexture("textures/tree").setTall(true);
-    Texture CRATE = new PngTexture("textures/crate");
-    Texture PATH_DECORATION_0 = new PngTexture("textures/path_decoration_0");
-    Texture PATH_DECORATION_1 = new PngTexture("textures/path_decoration_1");
-    Texture PATH_DECORATION_2 = new PngTexture("textures/path_decoration_2");
-    Texture PATH_DECORATION_3 = new PngTexture("textures/path_decoration_3");
-    Texture PATH_DECORATION_4 = new PngTexture("textures/path_decoration_4");
+    Texture SIGN = new PngTexture.Builder("items/sign").build();
+    Texture TREE = new PngTexture.Builder("items/tree").setTall(true).build();
+    Texture CRATE = new PngTexture.Builder("items/crate").build();
+    Texture PATH_DECORATION_0 = new PngTexture.Builder("items/path_decoration/0").build();
+    Texture PATH_DECORATION_1 = new PngTexture.Builder("items/path_decoration/1").build();
+    Texture PATH_DECORATION_2 = new PngTexture.Builder("items/path_decoration/2").build();
+    Texture PATH_DECORATION_3 = new PngTexture.Builder("items/path_decoration/3").build();
+    Texture PATH_DECORATION_4 = new PngTexture.Builder("items/path_decoration/4").build();
 
     Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
     Texture[] PATH_DECORATION_ALTERNATIVES = new Texture[]{PATH_DECORATION_0, PATH_DECORATION_1, PATH_DECORATION_2, PATH_DECORATION_3, PATH_DECORATION_4};
 
     ////// PIECES FOR CONNECTED TEXTURES
-    Texture AIR_PIECE = new PngTexture("textures/small_air");
+    Texture AIR_PIECE = new PngTexture.Builder("tiles/air/small").build();
 
     // wall
-    Texture WALL_STRAIGHT_PIECE = new PngTexture("textures/wall_straight");
-    Texture WALL_STRAIGHT_PIECE_MIRRORED = new PngTexture("textures/wall_straight").setVerticallyMirrored(true);
-    Texture WALL_STRAIGHT_VERTICAL_PIECE = new PngTexture("textures/wall_straight_vertical");
-    Texture WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture("textures/wall_straight_vertical").setHorizontallyMirrored(true);
-    Texture WALL_INNER_CORNER_PIECE = new PngTexture("textures/wall_inner_corner");
-    Texture WALL_INNER_CORNER_PIECE_HM = new PngTexture("textures/wall_inner_corner").setHorizontallyMirrored(true);
-    Texture WALL_INNER_CORNER_PIECE_VM = new PngTexture("textures/wall_inner_corner").setVerticallyMirrored(true);
-    Texture WALL_INNER_CORNER_PIECE_HVM = new PngTexture("textures/wall_inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-    Texture WALL_OUTER_CORNER_PIECE = new PngTexture("textures/wall_outer_corner");
-    Texture WALL_OUTER_CORNER_PIECE_HM = new PngTexture("textures/wall_outer_corner_other");
-    Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture("textures/wall_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-    Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/wall_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-    Texture WALL_SINGLE = new PngTexture("textures/wall_single");
+    Texture WALL_STRAIGHT_PIECE = new PngTexture.Builder("tiles/wall/straight").build();
+    Texture WALL_STRAIGHT_PIECE_MIRRORED = new PngTexture.Builder("tiles/wall/straight").setVerticallyMirrored(true).build();
+    Texture WALL_STRAIGHT_VERTICAL_PIECE = new PngTexture.Builder("tiles/wall/straight_vertical").build();
+    Texture WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture.Builder("tiles/wall/straight_vertical").setHorizontallyMirrored(true).build();
+    Texture WALL_INNER_CORNER_PIECE = new PngTexture.Builder("tiles/wall/inner_corner").build();
+    Texture WALL_INNER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/wall/inner_corner").setHorizontallyMirrored(true).build();
+    Texture WALL_INNER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/wall/inner_corner").setVerticallyMirrored(true).build();
+    Texture WALL_INNER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/wall/inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
+    Texture WALL_OUTER_CORNER_PIECE = new PngTexture.Builder("tiles/wall/outer_corner").build();
+    Texture WALL_OUTER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/wall/outer_corner_other").build();
+    Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/wall/outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
+    Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/wall/outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
+    Texture WALL_SINGLE = new PngTexture.Builder("tiles/wall/single").build();
 
 
     // dirt
-    Texture DIRT_FULL_PIECE = new PngTexture("textures/dirt_full");
-    Texture DIRT_STRAIGHT_PIECE = new PngTexture("textures/dirt_straight");
-    Texture DIRT_STRAIGHT_PIECE_MIRRORED = new PngTexture("textures/dirt_straight").setVerticallyMirrored(true);
-    Texture DIRT_STRAIGHT_VERTICAL_PIECE = new PngTexture("textures/dirt_straight_vertical");
-    Texture DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture("textures/dirt_straight_vertical").setHorizontallyMirrored(true);
-    Texture DIRT_INNER_CORNER_PIECE = new PngTexture("textures/dirt_inner_corner");
-    Texture DIRT_INNER_CORNER_PIECE_HM = new PngTexture("textures/dirt_inner_corner").setHorizontallyMirrored(true);
-    Texture DIRT_INNER_CORNER_PIECE_VM = new PngTexture("textures/dirt_inner_corner").setVerticallyMirrored(true);
-    Texture DIRT_INNER_CORNER_PIECE_HVM = new PngTexture("textures/dirt_inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-    Texture DIRT_OUTER_CORNER_PIECE = new PngTexture("textures/dirt_outer_corner");
-    Texture DIRT_OUTER_CORNER_PIECE_HM = new PngTexture("textures/dirt_outer_corner_other");
-    Texture DIRT_OUTER_CORNER_PIECE_VM = new PngTexture("textures/dirt_outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true);
-    Texture DIRT_OUTER_CORNER_PIECE_HVM = new PngTexture("textures/dirt_outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true);
+    Texture DIRT_FULL_PIECE = new PngTexture.Builder("tiles/dirt/full").build();
+    Texture DIRT_STRAIGHT_PIECE = new PngTexture.Builder("tiles/dirt/straight").build();
+    Texture DIRT_STRAIGHT_PIECE_MIRRORED = new PngTexture.Builder("tiles/dirt/straight").setVerticallyMirrored(true).build();
+    Texture DIRT_STRAIGHT_VERTICAL_PIECE = new PngTexture.Builder("tiles/dirt/straight_vertical").build();
+    Texture DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture.Builder("tiles/dirt/straight_vertical").setHorizontallyMirrored(true).build();
+    Texture DIRT_INNER_CORNER_PIECE = new PngTexture.Builder("tiles/dirt/inner_corner").build();
+    Texture DIRT_INNER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/dirt/inner_corner").setHorizontallyMirrored(true).build();
+    Texture DIRT_INNER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/dirt/inner_corner").setVerticallyMirrored(true).build();
+    Texture DIRT_INNER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/dirt/inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
+    Texture DIRT_OUTER_CORNER_PIECE = new PngTexture.Builder("tiles/dirt/outer_corner").build();
+    Texture DIRT_OUTER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/dirt/outer_corner_other").build();
+    Texture DIRT_OUTER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/dirt/outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
+    Texture DIRT_OUTER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/dirt/outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
 
-////// ENTITIES
-
+    ////// ENTITIES
     // player
-    Texture PLAYER_UP = new PngTexture("textures/player_up").setPlayerTexture(true);
-    Texture PLAYER_DOWN = new PngTexture("textures/player_down").setPlayerTexture(true);
-    Texture PLAYER_LEFT = new PngTexture("textures/player_side").setHorizontallyMirrored(true).setPlayerTexture(true);
-    Texture PLAYER_RIGHT = new PngTexture("textures/player_side").setPlayerTexture(true);
+    Texture PLAYER_UP = new PngTexture.Builder("entity/player/up").setPlayerTexture(true).build();
+    Texture PLAYER_DOWN = new PngTexture.Builder("entity/player/down").setPlayerTexture(true).build();
+    Texture PLAYER_LEFT = new PngTexture.Builder("entity/player/side").setHorizontallyMirrored(true).setPlayerTexture(true).build();
+    Texture PLAYER_RIGHT = new PngTexture.Builder("entity/player/side").setPlayerTexture(true).build();
 
     Texture[] PLAYER_UP_WALK = new Texture[]
             {
-                    new PngTexture("textures/player_up_walking_0").setPlayerTexture(true),
-                    new PngTexture("textures/player_up_walking_1").setPlayerTexture(true),
-                    new PngTexture("textures/player_up_walking_2").setPlayerTexture(true),
-                    new PngTexture("textures/player_up_walking_3").setPlayerTexture(true)
+                    new PngTexture.Builder("entity/player/up_walking_0").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/up_walking_1").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/up_walking_2").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/up_walking_3").setPlayerTexture(true).build()
             };
     Texture[] PLAYER_DOWN_WALK = new Texture[]
             {
-                    new PngTexture("textures/player_down_walking_0").setPlayerTexture(true),
-                    new PngTexture("textures/player_down_walking_1").setPlayerTexture(true),
-                    new PngTexture("textures/player_down_walking_2").setPlayerTexture(true),
-                    new PngTexture("textures/player_down_walking_3").setPlayerTexture(true)
+                    new PngTexture.Builder("entity/player/down_walking_0").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/down_walking_1").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/down_walking_2").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/down_walking_3").setPlayerTexture(true).build()
             };
     Texture[] PLAYER_LEFT_WALK = new Texture[]
             {
-                    new PngTexture("textures/player_side_walking_0").setHorizontallyMirrored(true).setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_1").setHorizontallyMirrored(true).setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_2").setHorizontallyMirrored(true).setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_3").setHorizontallyMirrored(true).setPlayerTexture(true)
+                    new PngTexture.Builder("entity/player/side_walking_0").setHorizontallyMirrored(true).setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/side_walking_1").setHorizontallyMirrored(true).setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/side_walking_2").setHorizontallyMirrored(true).setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/side_walking_3").setHorizontallyMirrored(true).setPlayerTexture(true).build()
             };
     Texture[] PLAYER_RIGHT_WALK = new Texture[]
             {
-                    new PngTexture("textures/player_side_walking_0").setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_1").setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_2").setPlayerTexture(true),
-                    new PngTexture("textures/player_side_walking_3").setPlayerTexture(true)
+                    new PngTexture.Builder("entity/player/side_walking_0").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/side_walking_1").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/side_walking_2").setPlayerTexture(true).build(),
+                    new PngTexture.Builder("entity/player/side_walking_3").setPlayerTexture(true).build()
             };
 
     // scamperer
-    Texture SCAMPERER = new PngTexture("textures/scamperer");
+    Texture SCAMPERER = new PngTexture.Builder("entity/scamperer").build();
 
 ////// GUI
 
     // particles
     Texture[] CHOP_PARTICLE = new Texture[]
             {
-                    new PngTexture("textures/chop_particle_0"),
-                    new PngTexture("textures/chop_particle_1"),
-                    new PngTexture("textures/chop_particle_2"),
-                    new PngTexture("textures/chop_particle_3")
+                    new PngTexture.Builder("particles/chop/0").build(),
+                    new PngTexture.Builder("particles/chop/1").build(),
+                    new PngTexture.Builder("particles/chop/2").build(),
+                    new PngTexture.Builder("particles/chop/3").build()
             };
 
     // other gui
-    Texture VIEWPORT = new PngTexture("textures/viewport");
-    Texture HEALTH = new PngTexture("textures/ui_health");
-    Texture ENERGY = new PngTexture("textures/ui_energy");
+    Texture VIEWPORT = new PngTexture.Builder("gui/viewport").build();
+    Texture HEALTH = new PngTexture.Builder("gui/health").build();
+    Texture ENERGY = new PngTexture.Builder("gui/energy").build();
 
     // time gui
-    Texture SUNRISE = new PngTexture("textures/ui_time_sunrise");
-    Texture MORNING = new PngTexture("textures/ui_time_morning");
-    Texture AFTERNOON = new PngTexture("textures/ui_time_afternoon");
-    Texture SUNSET = new PngTexture("textures/ui_time_sunset");
-    Texture EVENING = new PngTexture("textures/ui_time_evening");
-    Texture NIGHT = new PngTexture("textures/ui_time_night");
+    Texture SUNRISE = new PngTexture.Builder("gui/time/sunrise").build();
+    Texture MORNING = new PngTexture.Builder("gui/time/morning").build();
+    Texture AFTERNOON = new PngTexture.Builder("gui/time/afternoon").build();
+    Texture SUNSET = new PngTexture.Builder("gui/time/sunset").build();
+    Texture EVENING = new PngTexture.Builder("gui/time/evening").build();
+    Texture NIGHT = new PngTexture.Builder("gui/time/night").build();
 }

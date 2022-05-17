@@ -30,108 +30,89 @@ import java.util.EnumMap;
 
 public class DirtTile extends FloorTile implements ConnectedTextureTile
 {
-    public EnumMap<Direction.Secondary, Texture> QUADRANT_TEXTURES = new EnumMap<>(Direction.Secondary.class);
+    public final EnumMap<Direction.Diagonal, Texture> QUADRANT_TEXTURES = new EnumMap<>(Direction.Diagonal.class);
 
     public DirtTile(final Texture texture)
     {
         super(texture);
     }
 
-    public void adaptQuadrantTexturesList(World world, Coordinate thisPos)
+    public void adaptQuadrantTexturesList(final World world, final Coordinate coordinate)
     {
-        Arrays.stream(Direction.Secondary.values()).iterator().forEachRemaining(secondary ->
-        {
-            QUADRANT_TEXTURES.put(secondary, getGoodTexture(secondary, thisPos, world));
-        });
+        Arrays.stream(Direction.Diagonal.values())
+                .iterator()
+                .forEachRemaining(diagonal -> QUADRANT_TEXTURES.put(diagonal, getGoodTexture(diagonal, coordinate, world)));
     }
 
     @Override
-    public EnumMap<Direction.Secondary, Texture> getQuadrantTextures()
+    public EnumMap<Direction.Diagonal, Texture> getQuadrantTextures()
     {
         return QUADRANT_TEXTURES;
     }
 
-    private Texture getGoodTexture(Direction.Secondary secondary, Coordinate thisPos, World world)
+    private Texture getGoodTexture(final Direction.Diagonal diagonalDirection, final Coordinate coordinate, final World world)
     {
-        Coordinate firstPos = thisPos.move(secondary.getHorizontal(), 1);
-        Coordinate otherPos = thisPos.move(secondary.getVertical(), 1);
+        final Coordinate firstCoordinate = coordinate.move(diagonalDirection.getHorizontalDirection());
+        final Coordinate otherCoordinate = coordinate.move(diagonalDirection.getVerticalDirection());
 
-        Tile firstNeighbourTile = world.isWithinWorld(firstPos) ? world.getTileAt(firstPos) : world.airTile;
-        Tile otherNeighbourTile = world.isWithinWorld(otherPos) ? world.getTileAt(otherPos) : world.airTile;
+        final Tile firstNeighbourTile = world.isWithinWorld(firstCoordinate)
+                ? world.getTileAt(firstCoordinate)
+                : world.airTile;
+        final Tile otherNeighbourTile = world.isWithinWorld(otherCoordinate)
+                ? world.getTileAt(otherCoordinate)
+                : world.airTile;
 
-        if (firstNeighbourTile instanceof AirTile && otherNeighbourTile instanceof AirTile) return Textures.AIR_PIECE;
-        if (firstNeighbourTile instanceof AirTile)
+        if (firstNeighbourTile instanceof AirTile && otherNeighbourTile instanceof AirTile)
         {
-            return secondary.getVertical() == Direction.UP
+            return Textures.AIR_PIECE;
+        } else if (firstNeighbourTile instanceof AirTile)
+        {
+            return diagonalDirection.getVerticalDirection() == Direction.UP
                     ? Textures.DIRT_STRAIGHT_PIECE
                     : Textures.DIRT_STRAIGHT_PIECE_MIRRORED;
-        }
-        if (otherNeighbourTile instanceof AirTile)
+        } else if (otherNeighbourTile instanceof AirTile)
         {
-            return secondary.getHorizontal() == Direction.RIGHT
+            return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
                     ? Textures.DIRT_STRAIGHT_VERTICAL_PIECE
                     : Textures.DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED;
-        }
-
-        if (!(firstNeighbourTile instanceof DirtTile) && !(otherNeighbourTile instanceof DirtTile))
+        } else if (!(firstNeighbourTile instanceof DirtTile) && !(otherNeighbourTile instanceof DirtTile))
         {
-            if (secondary.getHorizontal() == Direction.RIGHT)
-            {
-                if (secondary.getVertical() == Direction.UP)
-                {
-                    return Textures.DIRT_OUTER_CORNER_PIECE_VM;
-                } else
-                {
-                    return Textures.DIRT_OUTER_CORNER_PIECE;
-                }
-            } else
-            {
-                if (secondary.getVertical() == Direction.UP)
-                {
-                    return Textures.DIRT_OUTER_CORNER_PIECE_HVM;
-                } else
-                {
-                    return Textures.DIRT_OUTER_CORNER_PIECE_HM;
-                }
-            }
-        }
-
-        if (!(firstNeighbourTile instanceof DirtTile))
+            return switch (diagonalDirection)
+                    {
+                        case UP_AND_LEFT -> Textures.DIRT_OUTER_CORNER_PIECE_HVM;
+                        case UP_AND_RIGHT -> Textures.DIRT_OUTER_CORNER_PIECE_VM;
+                        case DOWN_AND_LEFT -> Textures.DIRT_OUTER_CORNER_PIECE_HM;
+                        case DOWN_AND_RIGHT -> Textures.DIRT_OUTER_CORNER_PIECE;
+                    };
+        } else if (!(firstNeighbourTile instanceof DirtTile))
         {
-            return secondary.getHorizontal() == Direction.RIGHT
+            return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
                     ? Textures.DIRT_STRAIGHT_VERTICAL_PIECE
                     : Textures.DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED;
-        }
-
-        if (!(otherNeighbourTile instanceof DirtTile))
+        } else if (!(otherNeighbourTile instanceof DirtTile))
         {
-            return secondary.getVertical() == Direction.UP
+            return diagonalDirection.getVerticalDirection() == Direction.UP
                     ? Textures.DIRT_STRAIGHT_PIECE
                     : Textures.DIRT_STRAIGHT_PIECE_MIRRORED;
-        }
-
-        Coordinate thirdPos = thisPos.move(secondary, 1);
-        Tile thirdNeighbourTile = world.isWithinWorld(thirdPos) ? world.getTileAt(thirdPos) : world.airTile;
-
-        if (thirdNeighbourTile instanceof DirtTile) return Textures.DIRT_FULL_PIECE;
-
-        if (secondary.getHorizontal() == Direction.RIGHT)
-        {
-            if (secondary.getVertical() == Direction.UP)
-            {
-                return Textures.DIRT_INNER_CORNER_PIECE_VM;
-            } else
-            {
-                return Textures.DIRT_INNER_CORNER_PIECE;
-            }
         } else
         {
-            if (secondary.getVertical() == Direction.UP)
+            final Coordinate thirdPos = coordinate.move(diagonalDirection);
+            final Tile thirdNeighbourTile = world.isWithinWorld(thirdPos)
+                    ? world.getTileAt(thirdPos)
+                    : world.airTile;
+
+            if (thirdNeighbourTile instanceof DirtTile)
             {
-                return Textures.DIRT_INNER_CORNER_PIECE_HVM;
+                return Textures.DIRT_FULL_PIECE;
             } else
             {
-                return Textures.DIRT_INNER_CORNER_PIECE_HM;
+                return switch (diagonalDirection)
+                        {
+                            case UP_AND_LEFT -> Textures.DIRT_INNER_CORNER_PIECE_HVM;
+                            case UP_AND_RIGHT -> Textures.DIRT_INNER_CORNER_PIECE_VM;
+                            case DOWN_AND_LEFT -> Textures.DIRT_INNER_CORNER_PIECE_HM;
+                            case DOWN_AND_RIGHT -> Textures.DIRT_INNER_CORNER_PIECE;
+                        };
             }
         }
     }

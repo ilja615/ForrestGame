@@ -34,6 +34,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Player implements Entity
 {
     private static final float SCROLL_SPEED = 0.2f;
+    private static final int ANIMATION_FRAMES_TIME = 60;
     private final World world;
     private final StatTracker statTracker;
     public Direction facing = Direction.DOWN;
@@ -43,7 +44,6 @@ public class Player implements Entity
     private Coordinate scheduledCoordinate;
     private boolean mobile = true;
     private float animationTimer = 0.0f;
-    private final int ANIMATIONFRAMESTIME = 60;
 
     public Player(final World world, final Coordinate startPos)
     {
@@ -269,27 +269,27 @@ public class Player implements Entity
             // Walking
             return switch (this.facing)
                     {
-                        case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(ANIMATIONFRAMESTIME, 4)];
-                        case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(ANIMATIONFRAMESTIME, 4)];
-                        case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(ANIMATIONFRAMESTIME, 4)];
-                        case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(ANIMATIONFRAMESTIME, 4)];
+                        case UP -> Textures.PLAYER_UP_WALK[getAnimationFrame(ANIMATION_FRAMES_TIME, 4)];
+                        case DOWN -> Textures.PLAYER_DOWN_WALK[getAnimationFrame(ANIMATION_FRAMES_TIME, 4)];
+                        case LEFT -> Textures.PLAYER_LEFT_WALK[getAnimationFrame(ANIMATION_FRAMES_TIME, 4)];
+                        case RIGHT -> Textures.PLAYER_RIGHT_WALK[getAnimationFrame(ANIMATION_FRAMES_TIME, 4)];
                     };
         }
     }
 
     @Override
-    public boolean onPlayerAttemptingWalk(Entity player, Coordinate coordinate)
+    public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         return false;
     }
 
     @Override
-    public void die(Stat deathCausingStat)
+    public void die(final Stat deathCausingStat)
     {
         switch (deathCausingStat)
         {
             case HEALTH -> world.getGame().end(Game.EndReason.DIED);
-            case HUNGER -> world.getGame().end(Game.EndReason.NO_ENERGY);
+            case HUNGER -> world.getGame().end(Game.EndReason.STARVED);
         }
     }
 
@@ -306,7 +306,7 @@ public class Player implements Entity
         return false;
     }
 
-    private int getAnimationFrame(int framesTime, int amountFrames)
+    private int getAnimationFrame(final int framesTime, final int amountFrames)
     {
         this.animationTimer += (1 / (float) framesTime);
         return ((int) this.animationTimer) % amountFrames;

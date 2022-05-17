@@ -37,9 +37,9 @@ public interface Game
 
     enum EndReason
     {
-        MANUAL_EXIT("manually exited the game"),
+        MANUAL_CLOSE("manually closed the game"),
         DIED("died"),
-        NO_ENERGY("had no more energy");
+        STARVED("starved");
 
         private final String message;
 

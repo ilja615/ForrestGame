@@ -24,7 +24,6 @@ import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
-import com.github.ilja615.forrestgame.gui.texture.PngTexture;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -33,28 +32,21 @@ import java.util.Map;
 
 public class BushItem implements Item
 {
-    private static final Texture TEXTURE_0 = new PngTexture("textures/bush0");
-    private static final Texture TEXTURE_1 = new PngTexture("textures/bush1");
-    private static final Texture TEXTURE_2 = new PngTexture("textures/bush2");
     private int stage = 2;
-
-    public BushItem()
-    {
-    }
 
     @Override
     public Texture getCurrentTexture()
     {
         return switch (stage)
                 {
-                    default -> TEXTURE_0;
-                    case 1 -> TEXTURE_1;
-                    case 2 -> TEXTURE_2;
+                    default -> Textures.BUSH_0;
+                    case 1 -> Textures.BUSH_1;
+                    case 2 -> Textures.BUSH_2;
                 };
     }
 
     @Override
-    public boolean isObstacle(Entity incomingEntity)
+    public boolean isObstacle(final Entity incomingEntity)
     {
         return !(incomingEntity instanceof Player || this.stage == 0);
     }
@@ -84,7 +76,7 @@ public class BushItem implements Item
     }
 
     @Override
-    public Map<Coordinate, Texture> whichLayer(TextureRenderer tr)
+    public Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

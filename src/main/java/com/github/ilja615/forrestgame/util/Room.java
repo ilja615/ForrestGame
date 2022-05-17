@@ -19,18 +19,22 @@
 
 package com.github.ilja615.forrestgame.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class Room extends ArrayList<Coordinate>
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Room.class);
     private final int startX;
     private final int startY;
     private final int width;
     private final int height;
 
-    public Room(int startX, int startY, int width, int height)
+    public Room(final int startX, final int startY, final int width, final int height)
     {
         this.startX = startX;
         this.startY = startY;
@@ -47,29 +51,35 @@ public class Room extends ArrayList<Coordinate>
 
     public Pair<Coordinate, Direction> randomOfWall()
     {
-        Coordinate c = wallsExcludingCorners().get(ThreadLocalRandom.current().nextInt(wallsExcludingCorners().size()));
-        Direction d = null; // default but shouldn't be needed
-        if (c.x() == startX - 1) d = Direction.LEFT;
-        if (c.x() == startX + width + 1) d = Direction.RIGHT;
-        if (c.y() == startY - 1) d = Direction.DOWN;
-        if (c.y() == startY + height + 1) d = Direction.UP;
-        if (d == null)
+        final Coordinate coordinate = wallsExcludingCorners().get(ThreadLocalRandom.current().nextInt(wallsExcludingCorners().size()));
+        Direction direction = null; // default but shouldn't be needed
+
+        if (coordinate.x() == startX - 1) direction = Direction.LEFT;
+        if (coordinate.x() == startX + width + 1) direction = Direction.RIGHT;
+        if (coordinate.y() == startY - 1) direction = Direction.DOWN;
+        if (coordinate.y() == startY + height + 1) direction = Direction.UP;
+        if (direction == null)
         {
-            System.out.println("d is null error");
-            d = Direction.RIGHT;
+            LOGGER.debug("The direction was null.");
+            direction = Direction.RIGHT;
         }
-        return new Pair<>(c, d);
+
+        return new Pair<>(coordinate, direction);
     }
 
     public ArrayList<Coordinate> walls()
     {
-        return new Room(this.startX - 1, this.startY - 1, this.width + 2, this.height + 2).stream().filter(c -> c.x() == startX - 1 || c.y() == startY - 1 || c.x() == startX + width + 1 || c.y() == startY + height + 1).collect(Collectors.toCollection(ArrayList::new));
+        return new Room(this.startX - 1, this.startY - 1, this.width + 2, this.height + 2)
+                .stream()
+                .filter(c -> c.x() == startX - 1 || c.y() == startY - 1 || c.x() == startX + width + 1 || c.y() == startY + height + 1)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<Coordinate> wallsExcludingCorners()
     {
-        return this.walls().stream().filter(c -> !(
-                (c.x() == startX - 1 || c.x() == startX + width + 1) && (c.y() == startY - 1 || c.y() == startY + height + 1)
-        )).collect(Collectors.toCollection(ArrayList::new));
+        return this.walls()
+                .stream()
+                .filter(c -> !((c.x() == startX - 1 || c.x() == startX + width + 1) && (c.y() == startY - 1 || c.y() == startY + height + 1)))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }

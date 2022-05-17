@@ -46,7 +46,7 @@ public class CrateItem implements Item
     }
 
     @Override
-    public boolean isObstacle(Entity incomingEntity)
+    public boolean isObstacle(final Entity incomingEntity)
     {
         return !(incomingEntity instanceof Player);
     }
@@ -54,20 +54,23 @@ public class CrateItem implements Item
     @Override
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
-        Coordinate playerOldCoordinate = player.getCoordinate();
-        Coordinate coordinateThatCratePushedTo = coordinate.relative(coordinate.x() - playerOldCoordinate.x(), coordinate.y() - playerOldCoordinate.y());
-        Tile destination = player.getWorld().getTiles()[coordinateThatCratePushedTo.x() + (coordinateThatCratePushedTo.y() * player.getWorld().WORLD_WIDTH)];
+        final Coordinate playerOldCoordinate = player.getCoordinate();
+        final Coordinate coordinateThatCratePushedTo = coordinate.relativeMove(coordinate.x() - playerOldCoordinate.x(), coordinate.y() - playerOldCoordinate.y());
+        final Tile destination = player.getWorld().getTiles()[coordinateThatCratePushedTo.x() + (coordinateThatCratePushedTo.y() * player.getWorld().WORLD_WIDTH)];
+
         if (!destination.hasItem() && !destination.isObstacle(player) && player.getWorld().getEntityAt(coordinateThatCratePushedTo) == null)
         {
             player.getWorld().getTiles()[coordinateThatCratePushedTo.x() + (coordinateThatCratePushedTo.y() * player.getWorld().WORLD_WIDTH)].setItem(this);
             player.getWorld().getTiles()[coordinate.x() + (coordinate.y() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
             return true;
+        } else
+        {
+            return false;
         }
-        return false;
     }
 
     @Override
-    public Map<Coordinate, Texture> whichLayer(TextureRenderer tr)
+    public Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_FRONT;
     }

@@ -42,8 +42,8 @@ public class TextRenderer
         for (final char c : characters)
         {
             final String textureName = TextRenderer.getTextureName(c);
-            final Texture texture = new PngTexture("font/" + textureName);
-            LOGGER.debug("Mapping texture name {} to {}", c, "font/" + textureName);
+            final Texture texture = new PngTexture.Builder("font/" + textureName).build();
+            LOGGER.debug("Mapping character '{}' to the texture file {}.", c, "font/" + textureName);
             builder.put(textureName, texture);
         }
 
@@ -56,9 +56,9 @@ public class TextRenderer
                 {
                     case ' ' -> "space";
                     case ':' -> "colon";
-                    case '?' -> "question";
-                    case '!' -> "exclamation";
-                    case '-' -> "dash";
+                    case '?' -> "question_mark";
+                    case '!' -> "exclamation_point";
+                    case '-' -> "hyphen";
                     default -> String.valueOf(character);
                 };
     }
@@ -70,8 +70,9 @@ public class TextRenderer
         for (int i = 0; i < string.length(); i++)
         {
             if (characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))) == null)
-                LOGGER.error("Not able to draw the texture for the character: " + string.charAt(i));
-            else
+            {
+                LOGGER.error("The texture for the character '{}' could not be found.", string.charAt(i));
+            } else
             {
                 characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))).bind();
 
