@@ -170,6 +170,7 @@ public class World implements Tickable
             }
         }
 
+
         Room room = makeRoom(Direction.RIGHT); // Make initial room
         if (room == null)
         {
@@ -202,14 +203,23 @@ public class World implements Tickable
             final Pair<ArrayList<Coordinate>, Direction> path = makePath(rooms.get(ThreadLocalRandom.current().nextInt(rooms.size())));
             if (!path.first().isEmpty() && path.second() != null)
             {
+<<<<<<< Updated upstream
                 room = makeRoom(path.second());
+=======
+                final int random = ThreadLocalRandom.current().nextInt(6);
+                room = switch (random)
+                {
+                    case 0 -> makeMushroomRoom(path.getSecondThing());
+                    default -> makeRoom(path.getSecondThing());
+                };
+
+>>>>>>> Stashed changes
                 if (room == null)
                 {
                     onBoardFailureToCreate();
                     return;
                 }
                 placedRooms++;
-                rooms.add(room);
             }
         }
 
@@ -260,9 +270,12 @@ public class World implements Tickable
 
     private Room makeRoom(final Direction direction)
     {
+<<<<<<< Updated upstream
         final int random = ThreadLocalRandom.current().nextInt(4);
         if (random == 0) return makeMushroomRoom(direction);
 
+=======
+>>>>>>> Stashed changes
         Room room = null;
         int roomTries = 0;
         boolean successfulRoom = false;
@@ -301,9 +314,16 @@ public class World implements Tickable
                 }
             }
         }
+<<<<<<< Updated upstream
 
         if (!successfulRoom) room = null;
 
+=======
+        if (!successfullRoom)
+            room = null;
+
+        rooms.add(room);
+>>>>>>> Stashed changes
         return room;
     }
 
@@ -340,12 +360,19 @@ public class World implements Tickable
             {
                 for (final Coordinate coordinate : room)
                 {
+<<<<<<< Updated upstream
                     final Texture texture = ThreadLocalRandom.current().nextBoolean()
                             ? Textures.GRASS_0
                             : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
                     setTileAt(coordinate, new FloorTile(texture));
                     getTileAt(coordinate).setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
                     noObstacleZone.add(coordinate);
+=======
+                    Texture texture = ThreadLocalRandom.current().nextBoolean() ? Textures.GRASS_0 : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
+                    setTileAt(coord, new FloorTile(texture));
+                    getTileAt(coord).setItem(new MushroomEdibleItem(Textures.MUSHROOM_EDIBLE[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM_EDIBLE.length)]));
+                    noObstacleZone.add(coord);
+>>>>>>> Stashed changes
                 }
             }
         }
@@ -443,7 +470,11 @@ public class World implements Tickable
                     {
                         if (random == 6 || random == 7)
                         {
+<<<<<<< Updated upstream
                             tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
+=======
+                            case 6, 7 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomEdibleItem(Textures.MUSHROOM_EDIBLE[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM_EDIBLE.length)]));
+>>>>>>> Stashed changes
                         }
                     } else
                     {
@@ -451,8 +482,12 @@ public class World implements Tickable
                         {
                             case 0, 1, 2, 3 -> tiles[x + (y * WORLD_WIDTH)].setItem(new BushItem());
                             case 4 -> tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
+<<<<<<< Updated upstream
                             case 6, 7 ->
                                     tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
+=======
+                            case 6, 7 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomEdibleItem(Textures.MUSHROOM_EDIBLE[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM_EDIBLE.length)]));
+>>>>>>> Stashed changes
                             case 8 -> tiles[x + (y * WORLD_WIDTH)].setItem(new TreeItem(Textures.TREE));
                         }
                     }

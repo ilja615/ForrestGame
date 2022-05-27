@@ -20,7 +20,8 @@
 package com.github.ilja615.forrestgame.entity;
 
 import com.github.ilja615.forrestgame.Game;
-import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.entity.related.StatTracker;
+import com.github.ilja615.forrestgame.entity.related.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;

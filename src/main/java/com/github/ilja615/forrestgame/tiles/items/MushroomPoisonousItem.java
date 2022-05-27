@@ -20,20 +20,21 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.entity.related.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.FloorTile;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 
-import java.util.Map;
+import java.util.ArrayList;
 
-public class MushroomItem implements Item
+public class MushroomPoisonousItem implements Item
 {
     private final Texture texture;
 
-    public MushroomItem(final Texture t)
+    public MushroomPoisonousItem(final Texture t)
     {
         this.texture = t;
     }
@@ -45,7 +46,7 @@ public class MushroomItem implements Item
     }
 
     @Override
-    public boolean isObstacle(final Entity incomingEntity)
+    public boolean isObstacle(Entity incomingEntity)
     {
         return false;
     }
@@ -54,13 +55,13 @@ public class MushroomItem implements Item
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
         player.getStatTracker().increment(Stat.HUNGER);
-        player.getWorld().getTiles()[coordinate.x() + (coordinate.y() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
+        player.getWorld().getTiles()[coordinate.getX() + (coordinate.getY() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
 
         return true;
     }
 
     @Override
-    public Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
+    public ArrayList<Pair<Coordinate, Texture>> whichLayer(TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

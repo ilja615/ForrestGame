@@ -20,59 +20,43 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.entity.Player;
 import com.github.ilja615.forrestgame.entity.related.StatTracker.Stat;
-import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
+import com.github.ilja615.forrestgame.tiles.FloorTile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 
 import java.util.Map;
 
-public class BushItem implements Item
+public class MushroomEdibleItem implements Item
 {
-    private int stage = 2;
+    private final Texture texture;
+
+    public MushroomEdibleItem(final Texture t)
+    {
+        this.texture = t;
+    }
 
     @Override
     public Texture getCurrentTexture()
     {
-        return switch (stage)
-                {
-                    default -> Textures.BUSH_0;
-                    case 1 -> Textures.BUSH_1;
-                    case 2 -> Textures.BUSH_2;
-                };
+        return this.texture;
     }
 
     @Override
     public boolean isObstacle(final Entity incomingEntity)
     {
-        return !(incomingEntity instanceof Player || this.stage == 0);
+        return false;
     }
 
     @Override
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
-        if (stage > 0)
-        {
-            stage -= 1;
+        player.getStatTracker().increment(Stat.HUNGER);
+        player.getWorld().getTiles()[coordinate.x() + (coordinate.y() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
 
-            player.setMobile(false);
-            if (player instanceof Player)
-            {
-                ((Player) player).wait += 5;
-                ((Player) player).currentDoingAction = Player.Action.SLASHING;
-            }
-            player.getStatTracker().decrement(Stat.HUNGER);
-            player.getWorld().onEnemyTurn();
-            player.getWorld().getParticles().add(new Particle(coordinate, 1, 1, player.getWorld(), Textures.CHOP_PARTICLE));
-
-            return false;
-        } else
-        {
-            return true;
-        }
+        return true;
     }
 
     @Override

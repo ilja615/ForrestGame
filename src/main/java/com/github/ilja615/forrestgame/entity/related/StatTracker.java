@@ -17,9 +17,10 @@
  * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.ilja615.forrestgame.entity;
+package com.github.ilja615.forrestgame.entity.related;
 
-import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.entity.related.StatTracker.Stat;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.AbstractMap;

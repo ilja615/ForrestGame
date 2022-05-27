@@ -21,6 +21,7 @@ package com.github.ilja615.forrestgame.gui.texture;
 
 public interface Textures
 {
+<<<<<<< Updated upstream
     ////// TILES AND ITEMS
     Texture AIR = new PngTexture.Builder("tiles/air/default").build();
     Texture GRASS_0 = new PngTexture.Builder("tiles/grass/0").build();
@@ -34,6 +35,23 @@ public interface Textures
             {
                     new PngTexture.Builder("items/mushroom/0").build(),
                     new PngTexture.Builder("items/mushroom/1").build()
+=======
+////// TILES AND ITEMS
+    Texture AIR = new PngTexture("textures/air");
+    Texture GRASS_0 = new PngTexture("textures/grass_0");
+    Texture GRASS_1 = new PngTexture("textures/grass_1");
+    Texture GRASS_2 = new PngTexture("textures/grass_2");
+    Texture GRASS_3 = new PngTexture("textures/grass_3");
+    Texture[] MUSHROOM_POISONOUS = new Texture[]
+            {
+                    new PngTexture("textures/mushroom_poisonous_0"),
+                    new PngTexture("textures/mushroom_poisonous_1")
+            };
+    Texture[] MUSHROOM_EDIBLE = new Texture[]
+            {
+                    new PngTexture("textures/mushroom_edible_0"),
+                    new PngTexture("textures/mushroom_edible_1")
+>>>>>>> Stashed changes
             };
     Texture SIGN = new PngTexture.Builder("items/sign").build();
     Texture TREE = new PngTexture.Builder("items/tree").setTall(true).build();
