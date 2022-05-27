@@ -80,33 +80,16 @@ public class Shader
         glDeleteProgram(program);
     }
 
-<<<<<<< Updated upstream
-    private String readSource(final String file)
-    {
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(
-                this.getClass().getResourceAsStream("/shaders/" + file),
-                "The shader file " + file + " could not be found."
-=======
-    public void useShader()
-    {
-        glUseProgram(program);
-    }
-
     private String readSource(final String file)
     {
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(
                 this.getClass().getResourceAsStream("/shaders/" + file)
->>>>>>> Stashed changes
         ))))
         {
             return reader.lines().collect(Collectors.joining("\n"));
         } catch (final IOException exception)
         {
-<<<<<<< Updated upstream
-            throw new IllegalStateException("Could not load the shader file " + file + ".", exception);
-=======
             throw new IllegalStateException("Could not load shader " + file, exception);
->>>>>>> Stashed changes
         }
     }
 
