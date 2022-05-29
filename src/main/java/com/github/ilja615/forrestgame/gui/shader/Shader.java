@@ -83,14 +83,13 @@ public class Shader
     private String readSource(final String file)
     {
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(
-                this.getClass().getResourceAsStream("/shaders/" + file),
-                "The shader file " + file + " could not be found."
+                this.getClass().getResourceAsStream("/shaders/" + file)
         ))))
         {
             return reader.lines().collect(Collectors.joining("\n"));
         } catch (final IOException exception)
         {
-            throw new IllegalStateException("Could not load the shader file " + file + ".", exception);
+            throw new IllegalStateException("Could not load shader " + file, exception);
         }
     }
 

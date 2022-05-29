@@ -20,7 +20,7 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.entity.StatTracker.Stat;
+import com.github.ilja615.forrestgame.entity.related.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
@@ -29,11 +29,11 @@ import com.github.ilja615.forrestgame.util.Coordinate;
 
 import java.util.Map;
 
-public class MushroomItem implements Item
+public class MushroomEdibleItem implements Item
 {
     private final Texture texture;
 
-    public MushroomItem(final Texture t)
+    public MushroomEdibleItem(final Texture t)
     {
         this.texture = t;
     }

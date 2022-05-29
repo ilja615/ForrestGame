@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: com.github.ilja615.forrestgame.ForrestGame
+

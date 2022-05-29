@@ -19,6 +19,7 @@
 
 package com.github.ilja615.forrestgame.entity;
 
+import com.github.ilja615.forrestgame.entity.related.StatTracker;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;

@@ -170,6 +170,7 @@ public class World implements Tickable
             }
         }
 
+
         Room room = makeRoom(Direction.RIGHT); // Make initial room
         if (room == null)
         {
@@ -209,7 +210,6 @@ public class World implements Tickable
                     return;
                 }
                 placedRooms++;
-                rooms.add(room);
             }
         }
 
@@ -260,7 +260,7 @@ public class World implements Tickable
 
     private Room makeRoom(final Direction direction)
     {
-        final int random = ThreadLocalRandom.current().nextInt(4);
+        final int random = ThreadLocalRandom.current().nextInt(6);
         if (random == 0) return makeMushroomRoom(direction);
 
         Room room = null;
@@ -301,9 +301,9 @@ public class World implements Tickable
                 }
             }
         }
-
         if (!successfulRoom) room = null;
 
+        //rooms.add(room); //unsure if this code w
         return room;
     }
 
@@ -344,7 +344,7 @@ public class World implements Tickable
                             ? Textures.GRASS_0
                             : Textures.GROUND_ALTERNATIVES[ThreadLocalRandom.current().nextInt(Textures.GROUND_ALTERNATIVES.length)];
                     setTileAt(coordinate, new FloorTile(texture));
-                    getTileAt(coordinate).setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
+                    getTileAt(coordinate).setItem(new MushroomEdibleItem(Textures.MUSHROOM_EDIBLE[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM_EDIBLE.length)]));
                     noObstacleZone.add(coordinate);
                 }
             }
@@ -441,9 +441,9 @@ public class World implements Tickable
 
                     if (noObstacleZone.contains(c))
                     {
-                        if (random == 6 || random == 7)
+                        switch (random)
                         {
-                            tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
+                            case 6, 7 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomEdibleItem(Textures.MUSHROOM_EDIBLE[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM_EDIBLE.length)]));
                         }
                     } else
                     {
@@ -451,8 +451,7 @@ public class World implements Tickable
                         {
                             case 0, 1, 2, 3 -> tiles[x + (y * WORLD_WIDTH)].setItem(new BushItem());
                             case 4 -> tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
-                            case 6, 7 ->
-                                    tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomItem(Textures.MUSHROOM[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM.length)]));
+                            case 6, 7 -> tiles[x + (y * WORLD_WIDTH)].setItem(new MushroomEdibleItem(Textures.MUSHROOM_EDIBLE[ThreadLocalRandom.current().nextInt(Textures.MUSHROOM_EDIBLE.length)]));
                             case 8 -> tiles[x + (y * WORLD_WIDTH)].setItem(new TreeItem(Textures.TREE));
                         }
                     }

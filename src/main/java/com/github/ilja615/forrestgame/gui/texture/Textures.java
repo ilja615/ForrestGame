@@ -30,10 +30,15 @@ public interface Textures
     Texture BUSH_0 = new PngTexture.Builder("items/bush/0").build();
     Texture BUSH_1 = new PngTexture.Builder("items/bush/1").build();
     Texture BUSH_2 = new PngTexture.Builder("items/bush/2").build();
-    Texture[] MUSHROOM = new Texture[]
+    Texture[] MUSHROOM_POISONOUS = new Texture[]
             {
-                    new PngTexture.Builder("items/mushroom/0").build(),
-                    new PngTexture.Builder("items/mushroom/1").build()
+                    new PngTexture.Builder("items/mushroom/poisonous_0").build(),
+                    new PngTexture.Builder("items/mushroom/poisonous_1").build()
+            };
+    Texture[] MUSHROOM_EDIBLE = new Texture[]
+            {
+                    new PngTexture.Builder("items/mushroom/edible_0").build(),
+                    new PngTexture.Builder("items/mushroom/edible_1").build()
             };
     Texture SIGN = new PngTexture.Builder("items/sign").build();
     Texture TREE = new PngTexture.Builder("items/tree").setTall(true).build();
