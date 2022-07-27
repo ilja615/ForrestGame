@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.8.2")) // JUnit bill of materials
+    testImplementation(platform("org.junit:junit-bom:5.9.0")) // JUnit bill of materials
     testImplementation("org.junit.jupiter:junit-jupiter") // JUnit Jupiter (unit testing)
     implementation("ch.qos.logback:logback-classic:1.2.11") // Logback (logging)
     implementation("com.google.guava:guava:31.1-jre") // Guava ("core libraries for Java")
