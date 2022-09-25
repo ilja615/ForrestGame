@@ -88,18 +88,18 @@ public class WallTile extends Tile implements ConnectedTextureTile
 
     private Texture getGoodTexture(final Direction.Diagonal diagonal, final Coordinate thisPos, final World world)
     {
-        final Coordinate firstPos = thisPos.move(diagonal.getHorizontalDirection(), 1);
-        final Coordinate otherPos = thisPos.move(diagonal.getVerticalDirection(), 1);
+        final Coordinate firstPos = thisPos.transpose(diagonal.getHorizontalDirection(), 1);
+        final Coordinate otherPos = thisPos.transpose(diagonal.getVerticalDirection(), 1);
 
         final Tile firstNeighbourTile = world.isWithinWorld(firstPos) ? world.getTileAt(firstPos) : world.airTile;
         final Tile otherNeighbourTile = world.isWithinWorld(otherPos) ? world.getTileAt(otherPos) : world.airTile;
 
-        if (firstNeighbourTile instanceof AirTile && otherNeighbourTile instanceof FloorTile)
+        if (firstNeighbourTile instanceof AirTile && !(otherNeighbourTile instanceof AirTile || otherNeighbourTile instanceof WallTile))
         {
             return diagonal.getVerticalDirection() == Direction.UP ? Textures.WALL_STRAIGHT_PIECE : Textures.WALL_STRAIGHT_PIECE_MIRRORED;
         }
 
-        if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof AirTile)
+        if (!(firstNeighbourTile instanceof AirTile || firstNeighbourTile instanceof WallTile) && otherNeighbourTile instanceof AirTile)
         {
             return diagonal.getHorizontalDirection() == Direction.RIGHT ? Textures.WALL_STRAIGHT_VERTICAL_PIECE : Textures.WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED;
         }
@@ -109,7 +109,7 @@ public class WallTile extends Tile implements ConnectedTextureTile
             return Textures.AIR_PIECE;
         }
 
-        if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof FloorTile)
+        if (!(firstNeighbourTile instanceof AirTile || firstNeighbourTile instanceof WallTile) && !(otherNeighbourTile instanceof AirTile || otherNeighbourTile instanceof WallTile))
         {
             if (diagonal.getHorizontalDirection() == Direction.RIGHT)
             {
@@ -132,22 +132,22 @@ public class WallTile extends Tile implements ConnectedTextureTile
             }
         }
 
-        if (firstNeighbourTile instanceof FloorTile && otherNeighbourTile instanceof WallTile)
+        if (!(firstNeighbourTile instanceof AirTile || firstNeighbourTile instanceof WallTile) && otherNeighbourTile instanceof WallTile)
         {
             return diagonal.getHorizontalDirection() == Direction.RIGHT ? Textures.WALL_STRAIGHT_VERTICAL_PIECE : Textures.WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED;
         }
 
-        if (firstNeighbourTile instanceof WallTile && otherNeighbourTile instanceof FloorTile)
+        if (firstNeighbourTile instanceof WallTile && !(otherNeighbourTile instanceof AirTile || otherNeighbourTile instanceof WallTile))
         {
             return diagonal.getVerticalDirection() == Direction.UP ? Textures.WALL_STRAIGHT_PIECE : Textures.WALL_STRAIGHT_PIECE_MIRRORED;
         }
 
         if (firstNeighbourTile instanceof WallTile && otherNeighbourTile instanceof WallTile)
         {
-            final Coordinate thirdPos = thisPos.move(diagonal);
+            final Coordinate thirdPos = thisPos.transpose(diagonal);
             final Tile thirdNeighbourTile = world.isWithinWorld(thirdPos) ? world.getTileAt(thirdPos) : world.airTile;
 
-            if (!(thirdNeighbourTile instanceof FloorTile)) return Textures.AIR_PIECE;
+            if (thirdNeighbourTile instanceof AirTile || thirdNeighbourTile instanceof WallTile) return Textures.AIR_PIECE;
 
             if (diagonal.getHorizontalDirection() == Direction.RIGHT)
             {

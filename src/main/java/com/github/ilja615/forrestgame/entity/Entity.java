@@ -19,6 +19,7 @@
 
 package com.github.ilja615.forrestgame.entity;
 
+import com.github.ilja615.forrestgame.entity.related.EffectTracker;
 import com.github.ilja615.forrestgame.entity.related.StatTracker;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
@@ -47,6 +48,8 @@ public interface Entity extends Tickable
     void setCoordinate(final Coordinate coordinate);
 
     StatTracker getStatTracker();
+
+    EffectTracker getEffectTracker();
 
     /**
      * Sets if this entity can move

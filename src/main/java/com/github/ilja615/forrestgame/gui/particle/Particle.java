@@ -26,11 +26,11 @@ import com.github.ilja615.forrestgame.world.World;
 
 public class Particle implements Tickable
 {
-    private final Coordinate coordinate;
-    private final Texture[] textures;
-    private final int amountLifeCycles;
+    private Coordinate coordinate;
+    private Texture[] textures;
+    private int amountLifeCycles;
     private final World world;
-    private final int ticksPerFrame;
+    private int ticksPerFrame;
     private int currentFrame = 0;
     private int animationTimer = 0;
     private int completedCycles = 0;
@@ -65,9 +65,36 @@ public class Particle implements Tickable
         return this.coordinate;
     }
 
+    public void setCoordinate(Coordinate c) { this.coordinate = c; }
+
     public boolean isExpired()
     {
         return this.expired;
+    }
+
+    public int getAmountLifeCycles()
+    {
+        return amountLifeCycles;
+    }
+
+    public void setAmountLifeCycles(final int amountLifeCycles)
+    {
+        this.amountLifeCycles = amountLifeCycles;
+    }
+
+    public int getCompletedCycles()
+    {
+        return completedCycles;
+    }
+
+    public Texture[] getTextures()
+    {
+        return textures;
+    }
+
+    public void setTextures(final Texture[] textures)
+    {
+        this.textures = textures;
     }
 
     @Override

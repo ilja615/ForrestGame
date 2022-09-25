@@ -76,12 +76,12 @@ public record Coordinate(int x, int y)
         return relativeMove(+validateMovement(amount), 0);
     }
 
-    public Coordinate move(final Direction direction)
+    public Coordinate transpose(final Direction direction)
     {
-        return move(direction, 1);
+        return transpose(direction, 1);
     }
 
-    public Coordinate move(final Direction direction, final int amount)
+    public Coordinate transpose(final Direction direction, final int amount)
     {
         return switch (direction)
                 {
@@ -92,12 +92,12 @@ public record Coordinate(int x, int y)
                 };
     }
 
-    public Coordinate move(final Direction.Diagonal diagonalDirection)
+    public Coordinate transpose(final Direction.Diagonal diagonalDirection)
     {
-        return move(diagonalDirection, 1);
+        return transpose(diagonalDirection, 1);
     }
 
-    public Coordinate move(final Direction.Diagonal diagonalDirection, final int amount)
+    public Coordinate transpose(final Direction.Diagonal diagonalDirection, final int amount)
     {
         return switch (diagonalDirection)
                 {

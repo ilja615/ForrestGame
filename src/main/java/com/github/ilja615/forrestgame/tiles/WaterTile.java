@@ -19,6 +19,7 @@
 
 package com.github.ilja615.forrestgame.tiles;
 
+import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -27,12 +28,19 @@ import com.github.ilja615.forrestgame.world.World;
 
 import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class DirtTile extends FloorTile implements ConnectedTextureTile
+public class WaterTile extends Tile implements ConnectedTextureTile
 {
     public final EnumMap<Direction.Diagonal, Texture> QUADRANT_TEXTURES = new EnumMap<>(Direction.Diagonal.class);
 
-    public DirtTile(final Texture texture)
+    @Override
+    public boolean isObstacle(final Entity incomingEntity)
+    {
+        return true;
+    }
+
+    public WaterTile(final Texture texture)
     {
         super(texture);
     }
@@ -68,32 +76,32 @@ public class DirtTile extends FloorTile implements ConnectedTextureTile
         } else if (firstNeighbourTile instanceof AirTile)
         {
             return diagonalDirection.getVerticalDirection() == Direction.UP
-                    ? Textures.DIRT_STRAIGHT_PIECE
-                    : Textures.DIRT_STRAIGHT_PIECE_MIRRORED;
+                    ? Textures.WATER_STRAIGHT_PIECE
+                    : Textures.WATER_STRAIGHT_PIECE_MIRRORED;
         } else if (otherNeighbourTile instanceof AirTile)
         {
             return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
-                    ? Textures.DIRT_STRAIGHT_VERTICAL_PIECE
-                    : Textures.DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED;
-        } else if (!(firstNeighbourTile instanceof DirtTile) && !(otherNeighbourTile instanceof DirtTile))
+                    ? Textures.WATER_STRAIGHT_VERTICAL_PIECE[ThreadLocalRandom.current().nextInt(Textures.WATER_STRAIGHT_VERTICAL_PIECE.length)]
+                    : Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED[ThreadLocalRandom.current().nextInt(Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED.length)];
+        } else if (!(firstNeighbourTile instanceof WaterTile) && !(otherNeighbourTile instanceof WaterTile))
         {
             return switch (diagonalDirection)
                     {
-                        case UP_AND_LEFT -> Textures.DIRT_OUTER_CORNER_PIECE_HVM;
-                        case UP_AND_RIGHT -> Textures.DIRT_OUTER_CORNER_PIECE_VM;
-                        case DOWN_AND_LEFT -> Textures.DIRT_OUTER_CORNER_PIECE_HM;
-                        case DOWN_AND_RIGHT -> Textures.DIRT_OUTER_CORNER_PIECE;
+                        case UP_AND_LEFT -> Textures.WATER_OUTER_CORNER_PIECE_HVM;
+                        case UP_AND_RIGHT -> Textures.WATER_OUTER_CORNER_PIECE_VM;
+                        case DOWN_AND_LEFT -> Textures.WATER_OUTER_CORNER_PIECE_HM;
+                        case DOWN_AND_RIGHT -> Textures.WATER_OUTER_CORNER_PIECE;
                     };
-        } else if (!(firstNeighbourTile instanceof DirtTile))
+        } else if (!(firstNeighbourTile instanceof WaterTile))
         {
             return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
-                    ? Textures.DIRT_STRAIGHT_VERTICAL_PIECE
-                    : Textures.DIRT_STRAIGHT_VERTICAL_PIECE_MIRRORED;
-        } else if (!(otherNeighbourTile instanceof DirtTile))
+                    ? Textures.WATER_STRAIGHT_VERTICAL_PIECE[ThreadLocalRandom.current().nextInt(Textures.WATER_STRAIGHT_VERTICAL_PIECE.length)]
+                    : Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED[ThreadLocalRandom.current().nextInt(Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED.length)];
+        } else if (!(otherNeighbourTile instanceof WaterTile))
         {
             return diagonalDirection.getVerticalDirection() == Direction.UP
-                    ? Textures.DIRT_STRAIGHT_PIECE
-                    : Textures.DIRT_STRAIGHT_PIECE_MIRRORED;
+                    ? Textures.WATER_STRAIGHT_PIECE
+                    : Textures.WATER_STRAIGHT_PIECE_MIRRORED;
         } else
         {
             final Coordinate thirdPos = coordinate.transpose(diagonalDirection);
@@ -101,17 +109,19 @@ public class DirtTile extends FloorTile implements ConnectedTextureTile
                     ? world.getTileAt(thirdPos)
                     : world.airTile;
 
-            if (thirdNeighbourTile instanceof DirtTile)
+            if (thirdNeighbourTile instanceof WaterTile)
             {
-                return Textures.DIRT_FULL_PIECE;
+                if (ThreadLocalRandom.current().nextBoolean())
+                    return Textures.WATER_FULL_PIECE_NORMAL;
+                else return Textures.WATER_FULL_PIECE[ThreadLocalRandom.current().nextInt(Textures.WATER_FULL_PIECE.length)];
             } else
             {
                 return switch (diagonalDirection)
                         {
-                            case UP_AND_LEFT -> Textures.DIRT_INNER_CORNER_PIECE_HVM;
-                            case UP_AND_RIGHT -> Textures.DIRT_INNER_CORNER_PIECE_VM;
-                            case DOWN_AND_LEFT -> Textures.DIRT_INNER_CORNER_PIECE_HM;
-                            case DOWN_AND_RIGHT -> Textures.DIRT_INNER_CORNER_PIECE;
+                            case UP_AND_LEFT -> Textures.WATER_INNER_CORNER_PIECE_HVM;
+                            case UP_AND_RIGHT -> Textures.WATER_INNER_CORNER_PIECE_VM;
+                            case DOWN_AND_LEFT -> Textures.WATER_INNER_CORNER_PIECE_HM;
+                            case DOWN_AND_RIGHT -> Textures.WATER_INNER_CORNER_PIECE;
                         };
             }
         }

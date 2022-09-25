@@ -19,6 +19,7 @@
 
 package com.github.ilja615.forrestgame.entity;
 
+import com.github.ilja615.forrestgame.entity.related.EffectTracker;
 import com.github.ilja615.forrestgame.entity.related.StatTracker;
 import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
@@ -36,12 +37,14 @@ public class Scamperer implements Entity
     private final StatTracker statTracker;
     private Coordinate coordinate;
     private boolean mobile = true;
+    private final EffectTracker effectTracker;
 
     public Scamperer(final World world, final Coordinate startPos)
     {
         this.world = world;
         this.coordinate = startPos;
         this.statTracker = new StatTracker(this, ImmutableMap.of(StatTracker.Stat.HEALTH, 2));
+        this.effectTracker = new EffectTracker(this);
     }
 
     @Override
@@ -66,6 +69,12 @@ public class Scamperer implements Entity
     public StatTracker getStatTracker()
     {
         return statTracker;
+    }
+
+    @Override
+    public EffectTracker getEffectTracker()
+    {
+        return effectTracker;
     }
 
     @Override

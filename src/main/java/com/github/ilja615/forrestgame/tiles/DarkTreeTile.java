@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 the ForrestGame contributors.
+ * Copyright (c) 2021-2022 the ForrestGame contributors.
  *
  * This file is part of ForrestGame.
  *
@@ -17,8 +17,21 @@
  * along with ForrestGame.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.ilja615.forrestgame.entity.related;
+package com.github.ilja615.forrestgame.tiles;
 
-public interface Effect
+import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.gui.texture.Texture;
+
+public class DarkTreeTile extends Tile
 {
+    public DarkTreeTile(final Texture texture)
+    {
+        super(texture);
+    }
+
+    @Override
+    public boolean isObstacle(final Entity incomingEntity)
+    {
+        return false;
+    }
 }

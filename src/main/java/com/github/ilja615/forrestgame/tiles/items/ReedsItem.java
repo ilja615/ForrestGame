@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 the ForrestGame contributors.
+ * Copyright (c) 2022 the ForrestGame contributors.
  *
  * This file is part of ForrestGame.
  *
@@ -20,20 +20,17 @@
 package com.github.ilja615.forrestgame.tiles.items;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.entity.related.StatTracker.Stat;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
-import com.github.ilja615.forrestgame.gui.texture.Textures;
-import com.github.ilja615.forrestgame.tiles.FloorTile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 
 import java.util.Map;
 
-public class MushroomPoisonousItem implements Item
+public class ReedsItem implements Item
 {
     private final Texture texture;
 
-    public MushroomPoisonousItem(final Texture t)
+    public ReedsItem(final Texture t)
     {
         this.texture = t;
     }
@@ -45,7 +42,7 @@ public class MushroomPoisonousItem implements Item
     }
 
     @Override
-    public boolean isObstacle(Entity incomingEntity)
+    public boolean isObstacle(final Entity incomingEntity)
     {
         return false;
     }
@@ -53,9 +50,6 @@ public class MushroomPoisonousItem implements Item
     @Override
     public boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate)
     {
-        player.getStatTracker().increment(Stat.HUNGER);
-        player.getWorld().getTiles()[coordinate.x() + (coordinate.y() * player.getWorld().WORLD_WIDTH)] = new FloorTile(Textures.GRASS_0);
-
         return true;
     }
 

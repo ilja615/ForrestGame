@@ -20,34 +20,48 @@
 package com.github.ilja615.forrestgame.entity.related;
 
 import com.github.ilja615.forrestgame.entity.Entity;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-public class EffectTracker extends AbstractMap<Effect, Integer>
+public class EffectTracker
 {
-    private final Map<Effect, Integer> delegate;
     private final Entity entity;
+    public Effect confusion = Effect.CONFUSION;
 
-    public EffectTracker(final Entity entity, final Map<Effect, Integer> stats)
+    public EffectTracker(final Entity entity)
     {
-        this.delegate = new HashMap<>(stats);
         this.entity = entity;
     }
 
-    @Override
-    public Integer get(final Object key)
+    public void decrementAll()
     {
-        return delegate.get(key);
+        this.confusion.decrement();
     }
 
-    @NotNull
-    @Override
-    public Set<Entry<Effect, Integer>> entrySet()
+    public enum Effect
     {
-        return null;
+        CONFUSION;
+
+        private int turnsLeft = 0;
+
+        Effect() {}
+
+        public int getTurnsLeft()
+        {
+            return turnsLeft;
+        }
+
+        public void setTurnsLeft(int amount)
+        {
+            this.turnsLeft = amount;
+        }
+
+        public void decrement()
+        {
+             if (this.isActive()) this.turnsLeft -= 1;
+        }
+
+        public boolean isActive()
+        {
+            return this.turnsLeft > 0;
+        }
     }
 }

@@ -20,8 +20,10 @@
 package com.github.ilja615.forrestgame.entity;
 
 import com.github.ilja615.forrestgame.Game;
+import com.github.ilja615.forrestgame.entity.related.EffectTracker;
 import com.github.ilja615.forrestgame.entity.related.StatTracker;
 import com.github.ilja615.forrestgame.entity.related.StatTracker.Stat;
+import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
@@ -38,6 +40,7 @@ public class Player implements Entity
     private static final int ANIMATION_FRAMES_TIME = 60;
     private final World world;
     private final StatTracker statTracker;
+    private final EffectTracker effectTracker;
     public Direction facing = Direction.DOWN;
     public int wait = 0;
     public Action currentDoingAction = Action.NOTHING;
@@ -51,6 +54,7 @@ public class Player implements Entity
         this.world = world;
         this.coordinate = startPos;
         this.statTracker = new StatTracker(this, ImmutableMap.of(Stat.HEALTH, 10, Stat.HUNGER, 10));
+        this.effectTracker = new EffectTracker(this);
     }
 
     @Override
@@ -76,6 +80,9 @@ public class Player implements Entity
     {
         return statTracker;
     }
+
+    @Override
+    public EffectTracker getEffectTracker() { return effectTracker; }
 
     @Override
     public void setMobile(final boolean mobile)
@@ -131,6 +138,29 @@ public class Player implements Entity
 
         world.getTextureRenderer().setPartialY(partialY);
 
+        if (effectTracker.confusion.isActive())
+        {
+            Particle already = null;
+            for (Particle particle : this.getWorld().getParticles())
+            {
+                if (particle.getTextures() == Textures.CONFUSION_PARTICLE)
+                {
+                    already = particle;
+                }
+            }
+            if (already == null)
+            {
+                // There was not yet a confusion particle
+                this.getWorld().getParticles().add(new Particle(coordinate, 1, 1, this.getWorld(), Textures.CONFUSION_PARTICLE));
+            } else {
+                // The current particle its position should be updated
+                already.setCoordinate(this.coordinate);
+                // The current one should be extended if it is close to expiration
+                if (already.getCompletedCycles() >= already.getAmountLifeCycles() - 1)
+                    already.setAmountLifeCycles(already.getAmountLifeCycles() + 1);
+            }
+        }
+
         if (mobile && partialX == 0 && partialY == 0)
         {
             // The player is not doing anything currently and can now do something
@@ -140,80 +170,36 @@ public class Player implements Entity
 
             if (isKeyDown(game, GLFW_KEY_UP) || isKeyDown(game, GLFW_KEY_W))
             {
-                moveUp();
+                move(Direction.UP);
             } else if (isKeyDown(game, GLFW_KEY_DOWN) || isKeyDown(game, GLFW_KEY_S))
             {
-                moveDown();
+                move(Direction.DOWN);
             } else if (isKeyDown(game, GLFW_KEY_LEFT) || isKeyDown(game, GLFW_KEY_A))
             {
-                moveLeft();
+                move(Direction.LEFT);
             } else if (isKeyDown(game, GLFW_KEY_RIGHT) || isKeyDown(game, GLFW_KEY_D))
             {
-                moveRight();
+                move(Direction.RIGHT);
             }
         }
     }
 
-    private void moveUp()
+    private void move(Direction dir)
     {
         final Game game = world.getGame();
-        if (!isKeyDown(game, GLFW_KEY_LEFT_SHIFT) && !isKeyDown(game, GLFW_KEY_RIGHT_SHIFT))
-        {
-            this.mobile = false;
-            this.facing = Direction.UP;
-            this.currentDoingAction = Action.WALKING;
-            move(coordinate.up(), Direction.UP);
-        } else
-        {
-            this.facing = Direction.UP;
-            waitMoment();
-        }
-    }
 
-    private void moveDown()
-    {
-        final Game game = world.getGame();
-        if (!isKeyDown(game, GLFW_KEY_LEFT_SHIFT) && !isKeyDown(game, GLFW_KEY_RIGHT_SHIFT))
-        {
-            this.mobile = false;
-            this.facing = Direction.DOWN;
-            this.currentDoingAction = Action.WALKING;
-            move(coordinate.down(), Direction.DOWN);
-        } else
-        {
-            this.facing = Direction.DOWN;
-            waitMoment();
-        }
-    }
+        if (this.effectTracker.confusion.isActive())
+            dir = dir.getOpposite();
 
-    private void moveLeft()
-    {
-        final Game game = world.getGame();
         if (!isKeyDown(game, GLFW_KEY_LEFT_SHIFT) && !isKeyDown(game, GLFW_KEY_RIGHT_SHIFT))
         {
             this.mobile = false;
-            this.facing = Direction.LEFT;
+            this.facing = dir;
             this.currentDoingAction = Action.WALKING;
-            move(coordinate.left(), Direction.LEFT);
+            handleMotionTowards(coordinate.transpose(dir), dir);
         } else
         {
-            this.facing = Direction.LEFT;
-            waitMoment();
-        }
-    }
-
-    private void moveRight()
-    {
-        final Game game = world.getGame();
-        if (!isKeyDown(game, GLFW_KEY_LEFT_SHIFT) && !isKeyDown(game, GLFW_KEY_RIGHT_SHIFT))
-        {
-            this.mobile = false;
-            this.facing = Direction.RIGHT;
-            this.currentDoingAction = Action.WALKING;
-            move(coordinate.right(), Direction.RIGHT);
-        } else
-        {
-            this.facing = Direction.RIGHT;
+            this.facing = dir;
             waitMoment();
         }
     }
@@ -223,7 +209,7 @@ public class Player implements Entity
         wait = 1;
     }
 
-    private void move(final Coordinate coordinate, final Direction direction)
+    private void handleMotionTowards(final Coordinate coordinate, final Direction direction)
     {
         if (world.isWithinWorld(coordinate))
         {

@@ -53,6 +53,17 @@ public enum Direction
         return xMovement != 0;
     }
 
+    public Direction getOpposite()
+    {
+        return switch (this)
+                {
+                    case UP -> DOWN;
+                    case DOWN -> UP;
+                    case LEFT -> RIGHT;
+                    case RIGHT -> LEFT;
+                };
+    }
+
     public enum Diagonal
     {
         UP_AND_LEFT(UP, LEFT), UP_AND_RIGHT(UP, RIGHT),

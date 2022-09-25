@@ -30,10 +30,11 @@ public interface Textures
     Texture BUSH_0 = new PngTexture.Builder("items/bush/0").build();
     Texture BUSH_1 = new PngTexture.Builder("items/bush/1").build();
     Texture BUSH_2 = new PngTexture.Builder("items/bush/2").build();
-    Texture[] MUSHROOM_POISONOUS = new Texture[]
+    Texture BUSH_BERRY = new PngTexture.Builder("items/bush/berry").build();
+    Texture[] MUSHROOM_CONFUSING = new Texture[]
             {
-                    new PngTexture.Builder("items/mushroom/poisonous_0").build(),
-                    new PngTexture.Builder("items/mushroom/poisonous_1").build()
+                    new PngTexture.Builder("items/mushroom/confusing_0").build(),
+                    new PngTexture.Builder("items/mushroom/confusing_1").build()
             };
     Texture[] MUSHROOM_EDIBLE = new Texture[]
             {
@@ -51,6 +52,14 @@ public interface Textures
 
     Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
     Texture[] PATH_DECORATION_ALTERNATIVES = new Texture[]{PATH_DECORATION_0, PATH_DECORATION_1, PATH_DECORATION_2, PATH_DECORATION_3, PATH_DECORATION_4};
+    Texture DARK_TREE = new PngTexture.Builder("tiles/dark_tree").setTall(true).build();
+    Texture[] LILY_PAD = new Texture[]
+            {
+                    new PngTexture.Builder("items/water/lily_pad_0").build(),
+                    new PngTexture.Builder("items/water/lily_pad_1").build(),
+                    new PngTexture.Builder("items/water/lily_pad_2").build()
+            };
+    Texture REEDS = new PngTexture.Builder("items/water/reeds").setTall(true).build();
 
     ////// PIECES FOR CONNECTED TEXTURES
     Texture AIR_PIECE = new PngTexture.Builder("tiles/air/small").build();
@@ -85,6 +94,35 @@ public interface Textures
     Texture DIRT_OUTER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/dirt/outer_corner_other").build();
     Texture DIRT_OUTER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/dirt/outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
     Texture DIRT_OUTER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/dirt/outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
+
+    Texture WATER_FULL_PIECE_NORMAL = new PngTexture.Builder("tiles/water/full_normal").build();
+    Texture[] WATER_FULL_PIECE = new Texture[]
+            {
+                    new PngTexture.Builder("tiles/water/full_0").build(),
+                    new PngTexture.Builder("tiles/water/full_1").build(),
+                    new PngTexture.Builder("tiles/water/full_2").build(),
+                    new PngTexture.Builder("tiles/water/full_3").build()
+            };
+    Texture WATER_STRAIGHT_PIECE = new PngTexture.Builder("tiles/water/top_straight").build();
+    Texture WATER_STRAIGHT_PIECE_MIRRORED = new PngTexture.Builder("tiles/water/bottom_straight").build();
+    Texture[] WATER_STRAIGHT_VERTICAL_PIECE = new Texture[]
+            {
+                    new PngTexture.Builder("tiles/water/straight_vertical").build(),
+                    new PngTexture.Builder("tiles/water/straight_vertical_other").build()
+            };
+    Texture[] WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED = new Texture[]
+            {
+                    new PngTexture.Builder("tiles/water/straight_vertical").setHorizontallyMirrored(true).build(),
+                    new PngTexture.Builder("tiles/water/straight_vertical_other").setHorizontallyMirrored(true).build()
+            };
+    Texture WATER_INNER_CORNER_PIECE = new PngTexture.Builder("tiles/water/bottom_inner_corner").build();
+    Texture WATER_INNER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/water/bottom_inner_corner").setHorizontallyMirrored(true).build();
+    Texture WATER_INNER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/water/top_inner_corner").setHorizontallyMirrored(true).build();
+    Texture WATER_INNER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/water/top_inner_corner").build();
+    Texture WATER_OUTER_CORNER_PIECE = new PngTexture.Builder("tiles/water/bottom_outer_corner").build();
+    Texture WATER_OUTER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/water/bottom_outer_corner").setHorizontallyMirrored(true).build();
+    Texture WATER_OUTER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/water/top_outer_corner").build();
+    Texture WATER_OUTER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/water/top_outer_corner").setHorizontallyMirrored(true).build();
 
     ////// ENTITIES
     // player
@@ -134,6 +172,13 @@ public interface Textures
                     new PngTexture.Builder("particles/chop/1").build(),
                     new PngTexture.Builder("particles/chop/2").build(),
                     new PngTexture.Builder("particles/chop/3").build()
+            };
+    Texture[] CONFUSION_PARTICLE = new Texture[]
+            {
+                    new PngTexture.Builder("particles/confusion/0").build(),
+                    new PngTexture.Builder("particles/confusion/1").build(),
+                    new PngTexture.Builder("particles/confusion/2").build(),
+                    new PngTexture.Builder("particles/confusion/3").build()
             };
 
     // other gui
