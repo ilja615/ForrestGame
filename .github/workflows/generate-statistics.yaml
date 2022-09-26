@@ -13,7 +13,7 @@ jobs:
         with:
           root_dir: src/main
       - name: Commit
-        uses: stefanzweifel/git-auto-commit-action@v4.14.1
+        uses: stefanzweifel/git-auto-commit-action@v4.15.0
         with:
           branch: ${{ github.head_ref }}
           commit_message: Generate statistics
