@@ -168,7 +168,7 @@ public class World implements Tickable
         {
             for (int y = 0; y < WORLD_HEIGHT; y++)
             {
-                tiles[x + (y * WORLD_WIDTH)] = new WallTile(Textures.WALL_SINGLE);
+                tiles[x + (y * WORLD_WIDTH)] = new DarkTreeTile(Textures.AIR);
             }
         }
 
@@ -620,7 +620,7 @@ public class World implements Tickable
 
         for (final Coordinate c : potential)
         {
-            if (isWithinWorld(c) && getTileAt(c) instanceof WallTile)
+            if (isWithinWorld(c) && getTileAt(c) instanceof DarkTreeTile)
             {
                 if (amountFloorNeighbour(c).size() == 1)
                 {

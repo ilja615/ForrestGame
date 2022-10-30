@@ -68,18 +68,24 @@ public interface Textures
     Texture AIR_PIECE = new PngTexture.Builder("tiles/air/small").build();
 
     // wall
-    Texture WALL_STRAIGHT_PIECE = new PngTexture.Builder("tiles/wall/straight").build();
-    Texture WALL_STRAIGHT_PIECE_MIRRORED = new PngTexture.Builder("tiles/wall/straight").setVerticallyMirrored(true).build();
-    Texture WALL_STRAIGHT_VERTICAL_PIECE = new PngTexture.Builder("tiles/wall/straight_vertical").build();
-    Texture WALL_STRAIGHT_VERTICAL_PIECE_MIRRORED = new PngTexture.Builder("tiles/wall/straight_vertical").setHorizontallyMirrored(true).build();
-    Texture WALL_INNER_CORNER_PIECE = new PngTexture.Builder("tiles/wall/inner_corner").build();
-    Texture WALL_INNER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/wall/inner_corner").setHorizontallyMirrored(true).build();
-    Texture WALL_INNER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/wall/inner_corner").setVerticallyMirrored(true).build();
-    Texture WALL_INNER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/wall/inner_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
-    Texture WALL_OUTER_CORNER_PIECE = new PngTexture.Builder("tiles/wall/outer_corner").build();
-    Texture WALL_OUTER_CORNER_PIECE_HM = new PngTexture.Builder("tiles/wall/outer_corner_other").build();
-    Texture WALL_OUTER_CORNER_PIECE_VM = new PngTexture.Builder("tiles/wall/outer_corner_other").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
-    Texture WALL_OUTER_CORNER_PIECE_HVM = new PngTexture.Builder("tiles/wall/outer_corner").setHorizontallyMirrored(true).setVerticallyMirrored(true).build();
+    Texture DARK_TREE_FULL_PIECE = new PngTexture.Builder("tiles/dark_tree/full").build();
+    Texture[] DARK_TREE_TOP_STRAIGHT_PIECE = new Texture[]
+            {
+                    new PngTexture.Builder("tiles/dark_tree/top_straight_0").build(),
+                    new PngTexture.Builder("tiles/dark_tree/top_straight_1").build()
+            };
+    Texture DARK_TREE_BOTTOM_STRAIGHT_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_straight_left").build();
+    Texture DARK_TREE_BOTTOM_STRAIGHT_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_straight_right").build();
+    Texture DARK_TREE_STRAIGHT_VERTICAL_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/straight_vertical_left").build();
+    Texture DARK_TREE_STRAIGHT_VERTICAL_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/straight_vertical_right").build();
+    Texture DARK_TREE_BOTTOM_INNER_CORNER_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_inner_corner_left").build();
+    Texture DARK_TREE_BOTTOM_INNER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_inner_corner_right").build();
+    Texture DARK_TREE_TOP_INNER_CORNER_LEFT_PIECE_ = new PngTexture.Builder("tiles/dark_tree/top_inner_corner_left").build();
+    Texture DARK_TREE_TOP_INNER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_inner_corner_right").build();
+    Texture DARK_TREE_BOTTOM_OUTER_CORNER_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_outer_corner_left").build();
+    Texture DARK_TREE_BOTTOM_OUTER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_outer_corner_right").build();
+    Texture DARK_TREE_TOP_OUTER_CORNER_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_outer_corner_left").build();
+    Texture DARK_TREE_TOP_OUTER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_outer_corner_right").build();
     Texture WALL_SINGLE = new PngTexture.Builder("tiles/wall/single").build();
 
 
