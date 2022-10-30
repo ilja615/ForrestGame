@@ -70,20 +70,7 @@ public class DarkTreeTile extends Tile implements ConnectedTextureTile
                 ? world.getTileAt(otherCoordinate)
                 : world.airTile;
 
-        if (firstNeighbourTile instanceof AirTile && otherNeighbourTile instanceof AirTile)
-        {
-            return Textures.AIR_PIECE;
-        } else if (firstNeighbourTile instanceof AirTile)
-        {
-            return diagonalDirection.getVerticalDirection() == Direction.UP
-                    ? Textures.DARK_TREE_TOP_STRAIGHT_PIECE[ThreadLocalRandom.current().nextInt(Textures.DARK_TREE_TOP_STRAIGHT_PIECE.length)]
-                    : Textures.DARK_TREE_BOTTOM_STRAIGHT_LEFT_PIECE; // TODO : make alternation
-        } else if (otherNeighbourTile instanceof AirTile)
-        {
-            return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
-                    ? Textures.DARK_TREE_STRAIGHT_VERTICAL_RIGHT_PIECE
-                    : Textures.DARK_TREE_STRAIGHT_VERTICAL_LEFT_PIECE;
-        } else if (!(firstNeighbourTile instanceof DarkTreeTile) && !(otherNeighbourTile instanceof DarkTreeTile))
+        if (!(isWall(firstNeighbourTile)) && !(isWall(otherNeighbourTile)))
         {
             return switch (diagonalDirection)
                     {
@@ -92,16 +79,18 @@ public class DarkTreeTile extends Tile implements ConnectedTextureTile
                         case DOWN_AND_LEFT -> Textures.DARK_TREE_BOTTOM_OUTER_CORNER_LEFT_PIECE;
                         case DOWN_AND_RIGHT -> Textures.DARK_TREE_BOTTOM_OUTER_CORNER_RIGHT_PIECE;
                     };
-        } else if (!(firstNeighbourTile instanceof DarkTreeTile))
+        } else if (!(isWall(firstNeighbourTile)))
         {
             return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
                     ? Textures.DARK_TREE_STRAIGHT_VERTICAL_RIGHT_PIECE
                     : Textures.DARK_TREE_STRAIGHT_VERTICAL_LEFT_PIECE;
-        } else if (!(otherNeighbourTile instanceof DarkTreeTile))
+        } else if (!(isWall(otherNeighbourTile)))
         {
             return diagonalDirection.getVerticalDirection() == Direction.UP
                     ? Textures.DARK_TREE_TOP_STRAIGHT_PIECE[ThreadLocalRandom.current().nextInt(Textures.DARK_TREE_TOP_STRAIGHT_PIECE.length)]
-                    : Textures.DARK_TREE_BOTTOM_STRAIGHT_LEFT_PIECE; // TODO : make alternation
+                    : (diagonalDirection.getHorizontalDirection() == Direction.RIGHT
+                    ? Textures.DARK_TREE_BOTTOM_STRAIGHT_RIGHT_PIECE
+                    : Textures.DARK_TREE_BOTTOM_STRAIGHT_LEFT_PIECE);
         } else
         {
             final Coordinate thirdPos = coordinate.transpose(diagonalDirection);
@@ -109,7 +98,7 @@ public class DarkTreeTile extends Tile implements ConnectedTextureTile
                     ? world.getTileAt(thirdPos)
                     : world.airTile;
 
-            if (thirdNeighbourTile instanceof DarkTreeTile)
+            if (isWall(thirdNeighbourTile))
             {
                 return Textures.DARK_TREE_FULL_PIECE;
             } else {
@@ -122,5 +111,10 @@ public class DarkTreeTile extends Tile implements ConnectedTextureTile
                         };
             }
         }
+    }
+
+    private boolean isWall(Tile tile)
+    {
+        return (tile instanceof DarkTreeTile || tile instanceof AirTile);
     }
 }
