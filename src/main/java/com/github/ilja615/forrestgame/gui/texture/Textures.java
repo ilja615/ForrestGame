@@ -41,7 +41,10 @@ public interface Textures
                     new PngTexture.Builder("items/mushroom/edible_0").build(),
                     new PngTexture.Builder("items/mushroom/edible_1").build()
             };
-    Texture SIGN = new PngTexture.Builder("items/sign").build();
+    Texture SIGN_UP = new PngTexture.Builder("items/sign/up").build();
+    Texture SIGN_DOWN = new PngTexture.Builder("items/sign/down").build();
+    Texture SIGN_LEFT = new PngTexture.Builder("items/sign/left").build();
+    Texture SIGN_RIGHT = new PngTexture.Builder("items/sign/right").build();
     Texture TREE = new PngTexture.Builder("items/tree").setTall(true).build();
     Texture CRATE = new PngTexture.Builder("items/crate").build();
     Texture PATH_DECORATION_0 = new PngTexture.Builder("items/path_decoration/0").build();

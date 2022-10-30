@@ -622,7 +622,7 @@ public class World implements Tickable
         {
             if (isWithinWorld(c) && getTileAt(c) instanceof WallTile)
             {
-                if (amountFloorNeighbour(c) == 1)
+                if (amountFloorNeighbour(c).size() == 1)
                 {
                     endCoordinate = c;
                     LOGGER.info("Placed end at: {}", endCoordinate);
@@ -637,7 +637,17 @@ public class World implements Tickable
             this.onBoardFailureToCreate();
         } else {
             setTileAt(endCoordinate, new FloorTile(Textures.GRASS_0));
-            getTileAt(endCoordinate).setItem(new SignItem(Textures.SIGN));
+            getTileAt(endCoordinate).setItem(new SignItem
+                    (
+                            // Applies the texture with the arrow pointing opposite to direction of the floor-neighbour
+                            switch (amountFloorNeighbour(endCoordinate).get(0))
+                            {
+                                case RIGHT -> Textures.SIGN_LEFT;
+                                case LEFT -> Textures.SIGN_RIGHT;
+                                case DOWN -> Textures.SIGN_UP;
+                                case UP -> Textures.SIGN_DOWN;
+                            }
+                    ));
         }
         return endCoordinate;
     }
@@ -856,16 +866,17 @@ public class World implements Tickable
         return null;
     }
 
-    public int amountFloorNeighbour(final Coordinate coordinate)
+    public ArrayList<Direction> amountFloorNeighbour(final Coordinate coordinate)
     {
-        int amount = 0;
+        ArrayList<Direction> output = new ArrayList<>();
 
         for (final Direction d : Direction.values())
         {
-            if (isWithinWorld(coordinate.transpose(d)) && getTileAt(coordinate.transpose(d)) instanceof FloorTile) amount++;
+            if (isWithinWorld(coordinate.transpose(d)) && getTileAt(coordinate.transpose(d)) instanceof FloorTile)
+                output.add(d);
         }
 
-        return amount;
+        return output;
     }
 
     public boolean checkEntitySchedules(Coordinate coord) {
