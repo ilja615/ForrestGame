@@ -69,6 +69,11 @@ public class Player implements Entity
         return coordinate;
     }
 
+    public Coordinate getScheduledCoordinate()
+    {
+        return scheduledCoordinate;
+    }
+
     @Override
     public void setCoordinate(final Coordinate coordinate)
     {
@@ -114,7 +119,7 @@ public class Player implements Entity
             if (this.scheduledCoordinate != null)
             {
                 this.setCoordinate(this.scheduledCoordinate);
-                world.onEnemyTurn(); // Enemy turn when player stopped walking
+                world.onEntityTurn(); // Enemy turn when player stopped walking
             }
         }
 
@@ -132,7 +137,7 @@ public class Player implements Entity
             if (this.scheduledCoordinate != null)
             {
                 this.setCoordinate(this.scheduledCoordinate);
-                world.onEnemyTurn(); // Enemy turn when player stopped walking
+                world.onEntityTurn(); // Enemy turn when player stopped walking
             }
         }
 
@@ -209,20 +214,20 @@ public class Player implements Entity
         wait = 1;
     }
 
-    private void handleMotionTowards(final Coordinate coordinate, final Direction direction)
+    private void handleMotionTowards(final Coordinate newPos, final Direction direction)
     {
-        if (world.isWithinWorld(coordinate))
+        if (world.isWithinWorld(newPos))
         {
-            if (!world.getTileAt(coordinate).isObstacle(this))
+            if (!world.getTileAt(newPos).isObstacle(this))
             {
-                if (world.getEntityAt(coordinate) != null)
+                if (world.getEntityAt(newPos) != null)
                 {
-                    if (!world.getEntityAt(coordinate).onPlayerAttemptingWalk(this, coordinate))
+                    if (!world.getEntityAt(newPos).onPlayerAttemptingWalk(this, newPos))
                         return; // The player was not able to walk into the entity
                 }
-                if (world.getTileAt(coordinate).onPlayerAttemptingWalk(this, coordinate))
+                if (world.getTileAt(newPos).onPlayerAttemptingWalk(this, newPos))
                 {
-                    this.scheduledCoordinate = coordinate;
+                    this.scheduledCoordinate = newPos;
 
                     switch (direction)
                     {
@@ -291,6 +296,18 @@ public class Player implements Entity
     {
         // it is not an automatical mover but a controlled mover
         return false;
+    }
+
+    @Override
+    public float partialX()
+    {
+        return 0;
+    }
+
+    @Override
+    public float partialY()
+    {
+        return 0;
     }
 
     private int getAnimationFrame(final int framesTime, final int amountFrames)

@@ -23,6 +23,7 @@ import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 
 import java.util.Map;
 
@@ -51,5 +52,5 @@ public interface Item
      */
     boolean onPlayerAttemptingWalk(final Entity player, final Coordinate coordinate);
 
-    Map<Coordinate, Texture> whichLayer(TextureRenderer tr);
+    Map<Pair<Coordinate, Pair<Float, Float>>, Texture> whichLayer(TextureRenderer tr);
 }

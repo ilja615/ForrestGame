@@ -33,7 +33,6 @@ import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.*;
 import com.github.ilja615.forrestgame.tiles.items.*;
 import com.github.ilja615.forrestgame.util.*;
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,10 +70,11 @@ public class World implements Tickable
     private Tile[] tiles;
     private Coordinate startCoordinate;
     private Coordinate endCoordinate;
-    private int enemyTurnWait;
+    private int entityTurnWait;
     private ArrayList<Entity> this_turn_entity_stack = new ArrayList<>();
     private int currentX = 1;
     private int currentY = 1;
+    private boolean entityTurnAlmostFinished = false;
 
     public World(final Game game, final Shader shader)
     {
@@ -714,8 +714,8 @@ public class World implements Tickable
         {
             // Board
             textureRenderer.clearLayers();
-            textureRenderer.LAYER_MIDDLE.put(player.getCoordinate(), player.getCurrentTexture());
-            entities.forEach(entity -> entity.whichLayer(textureRenderer).put(entity.getCoordinate(), entity.getCurrentTexture()));
+            entities.forEach(entity -> entity.whichLayer(textureRenderer).put(new Pair<>(entity.getCoordinate(), new Pair<>(entity.partialX(), entity.partialY())), entity.getCurrentTexture()));
+            textureRenderer.LAYER_MIDDLE.put(new Pair<>(player.getCoordinate(), new Pair<>(0f, 0f)), player.getCurrentTexture());
             textureRenderer.renderBoard(); // Tiles and items get added to the lists in here and the rendering gets called.
 
             // UI
@@ -746,27 +746,38 @@ public class World implements Tickable
         if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
         if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();
 
-        if (enemyTurnWait > 0)
+        if (entityTurnWait > 0)
         {
-            enemyTurnWait--;
-            if (enemyTurnWait == 0)
-                nextEnemyTurn(); // If there were any enemies and they waited enough, it is now their turn.
+            entityTurnWait--;
+            if (entityTurnWait == 0)
+                nextEntityTurn(); // If there were any enemies and they waited enough, it is now their turn.
         }
 
-        if (KeyInput.isKeyDown(game, GLFW.GLFW_KEY_R))
+        if (entityTurnAlmostFinished)
         {
-            player.setCoordinate(startCoordinate);
+            boolean ready = true;
+            for (Entity e : entities)
+            {
+                if (e.getScheduledCoordinate() != null)
+                    if (!e.getScheduledCoordinate().equals(e.getCoordinate())) ready = false;
+            }
+            // Checked if there are any enemies whose coordinate is not yet equal to their scheduled coordinate.
+            if (ready)
+            {
+                onPlayerTurn();
+            }
         }
     }
 
-    public void onEnemyTurn()
+    public void onEntityTurn()
     {
+        entityTurnAlmostFinished = false;
         player.setMobile(false);
         this_turn_entity_stack = getEntitiesWithinViewThatWillWalk();
 
         if (this_turn_entity_stack.size() > 0)
         {
-            enemyTurnWait = 4; // next one
+            entityTurnWait = 4; // next one
         } else
         {
             onPlayerTurn();
@@ -774,21 +785,15 @@ public class World implements Tickable
         }
     }
 
-    private void nextEnemyTurn()
+    private void nextEntityTurn()
     {
         if (this_turn_entity_stack.size() > 0)
         {
             this_turn_entity_stack.get(0).automaticallyMove();
             this_turn_entity_stack.remove(0);
-            if (this_turn_entity_stack.size() > 0)
-            {
-                enemyTurnWait = 2; // next one
-            }
-        }
-
-        if (this_turn_entity_stack.isEmpty())
-        {
-            onPlayerTurn();
+            entityTurnWait = 2; // next one
+        } else {
+            entityTurnAlmostFinished = true;
             // No enemies left
         }
     }
@@ -861,5 +866,15 @@ public class World implements Tickable
         }
 
         return amount;
+    }
+
+    public boolean checkEntitySchedules(Coordinate coord) {
+        boolean flag = true;
+        for (Entity e : entities)
+        {
+            if (e.getScheduledCoordinate() != null)
+                if (e.getScheduledCoordinate().equals(coord)) flag = false;
+        }
+        return flag;
     }
 }

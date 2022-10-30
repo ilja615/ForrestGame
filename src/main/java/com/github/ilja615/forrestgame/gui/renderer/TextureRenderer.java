@@ -25,6 +25,7 @@ import com.github.ilja615.forrestgame.tiles.ConnectedTextureTile;
 import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Direction;
+import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
 
 import java.util.HashMap;
@@ -34,9 +35,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TextureRenderer
 {
-    public final Map<Coordinate, Texture> LAYER_BACK = new HashMap<>(); // For things between the floor and the entities
-    public final Map<Coordinate, Texture> LAYER_MIDDLE = new HashMap<>(); // For entities
-    public final Map<Coordinate, Texture> LAYER_FRONT = new HashMap<>(); // For foreground things
+    public final Map<Pair<Coordinate, Pair<Float, Float>>, Texture> LAYER_BACK = new HashMap<>(); // For things between the floor and the entities
+    public final Map<Pair<Coordinate, Pair<Float, Float>>, Texture> LAYER_MIDDLE = new HashMap<>(); // For entities
+    public final Map<Pair<Coordinate, Pair<Float, Float>>, Texture> LAYER_FRONT = new HashMap<>(); // For foreground things
     private final World world;
     private float partialX = 0f;
     private float partialY = 0f;
@@ -93,9 +94,6 @@ public class TextureRenderer
 
     public void renderBoard()
     {
-        // Add things to the list that need to be rendered
-        LAYER_MIDDLE.put(world.getPlayer().getCoordinate(), world.getPlayer().getCurrentTexture());
-
         // Renders all the tiles on the board. Tiles are rendered on "layer 0" so that is even behind layer back.
         for (int y = world.getPlayer().getCoordinate().y() + 4; y >= world.getPlayer().getCoordinate().y() - 6; y--)
         {
@@ -110,23 +108,23 @@ public class TextureRenderer
                         renderConnectedTextureTile(x, y);
                     } else
                     {
-                        renderTexture(tile.getTexture(), x, y);
+                        renderTexture(tile.getTexture(), x, y, 0, 0);
                     }
 
                     if (tile.hasItem()) tile.getItem()
                             .whichLayer(this)
-                            .put(new Coordinate(x, y), tile.getItem().getCurrentTexture());
+                            .put(new Pair<>(new Coordinate(x, y), new Pair<>(0f,0f)), tile.getItem().getCurrentTexture());
                 }
             }
         }
-        LAYER_BACK.forEach((coordinate, texture) -> renderTexture(texture, coordinate.x(), coordinate.y()));
-        LAYER_MIDDLE.forEach((coordinate, texture) -> renderTexture(texture, coordinate.x(), coordinate.y()));
-        LAYER_FRONT.forEach((coordinate, texture) -> renderTexture(texture, coordinate.x(), coordinate.y()));
+        LAYER_BACK.forEach((coordinatewithpartials, texture) -> renderTexture(texture, coordinatewithpartials.first().x(), coordinatewithpartials.first().y(), coordinatewithpartials.second().first(), coordinatewithpartials.second().second()));
+        LAYER_MIDDLE.forEach((coordinatewithpartials, texture) -> renderTexture(texture, coordinatewithpartials.first().x(), coordinatewithpartials.first().y(), coordinatewithpartials.second().first(), coordinatewithpartials.second().second()));
+        LAYER_FRONT.forEach((coordinatewithpartials, texture) -> renderTexture(texture, coordinatewithpartials.first().x(), coordinatewithpartials.first().y(), coordinatewithpartials.second().first(), coordinatewithpartials.second().second()));
 
-        world.getParticles().forEach(particle -> renderTexture(particle.getCurrentTexture(), particle.getCoordinate().x(), particle.getCoordinate().y()));
+        world.getParticles().forEach(particle -> renderTexture(particle.getCurrentTexture(), particle.getCoordinate().x(), particle.getCoordinate().y(), 0, 0));
     }
 
-    public void renderTexture(final Texture texture, int x, int y)
+    public void renderTexture(final Texture texture, int x, int y, float px, float py)
     {
         if (texture.isPlayerTexture())
         {
@@ -147,13 +145,13 @@ public class TextureRenderer
 
         glBegin(GL_QUADS);
         glTexCoord2f(hm ? 1 : 0, vm ? 1 : 0);
-        glVertex2f(-0.0834f + worldStarterX + ((float) x + partialX) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY) / 6.0f);
+        glVertex2f(-0.0834f + worldStarterX + ((float) x + partialX + px) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY + py) / 6.0f);
         glTexCoord2f(hm ? 0 : 1, vm ? 1 : 0);
-        glVertex2f(0.0834f + worldStarterX + ((float) x + partialX) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY) / 6.0f);
+        glVertex2f(0.0834f + worldStarterX + ((float) x + partialX + px) / 6.0f, 0.25f + worldStarterY + extraY + ((float) y + partialY +py) / 6.0f);
         glTexCoord2f(hm ? 0 : 1, vm ? 0 : 1);
-        glVertex2f(0.0834f + worldStarterX + ((float) x + partialX) / 6.0f, 0.083f + worldStarterY + ((float) y + partialY) / 6.0f);
+        glVertex2f(0.0834f + worldStarterX + ((float) x + partialX + px) / 6.0f, 0.083f + worldStarterY + ((float) y + partialY + py) / 6.0f);
         glTexCoord2f(hm ? 1 : 0, vm ? 0 : 1);
-        glVertex2f(-0.084f + worldStarterX + ((float) x + partialX) / 6.0f, 0.083f + worldStarterY + ((float) y + partialY) / 6.0f);
+        glVertex2f(-0.084f + worldStarterX + ((float) x + partialX + px) / 6.0f, 0.083f + worldStarterY + ((float) y + partialY + py) / 6.0f);
         glEnd();
     }
 

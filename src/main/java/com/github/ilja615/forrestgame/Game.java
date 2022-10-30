@@ -39,7 +39,8 @@ public interface Game
     {
         MANUAL_CLOSE("manually closed the game"),
         DIED("died"),
-        STARVED("starved");
+        STARVED("starved"),
+        SKILL_ISSUE("had a lack of skill");
 
         private final String message;
 

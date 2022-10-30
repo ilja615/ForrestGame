@@ -27,6 +27,7 @@ import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public class BerryBushItem implements Item
                 entity.getStatTracker().increment(StatTracker.Stat.HEALTH);
             }
             entity.getWorld().getParticles().add(new Particle(coordinate, 1, 1, entity.getWorld(), Textures.CHOP_PARTICLE));
-            entity.getWorld().onEnemyTurn();
+            entity.getWorld().onEntityTurn();
 
             return false;
         } else
@@ -84,7 +85,7 @@ public class BerryBushItem implements Item
     }
 
     @Override
-    public Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
+    public Map<Pair<Coordinate, Pair<Float, Float>>, Texture> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

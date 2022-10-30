@@ -25,6 +25,7 @@ import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.tiles.FloorTile;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public class ConfushroomItem implements Item
     }
 
     @Override
-    public Map<Coordinate, Texture> whichLayer(final TextureRenderer tr)
+    public Map<Pair<Coordinate, Pair<Float, Float>>, Texture> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

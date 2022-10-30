@@ -33,9 +33,13 @@ import java.util.List;
 
 public class Scamperer implements Entity
 {
+    private static final float WALK_SPEED = 0.334f;
     private final World world;
     private final StatTracker statTracker;
     private Coordinate coordinate;
+    private Coordinate scheduledCoordinate;
+    float partialX = 0;
+    float partialY = 0;
     private boolean mobile = true;
     private final EffectTracker effectTracker;
 
@@ -57,6 +61,11 @@ public class Scamperer implements Entity
     public Coordinate getCoordinate()
     {
         return coordinate;
+    }
+
+    public Coordinate getScheduledCoordinate()
+    {
+        return scheduledCoordinate;
     }
 
     @Override
@@ -92,7 +101,23 @@ public class Scamperer implements Entity
     @Override
     public void tick()
     {
-
+        if (this.scheduledCoordinate != null && this.coordinate != null)
+        {
+            System.out.println("from: "+this.coordinate+" to "+this.scheduledCoordinate+" this.partials: "+this.partialX+", "+this.partialY);
+            if (this.scheduledCoordinate != this.coordinate )
+            {
+                if (Math.abs(this.partialX) < 1)
+                    this.partialX += (this.scheduledCoordinate.x() - this.coordinate.x()) * WALK_SPEED;
+                else {
+                    this.coordinate = this.scheduledCoordinate; this.partialX = 0;
+                }
+                if (Math.abs(this.partialY) < 1)
+                    this.partialY += (this.scheduledCoordinate.y() - this.coordinate.y()) * WALK_SPEED;
+                else {
+                    this.coordinate = this.scheduledCoordinate; this.partialY = 0;
+                }
+            }
+        }
     }
 
     @Override
@@ -104,7 +129,7 @@ public class Scamperer implements Entity
             ((Player) player).wait += 5;
             ((Player) player).currentDoingAction = Player.Action.SLASHING;
         }
-        world.onEnemyTurn();
+        world.onEntityTurn();
         player.getWorld().getParticles().add(new Particle(coordinate, 1, 1, player.getWorld(), Textures.CHOP_PARTICLE));
         return false;
     }
@@ -133,8 +158,8 @@ public class Scamperer implements Entity
                     world.getParticles().add(new Particle(world.getPlayer().getCoordinate(), 1, 1, world, Textures.CHOP_PARTICLE));
                 } else
                 {
-                    if (world.getEntityAt(newPos) == null)
-                        this.coordinate = newPos;
+                    if (world.getEntityAt(newPos) == null && world.checkEntitySchedules(newPos))
+                        this.scheduledCoordinate = newPos;
                 }
             }
         }
@@ -147,5 +172,17 @@ public class Scamperer implements Entity
         final List<Coordinate> path = pathFinder.findPath(this.world, this.coordinate, this.world.getPlayer().getCoordinate(), this);
 
         return !path.isEmpty();
+    }
+
+    @Override
+    public float partialX()
+    {
+        return this.partialX;
+    }
+
+    @Override
+    public float partialY()
+    {
+        return this.partialY;
     }
 }

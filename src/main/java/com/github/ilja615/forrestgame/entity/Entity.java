@@ -24,6 +24,7 @@ import com.github.ilja615.forrestgame.entity.related.StatTracker;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.util.Tickable;
 import com.github.ilja615.forrestgame.world.World;
 
@@ -61,7 +62,7 @@ public interface Entity extends Tickable
     Texture getCurrentTexture();
 
     // Entities use middle layer by default
-    default Map<Coordinate, Texture> whichLayer(final TextureRenderer textureRenderer)
+    default Map<Pair<Coordinate, Pair<Float, Float>>, Texture> whichLayer(final TextureRenderer textureRenderer)
     {
         return textureRenderer.LAYER_MIDDLE;
     }
@@ -80,4 +81,8 @@ public interface Entity extends Tickable
     void automaticallyMove();
 
     boolean willAutomaticallyMove();
+
+    float partialX(); float partialY();
+
+    Coordinate getScheduledCoordinate();
 }
