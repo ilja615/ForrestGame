@@ -35,6 +35,12 @@ public class DarkTreeTile extends Tile implements ConnectedTextureTile
     public final EnumMap<Direction.Diagonal, Texture> QUADRANT_TEXTURES = new EnumMap<>(Direction.Diagonal.class);
 
     @Override
+    public boolean canHaveItem()
+    {
+        return false;
+    }
+
+    @Override
     public boolean isObstacle(final Entity incomingEntity)
     {
         return true;

@@ -169,8 +169,8 @@ public interface Textures
                     new PngTexture.Builder("entity/player/side_walking_3").setPlayerTexture(true).build()
             };
 
-    // scamperer
-    Texture SCAMPERER = new PngTexture.Builder("entity/scamperer").build();
+    // Tangeling
+    Texture TANGELING = new PngTexture.Builder("entity/tangeling").build();
 
 ////// GUI
 

@@ -31,7 +31,7 @@ import com.google.common.collect.ImmutableMap;
 
 import java.util.List;
 
-public class Scamperer implements Entity
+public class Tangeling implements Entity
 {
     private static final float WALK_SPEED = 0.334f;
     private final World world;
@@ -43,7 +43,7 @@ public class Scamperer implements Entity
     private boolean mobile = true;
     private final EffectTracker effectTracker;
 
-    public Scamperer(final World world, final Coordinate startPos)
+    public Tangeling(final World world, final Coordinate startPos)
     {
         this.world = world;
         this.coordinate = startPos;
@@ -95,7 +95,7 @@ public class Scamperer implements Entity
     @Override
     public Texture getCurrentTexture()
     {
-        return Textures.SCAMPERER;
+        return Textures.TANGELING;
     }
 
     @Override

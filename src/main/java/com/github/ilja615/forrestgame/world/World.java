@@ -22,7 +22,7 @@ package com.github.ilja615.forrestgame.world;
 import com.github.ilja615.forrestgame.Game;
 import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.entity.Player;
-import com.github.ilja615.forrestgame.entity.Scamperer;
+import com.github.ilja615.forrestgame.entity.Tangeling;
 import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
@@ -602,7 +602,7 @@ public class World implements Tickable
                 {
                     final int random = ThreadLocalRandom.current().nextInt(26 - 2 * (timeTracker.getCurrentTime() % 6));
 
-                    if (random == 0) entities.add(new Scamperer(this, new Coordinate(x, y)));
+                    if (random == 0) entities.add(new Tangeling(this, new Coordinate(x, y)));
                 }
             }
         }
@@ -886,6 +886,8 @@ public class World implements Tickable
             if (e.getScheduledCoordinate() != null)
                 if (e.getScheduledCoordinate().equals(coord)) flag = false;
         }
+//        if (player.getScheduledCoordinate() != null)
+//            if (player.getScheduledCoordinate().equals(player.getCoordinate())) flag = false;
         return flag;
     }
 }

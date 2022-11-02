@@ -30,6 +30,12 @@ public class WallTile extends Tile
     }
 
     @Override
+    public boolean canHaveItem()
+    {
+        return false;
+    }
+
+    @Override
     public boolean isObstacle(final Entity incomingEntity)
     {
         return true;

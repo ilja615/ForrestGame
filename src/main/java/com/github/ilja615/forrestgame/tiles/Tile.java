@@ -76,7 +76,13 @@ public class Tile
 
     public void setItem(final Item item)
     {
-        this.item = item;
+        if (this.canHaveItem())
+            this.item = item;
+    }
+
+    public boolean canHaveItem()
+    {
+        return true;
     }
 
     public void postGenerationEvent(final World world, final Coordinate thisPos)
