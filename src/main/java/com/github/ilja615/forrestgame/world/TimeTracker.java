@@ -121,5 +121,9 @@ public class TimeTracker
         {
             return this.texture;
         }
+
+        public boolean getIsDaytime() {
+            return this.isDaytime;
+        }
     }
 }

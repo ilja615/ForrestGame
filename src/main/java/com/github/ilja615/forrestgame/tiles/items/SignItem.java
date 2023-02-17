@@ -58,8 +58,6 @@ public class SignItem implements Item
         world.getTimeTracker().incrementCurrentTime();
         world.getTextureRenderer().setDisabled();
         world.getTimeTracker().waitTicks = 20;
-        world.generate();
-
         return false;
     }
 

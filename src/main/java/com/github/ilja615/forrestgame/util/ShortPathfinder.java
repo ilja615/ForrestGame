@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class ShortPathfinder
 {
-    private static final int MAX_SEARCH_DISTANCE = 32;
+    private static final int MAX_SEARCH_DISTANCE = 64;
 
     /**
      * Finds the shortest path from {@code from} to {@code to}.

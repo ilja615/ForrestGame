@@ -20,6 +20,7 @@
 package com.github.ilja615.forrestgame.gui.renderer;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.entity.related.EffectTracker;
 import com.github.ilja615.forrestgame.entity.related.StatTracker;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
@@ -56,6 +57,22 @@ public class UiRenderer
         player.getWorld()
                 .getTextRenderer()
                 .drawString("x" + player.getStatTracker().get(StatTracker.Stat.HUNGER).toString(), 0.7f, 0.81f, 0.5f);
+    }
+
+    public void renderEffects(final Entity player)
+    {
+        int i = 0;
+        for (EffectTracker.Effect effect : player.getEffectTracker().getAllEffects())
+        {
+            if (effect.isActive())
+            {
+                renderTexture(effect.getTexture(), -0.05f - 0.2f*(float)Math.floor(i/2), 0.88f - 0.0835f*(float)Math.floor(i%2), 0.0835f);
+                player.getWorld()
+                        .getTextRenderer()
+                        .drawString("x" + effect.getTurnsLeft(), 0.06f - 0.2f*(float)Math.floor(i/2), 0.88f - 0.0835f*(float)Math.floor(i%2), 0.5f);
+                i++;
+            }
+        }
     }
 
     public void renderTimeIcon(final TimeTracker.Period period)

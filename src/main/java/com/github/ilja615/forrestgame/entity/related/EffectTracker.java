@@ -20,6 +20,10 @@
 package com.github.ilja615.forrestgame.entity.related;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.gui.texture.Texture;
+import com.github.ilja615.forrestgame.gui.texture.Textures;
+
+import java.util.Arrays;
 
 public class EffectTracker
 {
@@ -31,18 +35,23 @@ public class EffectTracker
         this.entity = entity;
     }
 
-    public void decrementAll()
+    public void decrementAll() { Arrays.stream(getAllEffects()).forEach(Effect::decrement); }
+
+    public Effect[] getAllEffects()
     {
-        this.confusion.decrement();
+        return Effect.values();
     }
 
     public enum Effect
     {
-        CONFUSION;
+        CONFUSION(Textures.CONFUSED);
 
         private int turnsLeft = 0;
+        private Texture texture;
 
-        Effect() {}
+        Effect(Texture t) {
+            this.texture = t;
+        }
 
         public int getTurnsLeft()
         {
@@ -62,6 +71,11 @@ public class EffectTracker
         public boolean isActive()
         {
             return this.turnsLeft > 0;
+        }
+
+        public Texture getTexture()
+        {
+            return texture;
         }
     }
 }

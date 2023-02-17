@@ -31,7 +31,7 @@ import com.google.common.collect.ImmutableMap;
 
 import java.util.List;
 
-public class Tangeling implements Entity
+public class Ghost implements Entity
 {
     private static final float WALK_SPEED = 0.334f;
     private final World world;
@@ -43,7 +43,7 @@ public class Tangeling implements Entity
     private boolean mobile = true;
     private final EffectTracker effectTracker;
 
-    public Tangeling(final World world, final Coordinate startPos)
+    public Ghost(final World world, final Coordinate startPos)
     {
         this.world = world;
         this.coordinate = startPos;
@@ -95,7 +95,7 @@ public class Tangeling implements Entity
     @Override
     public Texture getCurrentTexture()
     {
-        return Textures.TANGELING;
+        return Textures.GHOST;
     }
 
     @Override

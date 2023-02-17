@@ -172,6 +172,12 @@ public interface Textures
     // Tangeling
     Texture TANGELING = new PngTexture.Builder("entity/tangeling").build();
 
+    // Skeleton
+    Texture SKELETON = new PngTexture.Builder("entity/skeleton").setTall(true).build();
+
+    // Ghost
+    Texture GHOST = new PngTexture.Builder("entity/ghost").build();
+
 ////// GUI
 
     // particles
@@ -192,8 +198,11 @@ public interface Textures
 
     // other gui
     Texture VIEWPORT = new PngTexture.Builder("gui/viewport").build();
+
+    // stat and effect gui
     Texture HEALTH = new PngTexture.Builder("gui/health").build();
     Texture ENERGY = new PngTexture.Builder("gui/energy").build();
+    Texture CONFUSED = new PngTexture.Builder("gui/confused").build();
 
     // time gui
     Texture SUNRISE = new PngTexture.Builder("gui/time/sunrise").build();

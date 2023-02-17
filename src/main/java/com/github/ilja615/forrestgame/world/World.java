@@ -20,9 +20,7 @@
 package com.github.ilja615.forrestgame.world;
 
 import com.github.ilja615.forrestgame.Game;
-import com.github.ilja615.forrestgame.entity.Entity;
-import com.github.ilja615.forrestgame.entity.Player;
-import com.github.ilja615.forrestgame.entity.Tangeling;
+import com.github.ilja615.forrestgame.entity.*;
 import com.github.ilja615.forrestgame.gui.particle.Particle;
 import com.github.ilja615.forrestgame.gui.renderer.TextRenderer;
 import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
@@ -75,6 +73,7 @@ public class World implements Tickable
     private int currentX = 1;
     private int currentY = 1;
     private boolean entityTurnAlmostFinished = false;
+    private float fade = 1.0f;
 
     public World(final Game game, final Shader shader)
     {
@@ -260,6 +259,10 @@ public class World implements Tickable
                 }
             }
         }
+
+        // TODO : make it so that generating any inaccessiblePlaces is omitted when generating any obstacle
+        ArrayList<Coordinate> inaccessiblePlaces = findInaccessiblePlaces();
+        System.out.println("inaccessiblePlaces: "+inaccessiblePlaces);
 
         // Will do other stuff at the very end
         postGeneration();
@@ -600,9 +603,11 @@ public class World implements Tickable
             {
                 if (getTileAt(x, y) instanceof FloorTile && !getTileAt(x, y).hasItem())
                 {
-                    final int random = ThreadLocalRandom.current().nextInt(26 - 2 * (timeTracker.getCurrentTime() % 6));
+                    final int random = ThreadLocalRandom.current().nextInt(timeTracker.getPeriodFromTime(timeTracker.getCurrentTime()).getIsDaytime() ? 30 : 15);
 
                     if (random == 0) entities.add(new Tangeling(this, new Coordinate(x, y)));
+//                    if (random == 1) entities.add(new Skeleton(this, new Coordinate(x, y)));
+//                    if (random == 2) entities.add(new Ghost(this, new Coordinate(x, y)));
                 }
             }
         }
@@ -720,7 +725,18 @@ public class World implements Tickable
         glUniform1f(glGetUniformLocation(this.shader.program, "greenComponent"), this.timeTracker.getGreenComponent());
         glUniform1f(glGetUniformLocation(this.shader.program, "blueComponent"), this.timeTracker.getBlueComponent());
 
-        if (textureRenderer.isEnabled())
+        glUniform1f(glGetUniformLocation(this.shader.program, "fade"), 1);
+
+        if (!textureRenderer.isEnabled())
+        {
+            final String s = this.getTimeTracker().getCurrentTimeString();
+            final float size = 20.0f / (s.length() + 2);
+            textRenderer.drawString(s, -1f, -0.05f * size, size);
+        }
+
+        glUniform1f(glGetUniformLocation(this.shader.program, "fade"), fade);
+
+        if (textureRenderer.isEnabled() || fade > 0.0f)
         {
             // Board
             textureRenderer.clearLayers();
@@ -732,13 +748,9 @@ public class World implements Tickable
             uiRenderer.renderViewport();
             uiRenderer.renderEnergy(player);
             uiRenderer.renderHealth(player);
+            uiRenderer.renderEffects(player);
             textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.5f);
             uiRenderer.renderTimeIcon(this.getTimeTracker().getPeriodFromTime(this.timeTracker.getCurrentTime()));
-        } else
-        {
-            final String s = this.getTimeTracker().getCurrentTimeString();
-            final float size = 20.0f / (s.length() + 2);
-            textRenderer.drawString(s, -1f, -0.05f * size, size);
         }
     }
 
@@ -753,6 +765,9 @@ public class World implements Tickable
         // Clear the particles that should be removed
         particles.removeIf(Particle::isExpired);
 
+        if (timeTracker.waitTicks >= 15) fade = 1.0f - ((20 - timeTracker.waitTicks) / 5.0f);
+        if (timeTracker.waitTicks == 10) this.generate();
+        if (timeTracker.waitTicks <= 5) fade = 1.0f - (timeTracker.waitTicks / 5.0f);
         if (timeTracker.waitTicks > 0) timeTracker.waitTicks--;
         if (timeTracker.waitTicks == 0) textureRenderer.setEnabled();
 
@@ -774,6 +789,8 @@ public class World implements Tickable
             // Checked if there are any enemies whose coordinate is not yet equal to their scheduled coordinate.
             if (ready)
             {
+                // The enemy/entity their turn is now over!
+                entityTurnAlmostFinished = false;
                 onPlayerTurn();
             }
         }
@@ -811,6 +828,7 @@ public class World implements Tickable
     public void onPlayerTurn()
     {
         player.setMobile(true);
+        System.out.println("turn! " + System.currentTimeMillis());
         player.getEffectTracker().decrementAll();
     }
 
@@ -889,5 +907,41 @@ public class World implements Tickable
 //        if (player.getScheduledCoordinate() != null)
 //            if (player.getScheduledCoordinate().equals(player.getCoordinate())) flag = false;
         return flag;
+    }
+
+    private ArrayList<Coordinate> findInaccessiblePlaces()
+    {
+        List<Coordinate> tilesLeftToCheck = new ArrayList<>();
+        for (int x = 0; x < WORLD_WIDTH; x++)
+            for (int y = 0; y < WORLD_HEIGHT; y++)
+                tilesLeftToCheck.add(new Coordinate(x, y));
+
+        ArrayList<Coordinate> inaccessiblePlaces = new ArrayList<>();
+
+        // Try for every tile on the field.
+        while (tilesLeftToCheck.size() != 0)
+        {
+            Coordinate nextCoord = tilesLeftToCheck.get(0);
+            if (getTileAt(nextCoord).isObstacle(player) || nextCoord.equals(startCoordinate))
+            {
+                // Obstacles should not be considered as "inaccessible places", because it is intended to not be able to venture onto those tiles.
+                // The start coordinate should also be left out of the consideration as the path to it would always have length of 0.
+                tilesLeftToCheck.remove(nextCoord);
+            } else {
+                final ShortPathfinder pathFinder = new ShortPathfinder();
+                final List<Coordinate> path = pathFinder.findPath(this, startCoordinate, nextCoord, player);
+
+                if (path.isEmpty())
+                {
+                    // If no path to a certain tile is found, this tile is tagged as inaccessible.
+                    tilesLeftToCheck.remove(nextCoord);
+                    inaccessiblePlaces.add(nextCoord);
+                } else {
+                    // The tile was accessible.
+                    tilesLeftToCheck.removeIf(path::contains);
+                }
+            }
+        }
+        return inaccessiblePlaces;
     }
 }

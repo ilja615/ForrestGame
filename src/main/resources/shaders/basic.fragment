@@ -5,9 +5,10 @@ uniform float daylight;
 uniform float redComponent;
 uniform float greenComponent;
 uniform float blueComponent;
+uniform float fade;
 
 void main() {
     vec4 color1 = texture2D(texture1, gl_TexCoord[0].st);
-    color1 *= vec4(redComponent, greenComponent, blueComponent, 1.0);
+    color1 *= vec4(redComponent, greenComponent, blueComponent, fade);
     gl_FragColor = color1;
 }
