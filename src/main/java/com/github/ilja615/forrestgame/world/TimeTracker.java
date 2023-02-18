@@ -68,6 +68,11 @@ public class TimeTracker
         return (int) Math.floor(currentTime / 6.0d) + 1;
     }
 
+    public int getAmountSurvivedDays()
+    {
+        return getAmountSurvivedDays(this.getCurrentTime());
+    }
+
     public float getRedComponent()
     {
         return getPeriodFromTime(getCurrentTime()).red;

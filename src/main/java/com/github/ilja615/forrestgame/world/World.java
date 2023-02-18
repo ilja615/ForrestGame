@@ -281,7 +281,6 @@ public class World implements Tickable
 
         while (!successfulRoom && roomTries < 20)
         {
-            LOGGER.debug("Amount of room tries: {}.", roomTries);
             roomTries++;
             final int roomSizeX = ThreadLocalRandom.current().nextInt(ROOM_MAX_SIZE - ROOM_MIN_SIZE) + ROOM_MIN_SIZE;
             final int roomSizeY = ThreadLocalRandom.current().nextInt(ROOM_MAX_SIZE - ROOM_MIN_SIZE) + ROOM_MIN_SIZE;
@@ -326,7 +325,6 @@ public class World implements Tickable
 
         while (!successfulRoom && roomTries < 20)
         {
-            LOGGER.debug("Amount of room tries: {}.", roomTries);
             roomTries++;
             final int roomSizeX = ThreadLocalRandom.current().nextInt(3) + 2; // MushroomRoom is a bit smaller
             final int roomSizeY = ThreadLocalRandom.current().nextInt(3) + 2; // MushroomRoom is a bit smaller
@@ -377,7 +375,6 @@ public class World implements Tickable
 
         while (!successfulRoom && roomTries < 20)
         {
-            LOGGER.debug("Amount of room tries: {}.", roomTries);
             roomTries++;
             final int roomSizeX = ThreadLocalRandom.current().nextInt(3) + 2;
             final int roomSizeY = ThreadLocalRandom.current().nextInt(3) + 2;
@@ -603,11 +600,13 @@ public class World implements Tickable
             {
                 if (getTileAt(x, y) instanceof FloorTile && !getTileAt(x, y).hasItem())
                 {
-                    final int random = ThreadLocalRandom.current().nextInt(timeTracker.getPeriodFromTime(timeTracker.getCurrentTime()).getIsDaytime() ? 30 : 15);
-
-                    if (random == 0) entities.add(new Tangeling(this, new Coordinate(x, y)));
+                    if (timeTracker.getPeriodFromTime(timeTracker.getCurrentTime()).getIsDaytime())
+                    {
+                        final int random = ThreadLocalRandom.current().nextInt(24);
+                        if (random == 0) entities.add(new Tangeling(this, new Coordinate(x, y)));
 //                    if (random == 1) entities.add(new Skeleton(this, new Coordinate(x, y)));
 //                    if (random == 2) entities.add(new Ghost(this, new Coordinate(x, y)));
+                    }
                 }
             }
         }
@@ -757,12 +756,15 @@ public class World implements Tickable
     @Override
     public void tick()
     {
-        // Tick all objects
-        player.tick();
-        particles.forEach(Particle::tick);
-        entities.forEach(Entity::tick);
+        // Tick all objects if the game is not frozen
+        if (timeTracker.waitTicks == 0)
+        {
+            player.tick();
+            entities.forEach(Entity::tick);
+        }
 
-        // Clear the particles that should be removed
+        // Handle particle updates
+        particles.forEach(Particle::tick);
         particles.removeIf(Particle::isExpired);
 
         if (timeTracker.waitTicks >= 15) fade = 1.0f - ((20 - timeTracker.waitTicks) / 5.0f);
