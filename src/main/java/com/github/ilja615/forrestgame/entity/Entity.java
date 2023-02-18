@@ -27,8 +27,7 @@ import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.util.Tickable;
 import com.github.ilja615.forrestgame.world.World;
-
-import java.util.Map;
+import com.google.common.collect.Multimap;
 
 public interface Entity extends Tickable
 {
@@ -62,7 +61,7 @@ public interface Entity extends Tickable
     Texture getCurrentTexture();
 
     // Entities use middle layer by default
-    default Map<Pair<Coordinate, Pair<Float, Float>>, Texture> whichLayer(final TextureRenderer textureRenderer)
+    default Multimap<Pair<Coordinate, Pair<Float, Float>>, Object> whichLayer(final TextureRenderer textureRenderer)
     {
         return textureRenderer.LAYER_MIDDLE;
     }

@@ -26,8 +26,7 @@ import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
-
-import java.util.Map;
+import com.google.common.collect.Multimap;
 
 public class SignItem implements Item
 {
@@ -62,7 +61,7 @@ public class SignItem implements Item
     }
 
     @Override
-    public Map<Pair<Coordinate, Pair<Float, Float>>, Texture> whichLayer(final TextureRenderer tr)
+    public Multimap<Pair<Coordinate, Pair<Float, Float>>, Object> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_BACK;
     }

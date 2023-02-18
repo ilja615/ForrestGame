@@ -55,7 +55,6 @@ public interface Textures
 
     Texture[] GROUND_ALTERNATIVES = new Texture[]{GRASS_0, GRASS_1, GRASS_2, GRASS_3};
     Texture[] PATH_DECORATION_ALTERNATIVES = new Texture[]{PATH_DECORATION_0, PATH_DECORATION_1, PATH_DECORATION_2, PATH_DECORATION_3, PATH_DECORATION_4};
-    Texture DARK_TREE = new PngTexture.Builder("tiles/dark_tree").setTall(true).build();
     Texture[] LILY_PAD = new Texture[]
             {
                     new PngTexture.Builder("items/water/lily_pad_0").build(),
@@ -71,8 +70,10 @@ public interface Textures
     Texture DARK_TREE_FULL_PIECE = new PngTexture.Builder("tiles/dark_tree/full").build();
     Texture[] DARK_TREE_TOP_STRAIGHT_PIECE = new Texture[]
             {
-                    new PngTexture.Builder("tiles/dark_tree/top_straight_0").build(),
-                    new PngTexture.Builder("tiles/dark_tree/top_straight_1").build()
+                    new PngTexture.Builder("tiles/dark_tree/top_straight_0").setTall(true).build(),
+                    new PngTexture.Builder("tiles/dark_tree/top_straight_1").setTall(true).build(),
+                    new PngTexture.Builder("tiles/dark_tree/top_straight_2").setTall(true).build()
+
             };
     Texture DARK_TREE_BOTTOM_STRAIGHT_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_straight_left").build();
     Texture DARK_TREE_BOTTOM_STRAIGHT_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_straight_right").build();
@@ -80,12 +81,12 @@ public interface Textures
     Texture DARK_TREE_STRAIGHT_VERTICAL_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/straight_vertical_right").build();
     Texture DARK_TREE_BOTTOM_INNER_CORNER_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_inner_corner_left").build();
     Texture DARK_TREE_BOTTOM_INNER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_inner_corner_right").build();
-    Texture DARK_TREE_TOP_INNER_CORNER_LEFT_PIECE_ = new PngTexture.Builder("tiles/dark_tree/top_inner_corner_left").build();
+    Texture DARK_TREE_TOP_INNER_CORNER_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_inner_corner_left").build();
     Texture DARK_TREE_TOP_INNER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_inner_corner_right").build();
     Texture DARK_TREE_BOTTOM_OUTER_CORNER_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_outer_corner_left").build();
     Texture DARK_TREE_BOTTOM_OUTER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/bottom_outer_corner_right").build();
-    Texture DARK_TREE_TOP_OUTER_CORNER_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_outer_corner_left").build();
-    Texture DARK_TREE_TOP_OUTER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_outer_corner_right").build();
+    Texture DARK_TREE_TOP_OUTER_CORNER_LEFT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_outer_corner_left").setTall(true).build();
+    Texture DARK_TREE_TOP_OUTER_CORNER_RIGHT_PIECE = new PngTexture.Builder("tiles/dark_tree/top_outer_corner_right").setTall(true).build();
     Texture WALL_SINGLE = new PngTexture.Builder("tiles/wall/single").build();
 
 

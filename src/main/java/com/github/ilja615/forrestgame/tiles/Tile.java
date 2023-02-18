@@ -20,10 +20,15 @@
 package com.github.ilja615.forrestgame.tiles;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.tiles.items.Item;
 import com.github.ilja615.forrestgame.util.Coordinate;
+import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
+import com.google.common.collect.Multimap;
+
+import java.util.Map;
 
 public class Tile
 {
@@ -87,5 +92,10 @@ public class Tile
 
     public void postGenerationEvent(final World world, final Coordinate thisPos)
     {
+    }
+
+    public Multimap<Pair<Coordinate, Pair<Float, Float>>, Object> whichLayer(final TextureRenderer tr)
+    {
+        return tr.LAYER_BACK;
     }
 }

@@ -28,6 +28,7 @@ import com.github.ilja615.forrestgame.tiles.FloorTile;
 import com.github.ilja615.forrestgame.tiles.Tile;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
+import com.google.common.collect.Multimap;
 
 import java.util.Map;
 
@@ -71,7 +72,7 @@ public class CrateItem implements Item
     }
 
     @Override
-    public Map<Pair<Coordinate, Pair<Float, Float>>, Texture> whichLayer(final TextureRenderer tr)
+    public Multimap<Pair<Coordinate, Pair<Float, Float>>, Object> whichLayer(final TextureRenderer tr)
     {
         return tr.LAYER_FRONT;
     }

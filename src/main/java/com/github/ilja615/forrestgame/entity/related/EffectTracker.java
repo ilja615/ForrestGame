@@ -42,15 +42,22 @@ public class EffectTracker
         return Effect.values();
     }
 
+    public static Texture getTextureFromEffect(Effect effect)
+    {
+        return switch (effect)
+        {
+            case CONFUSION -> Textures.CONFUSED;
+        };
+    }
+
     public enum Effect
     {
-        CONFUSION(Textures.CONFUSED);
+        CONFUSION;
 
         private int turnsLeft = 0;
-        private Texture texture;
 
-        Effect(Texture t) {
-            this.texture = t;
+        Effect() {
+
         }
 
         public int getTurnsLeft()
@@ -71,11 +78,6 @@ public class EffectTracker
         public boolean isActive()
         {
             return this.turnsLeft > 0;
-        }
-
-        public Texture getTexture()
-        {
-            return texture;
         }
     }
 }

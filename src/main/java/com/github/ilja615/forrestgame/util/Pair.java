@@ -19,6 +19,13 @@
 
 package com.github.ilja615.forrestgame.util;
 
-public record Pair<A, B>(A first, B second)
+import org.jetbrains.annotations.NotNull;
+
+public record Pair<A, B>(A first, B second) implements Comparable
 {
+    @Override
+    public int compareTo(@NotNull Object o)
+    {
+        return this.equals(o) ? 0 : -1;
+    }
 }

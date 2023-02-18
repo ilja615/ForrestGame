@@ -66,7 +66,7 @@ public class UiRenderer
         {
             if (effect.isActive())
             {
-                renderTexture(effect.getTexture(), -0.05f - 0.2f*(float)Math.floor(i/2), 0.88f - 0.0835f*(float)Math.floor(i%2), 0.0835f);
+                renderTexture(EffectTracker.getTextureFromEffect(effect), -0.05f - 0.2f*(float)Math.floor(i/2), 0.88f - 0.0835f*(float)Math.floor(i%2), 0.0835f);
                 player.getWorld()
                         .getTextRenderer()
                         .drawString("x" + effect.getTurnsLeft(), 0.06f - 0.2f*(float)Math.floor(i/2), 0.88f - 0.0835f*(float)Math.floor(i%2), 0.5f);

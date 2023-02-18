@@ -739,8 +739,6 @@ public class World implements Tickable
         {
             // Board
             textureRenderer.clearLayers();
-            entities.forEach(entity -> entity.whichLayer(textureRenderer).put(new Pair<>(entity.getCoordinate(), new Pair<>(entity.partialX(), entity.partialY())), entity.getCurrentTexture()));
-            textureRenderer.LAYER_MIDDLE.put(new Pair<>(player.getCoordinate(), new Pair<>(0f, 0f)), player.getCurrentTexture());
             textureRenderer.renderBoard(); // Tiles and items get added to the lists in here and the rendering gets called.
 
             // UI
@@ -830,7 +828,6 @@ public class World implements Tickable
     public void onPlayerTurn()
     {
         player.setMobile(true);
-        System.out.println("turn! " + System.currentTimeMillis());
         player.getEffectTracker().decrementAll();
     }
 

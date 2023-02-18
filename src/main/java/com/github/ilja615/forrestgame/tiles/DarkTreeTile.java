@@ -20,11 +20,14 @@
 package com.github.ilja615.forrestgame.tiles;
 
 import com.github.ilja615.forrestgame.entity.Entity;
+import com.github.ilja615.forrestgame.gui.renderer.TextureRenderer;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Direction;
+import com.github.ilja615.forrestgame.util.Pair;
 import com.github.ilja615.forrestgame.world.World;
+import com.google.common.collect.Multimap;
 
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -87,9 +90,22 @@ public class DarkTreeTile extends Tile implements ConnectedTextureTile
                     };
         } else if (!(isWall(firstNeighbourTile)))
         {
-            return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
-                    ? Textures.DARK_TREE_STRAIGHT_VERTICAL_RIGHT_PIECE
-                    : Textures.DARK_TREE_STRAIGHT_VERTICAL_LEFT_PIECE;
+            final Coordinate belowFirstCoordinate = firstCoordinate.down();
+
+            final Tile belowFirstNeighbourTile = world.isWithinWorld(belowFirstCoordinate)
+                    ? world.getTileAt(belowFirstCoordinate)
+                    : world.airTile;
+            if (isWall(belowFirstNeighbourTile) && diagonalDirection.getVerticalDirection() == Direction.DOWN)
+            {
+                return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
+                        ? Textures.DARK_TREE_TOP_INNER_CORNER_RIGHT_PIECE
+                        : Textures.DARK_TREE_TOP_INNER_CORNER_LEFT_PIECE;
+            } else
+            {
+                return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
+                        ? Textures.DARK_TREE_STRAIGHT_VERTICAL_RIGHT_PIECE
+                        : Textures.DARK_TREE_STRAIGHT_VERTICAL_LEFT_PIECE;
+            }
         } else if (!(isWall(otherNeighbourTile)))
         {
             return diagonalDirection.getVerticalDirection() == Direction.UP
@@ -110,8 +126,7 @@ public class DarkTreeTile extends Tile implements ConnectedTextureTile
             } else {
                 return switch (diagonalDirection)
                         {
-                            case UP_AND_LEFT -> Textures.DARK_TREE_TOP_INNER_CORNER_LEFT_PIECE_;
-                            case UP_AND_RIGHT -> Textures.DARK_TREE_TOP_INNER_CORNER_RIGHT_PIECE;
+                            case UP_AND_LEFT, UP_AND_RIGHT -> Textures.DARK_TREE_FULL_PIECE;
                             case DOWN_AND_LEFT -> Textures.DARK_TREE_BOTTOM_INNER_CORNER_LEFT_PIECE;
                             case DOWN_AND_RIGHT -> Textures.DARK_TREE_BOTTOM_INNER_CORNER_RIGHT_PIECE;
                         };
@@ -122,5 +137,11 @@ public class DarkTreeTile extends Tile implements ConnectedTextureTile
     private boolean isWall(Tile tile)
     {
         return (tile instanceof DarkTreeTile || tile instanceof AirTile);
+    }
+
+    @Override
+    public Multimap<Pair<Coordinate, Pair<Float, Float>>, Object> whichLayer(final TextureRenderer tr)
+    {
+        return tr.LAYER_FRONT;
     }
 }
