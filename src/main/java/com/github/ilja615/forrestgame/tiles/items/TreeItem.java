@@ -26,8 +26,6 @@ import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
 import com.google.common.collect.Multimap;
 
-import java.util.Map;
-
 public class TreeItem implements Item
 {
     private final Texture texture;
@@ -54,6 +52,8 @@ public class TreeItem implements Item
     {
         return false;
     }
+
+    // TODO : sometimes the tree only shows the bottom half
 
     @Override
     public Multimap<Pair<Coordinate, Pair<Float, Float>>, Object> whichLayer(final TextureRenderer tr)

@@ -201,6 +201,7 @@ public class World implements Tickable
 
         for (int b = 0; b < ThreadLocalRandom.current().nextInt(7) + 4; b++) // Get random rooms and make side-branches of them.
         {
+            // TODO : rename to corridor to avoid confusing with the dirt path or with pathfinding path
             final Pair<ArrayList<Coordinate>, Direction> path = makePath(rooms.get(ThreadLocalRandom.current().nextInt(rooms.size())));
             if (!path.first().isEmpty() && path.second() != null)
             {
@@ -612,6 +613,8 @@ public class World implements Tickable
         }
     }
 
+    // TODO : sometimes multiple end signs are placed...
+
     public Coordinate placeEndSign()
     {
         final ArrayList<Coordinate> potential = finalRoom.wallsExcludingCorners();
@@ -635,6 +638,7 @@ public class World implements Tickable
             }
         }
 
+        // TODO : make that it checks for if its within world
         if (endCoordinate == null)
         {
             LOGGER.error("Failed to create end sign");

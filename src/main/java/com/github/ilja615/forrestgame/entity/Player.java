@@ -143,6 +143,8 @@ public class Player implements Entity
 
         world.getTextureRenderer().setPartialY(partialY);
 
+        // TODO : sometimes the particle is left behind
+
         if (effectTracker.confusion.isActive())
         {
             Particle already = null;
