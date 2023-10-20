@@ -37,7 +37,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Player implements Entity
 {
     private static final float SCROLL_SPEED = 0.2f;
-    private static final int ANIMATION_FRAMES_TIME = 60;
+    private static final int ANIMATION_FRAMES_TIME = 30;
     private final World world;
     private final StatTracker statTracker;
     private final EffectTracker effectTracker;

@@ -26,7 +26,7 @@ import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.gui.texture.Textures;
 import com.github.ilja615.forrestgame.world.TimeTracker;
 
-import static com.github.ilja615.forrestgame.gui.texture.Textures.VIEWPORT;
+import static com.github.ilja615.forrestgame.gui.texture.Textures.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class UiRenderer
@@ -72,6 +72,33 @@ public class UiRenderer
                         .drawString("x" + effect.getTurnsLeft(), 0.06f - 0.2f*(float)Math.floor(i/2), 0.88f - 0.0835f*(float)Math.floor(i%2), 0.5f);
                 i++;
             }
+        }
+    }
+
+    public void renderStress(final Entity player)
+    {
+        if (player.getWorld().playerTurnTimer > 0 && player.getWorld().playerTurnTimer <= 25)
+        {
+            (switch((int) (Math.ceil(player.getWorld().playerTurnTimer/5.0d)))
+                {
+                    case 5 -> STRESS_55;
+                    case 4 -> STRESS_45;
+                    case 3 -> STRESS_35;
+                    case 2 -> STRESS_25;
+                    case 1 -> STRESS_15;
+                    default -> STRESS_05;
+                }).bind();
+
+            glBegin(GL_QUADS);
+            glTexCoord2f(0, 0);
+            glVertex2f(-0.7515f, -0.6f + 0.167f);
+            glTexCoord2f(1, 0);
+            glVertex2f(0.7515f, -0.6f + 0.167f);
+            glTexCoord2f(1, 1);
+            glVertex2f(0.7515f, -0.6f);
+            glTexCoord2f(0, 1);
+            glVertex2f(-0.7515f, -0.6f);
+            glEnd();
         }
     }
 

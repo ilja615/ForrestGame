@@ -30,8 +30,6 @@ import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Pair;
 import com.google.common.collect.Multimap;
 
-import java.util.Map;
-
 public class BerryBushItem implements Item
 {
     private int stage = 3;
@@ -44,7 +42,7 @@ public class BerryBushItem implements Item
                     default -> Textures.BUSH_0;
                     case 1 -> Textures.BUSH_1;
                     case 2 -> Textures.BUSH_2;
-                    case 3 -> Textures.BUSH_BERRY;
+                    case 3 -> Textures.BUSH_2;
                 };
     }
 

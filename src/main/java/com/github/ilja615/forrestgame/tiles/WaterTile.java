@@ -81,8 +81,8 @@ public class WaterTile extends Tile implements ConnectedTextureTile
         } else if (otherNeighbourTile instanceof AirTile)
         {
             return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
-                    ? Textures.WATER_STRAIGHT_VERTICAL_PIECE[ThreadLocalRandom.current().nextInt(Textures.WATER_STRAIGHT_VERTICAL_PIECE.length)]
-                    : Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED[ThreadLocalRandom.current().nextInt(Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED.length)];
+                    ? Textures.WATER_STRAIGHT_VERTICAL_PIECE
+                    : Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED;
         } else if (!(firstNeighbourTile instanceof WaterTile) && !(otherNeighbourTile instanceof WaterTile))
         {
             return switch (diagonalDirection)
@@ -95,8 +95,8 @@ public class WaterTile extends Tile implements ConnectedTextureTile
         } else if (!(firstNeighbourTile instanceof WaterTile))
         {
             return diagonalDirection.getHorizontalDirection() == Direction.RIGHT
-                    ? Textures.WATER_STRAIGHT_VERTICAL_PIECE[ThreadLocalRandom.current().nextInt(Textures.WATER_STRAIGHT_VERTICAL_PIECE.length)]
-                    : Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED[ThreadLocalRandom.current().nextInt(Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED.length)];
+                    ? Textures.WATER_STRAIGHT_VERTICAL_PIECE
+                    : Textures.WATER_STRAIGHT_VERTICAL_PIECE_MIRRORED;
         } else if (!(otherNeighbourTile instanceof WaterTile))
         {
             return diagonalDirection.getVerticalDirection() == Direction.UP
@@ -111,7 +111,7 @@ public class WaterTile extends Tile implements ConnectedTextureTile
 
             if (thirdNeighbourTile instanceof WaterTile)
             {
-                if (ThreadLocalRandom.current().nextBoolean())
+                if (ThreadLocalRandom.current().nextBoolean() || this.hasItem())
                     return Textures.WATER_FULL_PIECE_NORMAL;
                 else return Textures.WATER_FULL_PIECE[ThreadLocalRandom.current().nextInt(Textures.WATER_FULL_PIECE.length)];
             } else

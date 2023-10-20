@@ -128,25 +128,25 @@ public class TextureRenderer
 
     public void renderAtLayer(Multimap<Pair<Coordinate, Pair<Float, Float>>, Object> layer)
     {
-        layer.forEach((coordinatewithpartials, object) ->
+        layer.entries().stream().forEachOrdered(entry ->
         {
-            if (object instanceof Texture texture)
+            if (entry.getValue() instanceof Texture texture)
             {
-                renderTexture(texture, coordinatewithpartials.first().x(), coordinatewithpartials.first().y(), coordinatewithpartials.second().first(), coordinatewithpartials.second().second());
+                renderTexture(texture, entry.getKey().first().x(), entry.getKey().first().y(), entry.getKey().second().first(), entry.getKey().second().second());
             }
-            if (object instanceof Tile tile)
+            if (entry.getValue() instanceof Tile tile)
             {
                 if (tile instanceof ConnectedTextureTile connectedTextureTile && connectedTextureTile.shouldShowConnectedTextures())
                 {
-                    renderConnectedTextureTile(coordinatewithpartials.first().x(), coordinatewithpartials.first().y());
+                    renderConnectedTextureTile(entry.getKey().first().x(), entry.getKey().first().y());
                 } else
                 {
-                    renderTexture(tile.getTexture(), coordinatewithpartials.first().x(), coordinatewithpartials.first().y(), 0, 0);
+                    renderTexture(tile.getTexture(), entry.getKey().first().x(), entry.getKey().first().y(), 0, 0);
                 }
             }
-            if (object instanceof Item item)
+            if (entry.getValue() instanceof Item item)
             {
-                renderTexture(item.getCurrentTexture(), coordinatewithpartials.first().x(), coordinatewithpartials.first().y(), coordinatewithpartials.second().first(), coordinatewithpartials.second().second());
+                renderTexture(item.getCurrentTexture(), entry.getKey().first().x(), entry.getKey().first().y(), entry.getKey().second().first(), entry.getKey().second().second());
             }
         });
     }
