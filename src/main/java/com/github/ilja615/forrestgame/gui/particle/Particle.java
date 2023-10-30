@@ -19,6 +19,7 @@
 
 package com.github.ilja615.forrestgame.gui.particle;
 
+import com.github.ilja615.forrestgame.entity.Entity;
 import com.github.ilja615.forrestgame.gui.texture.Texture;
 import com.github.ilja615.forrestgame.util.Coordinate;
 import com.github.ilja615.forrestgame.util.Tickable;
@@ -35,6 +36,10 @@ public class Particle implements Tickable
     private int animationTimer = 0;
     private int completedCycles = 0;
     private boolean expired = false;
+    public int counterTo16 = 0;
+    public float partialX = 0;
+    public float partialY = 0;
+    public Entity entity;
 
     public Particle(final Coordinate coordinate, final int amountCycles, final int ticksPerFrame, final World world, final Texture[] textures)
     {
@@ -43,6 +48,12 @@ public class Particle implements Tickable
         this.world = world;
         this.textures = textures;
         this.ticksPerFrame = ticksPerFrame;
+    }
+
+    public Particle(final Coordinate coordinate, final int amountCycles, final int ticksPerFrame, final World world, final Entity entity, final Texture[] textures)
+    {
+        this(coordinate, amountCycles, ticksPerFrame, world, textures);
+        this.entity = entity;
     }
 
     public Texture getCurrentTexture()
@@ -70,6 +81,11 @@ public class Particle implements Tickable
     public boolean isExpired()
     {
         return this.expired;
+    }
+
+    public void setExpired()
+    {
+        this.expired = true;
     }
 
     public int getAmountLifeCycles()
@@ -100,7 +116,9 @@ public class Particle implements Tickable
     @Override
     public void tick()
     {
-        this.animationTimer += 1;
+        this.animationTimer ++;
+        this.counterTo16 ++;
+        this.counterTo16 %= 16;
         if (this.animationTimer > this.ticksPerFrame)
         {
             this.currentFrame++;

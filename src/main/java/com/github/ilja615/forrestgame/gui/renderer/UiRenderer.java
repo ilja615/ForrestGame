@@ -31,6 +31,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class UiRenderer
 {
+    private static float TEXTURE_SIZE = 1/13f*2f;
+    private static float TEXT_SIZE = TEXTURE_SIZE/16.0f*10.0f;
+
     public void renderHealth(final Entity player)
     {
         /*
@@ -39,10 +42,10 @@ public class UiRenderer
             renderTexture(Textures.HEALTH, -1.1f + i * 0.0835f, 0.8f, 0.167f);
         }
          */
-        renderTexture(Textures.HEALTH, 0.05f, 0.8f, 0.167f);
+        renderTexture(Textures.HEALTH, 0.5f*TEXTURE_SIZE, 1-TEXTURE_SIZE, TEXTURE_SIZE);
         player.getWorld()
                 .getTextRenderer()
-                .drawString("x" + player.getStatTracker().get(StatTracker.Stat.HEALTH).toString(), 0.35f, 0.81f, 0.5f);
+                .drawString(player.getStatTracker().get(StatTracker.Stat.HEALTH).toString(), 2.5f*TEXTURE_SIZE, 1-TEXTURE_SIZE, TEXT_SIZE);
     }
 
     public void renderEnergy(final Entity player)
@@ -53,10 +56,10 @@ public class UiRenderer
             renderTexture(Textures.ENERGY, -0.1f + i * 0.0835f, 0.8f, 0.167f);
         }
          */
-        renderTexture(Textures.ENERGY, 0.4f, 0.8f, 0.167f);
+        renderTexture(Textures.ENERGY, 3*TEXTURE_SIZE, 1-TEXTURE_SIZE, TEXTURE_SIZE);
         player.getWorld()
                 .getTextRenderer()
-                .drawString("x" + player.getStatTracker().get(StatTracker.Stat.HUNGER).toString(), 0.7f, 0.81f, 0.5f);
+                .drawString(player.getStatTracker().get(StatTracker.Stat.HUNGER).toString(), 5f*TEXTURE_SIZE, 1-TEXTURE_SIZE, TEXT_SIZE);
     }
 
     public void renderEffects(final Entity player)
@@ -66,10 +69,10 @@ public class UiRenderer
         {
             if (effect.isActive())
             {
-                renderTexture(EffectTracker.getTextureFromEffect(effect), -0.05f - 0.2f*(float)Math.floor(i/2), 0.88f - 0.0835f*(float)Math.floor(i%2), 0.0835f);
+                renderTexture(EffectTracker.getTextureFromEffect(effect), -TEXTURE_SIZE - 1.5f*TEXTURE_SIZE*i, 1-TEXTURE_SIZE, TEXTURE_SIZE);
                 player.getWorld()
                         .getTextRenderer()
-                        .drawString("x" + effect.getTurnsLeft(), 0.06f - 0.2f*(float)Math.floor(i/2), 0.88f - 0.0835f*(float)Math.floor(i%2), 0.5f);
+                        .drawString(String.valueOf(effect.getTurnsLeft()),  0.5f*TEXTURE_SIZE- 1.5f*TEXTURE_SIZE*i, 1-TEXTURE_SIZE, TEXT_SIZE);
                 i++;
             }
         }
@@ -91,20 +94,21 @@ public class UiRenderer
 
             glBegin(GL_QUADS);
             glTexCoord2f(0, 0);
-            glVertex2f(-0.7515f, -0.6f + 0.167f);
+            glVertex2f(-4.5f*TEXTURE_SIZE, -4*TEXTURE_SIZE);
             glTexCoord2f(1, 0);
-            glVertex2f(0.7515f, -0.6f + 0.167f);
+            glVertex2f(4.5f*TEXTURE_SIZE, -4*TEXTURE_SIZE);
             glTexCoord2f(1, 1);
-            glVertex2f(0.7515f, -0.6f);
+            glVertex2f(4.5f*TEXTURE_SIZE, -5*TEXTURE_SIZE);
             glTexCoord2f(0, 1);
-            glVertex2f(-0.7515f, -0.6f);
+            glVertex2f(-4.5f*TEXTURE_SIZE, -5*TEXTURE_SIZE);
             glEnd();
         }
     }
 
     public void renderTimeIcon(final TimeTracker.Period period)
     {
-        renderTexture(period.getTexture(), -1.08f, 0.74f, 0.167f);
+        renderTexture(period.getTexture(), -1-TEXTURE_SIZE, 1-TEXTURE_SIZE, TEXTURE_SIZE);
+
     }
 
     public void renderTexture(final Texture texture, float x, final float y, final float size)

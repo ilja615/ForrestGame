@@ -31,6 +31,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TextRenderer
 {
+    public static float TEXT_SIZE = 1/13f*2f/16f*10f;
     private static final Logger LOGGER = LoggerFactory.getLogger(TextRenderer.class);
     private static final char[] characters = "abcdefghijklmnopqrstuvwxyz1234567890 :?!-".toCharArray();
     private final Map<String, Texture> characterToTextureMap;
@@ -65,8 +66,6 @@ public class TextRenderer
 
     public void drawString(final String string, float x, final float y, float size)
     {
-        size /= 10;
-
         for (int i = 0; i < string.length(); i++)
         {
             if (characterToTextureMap.get(TextRenderer.getTextureName(string.charAt(i))) == null)
@@ -80,13 +79,13 @@ public class TextRenderer
 
                 glBegin(GL_QUADS);
                 glTexCoord2f(0, 0);
-                glVertex2f(x, size + y);
+                glVertex2f(-size + x, size + y);
                 glTexCoord2f(1, 0);
-                glVertex2f(size + x, size + y);
+                glVertex2f(x, size + y);
                 glTexCoord2f(1, 1);
-                glVertex2f(size + x, y);
-                glTexCoord2f(0, 1);
                 glVertex2f(x, y);
+                glTexCoord2f(0, 1);
+                glVertex2f(-size + x, y);
                 glEnd();
             }
         }

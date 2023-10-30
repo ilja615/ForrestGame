@@ -130,10 +130,10 @@ public class World implements Tickable
 
     public boolean isWithinView(final Coordinate coordinate)
     {
-        return coordinate.x() >= player.getCoordinate().x() - 5
-                && coordinate.x() <= player.getCoordinate().x() + 5
-                && coordinate.y() >= player.getCoordinate().y() - 4
-                && coordinate.y() <= player.getCoordinate().y() + 3;
+        return coordinate.x() >= player.getCoordinate().x() - 6
+                && coordinate.x() <= player.getCoordinate().x() + 6
+                && coordinate.y() >= player.getCoordinate().y() - 5
+                && coordinate.y() <= player.getCoordinate().y() + 5;
     }
 
     public ArrayList<Entity> getEntitiesWithinView()
@@ -717,8 +717,7 @@ public class World implements Tickable
         if (!textureRenderer.isEnabled())
         {
             final String s = this.getTimeTracker().getCurrentTimeString();
-            final float size = 20.0f / (s.length() + 2);
-            textRenderer.drawString(s, -1f, -0.05f * size, size);
+            textRenderer.drawString(s, -0.5f * TextRenderer.TEXT_SIZE * s.length(), -0.5f * TextRenderer.TEXT_SIZE, TextRenderer.TEXT_SIZE);
         }
 
         glUniform1f(glGetUniformLocation(this.shader.program, "fade"), fade);
@@ -734,7 +733,7 @@ public class World implements Tickable
             uiRenderer.renderEnergy(player);
             uiRenderer.renderHealth(player);
             uiRenderer.renderEffects(player);
-            textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.96f, 0.93f, 0.5f);
+            textRenderer.drawString(this.getTimeTracker().getCurrentDayString(), -0.846f, 0.846f, TextRenderer.TEXT_SIZE);
             uiRenderer.renderTimeIcon(this.getTimeTracker().getPeriodFromTime(this.timeTracker.getCurrentTime()));
             uiRenderer.renderStress(player);
         }

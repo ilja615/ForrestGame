@@ -150,7 +150,7 @@ public class Player implements Entity
             Particle already = null;
             for (Particle particle : this.getWorld().getParticles())
             {
-                if (particle.getTextures() == Textures.CONFUSION_PARTICLE)
+                if (particle.getTextures() == Textures.CONFUSION_PARTICLE && particle.entity == this)
                 {
                     already = particle;
                 }
@@ -158,13 +158,24 @@ public class Player implements Entity
             if (already == null)
             {
                 // There was not yet a confusion particle
-                this.getWorld().getParticles().add(new Particle(coordinate, 1, 1, this.getWorld(), Textures.CONFUSION_PARTICLE));
+                this.getWorld().getParticles().add(new Particle(coordinate, 1, 1, this.getWorld(), this, Textures.CONFUSION_PARTICLE));
             } else {
                 // The current particle its position should be updated
                 already.setCoordinate(this.coordinate);
+                already.partialX = -partialX;
+                already.partialY = -partialY + (float) (0.25f*Math.sin(already.counterTo16 / 8.0f * Math.PI));
                 // The current one should be extended if it is close to expiration
                 if (already.getCompletedCycles() >= already.getAmountLifeCycles() - 1)
                     already.setAmountLifeCycles(already.getAmountLifeCycles() + 1);
+            }
+        } else
+        {
+            for (Particle particle : this.getWorld().getParticles())
+            {
+                if (particle.getTextures() == Textures.CONFUSION_PARTICLE && particle.entity == this)
+                {
+                    particle.setExpired();
+                }
             }
         }
 

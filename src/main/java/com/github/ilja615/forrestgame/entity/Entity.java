@@ -63,7 +63,7 @@ public interface Entity extends Tickable
     // Entities use middle layer by default
     default Multimap<Pair<Coordinate, Pair<Float, Float>>, Object> whichLayer(final TextureRenderer textureRenderer)
     {
-        return textureRenderer.LAYER_MIDDLE;
+        return textureRenderer.LAYER_FRONT;
     }
 
     /**
